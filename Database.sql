@@ -108,11 +108,13 @@ DROP TABLE IF EXISTS `Benh_An`;
 CREATE TABLE `Benh_An`(
 	`Ma_Benh_An` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(`Ma_Benh_An`),
+	`Ma_Benh_Nhan` INT UNSIGNED NOT NULL,
 	`Thoi_Gian_Kham` DATETIME,
 	`Ten_Benh` VARCHAR(40),
 	`Trieu_Chung` VARCHAR(100),
 	`Huong_Dieu_Tri` VARCHAR(100),
-	`Ghi_Chu_BA` VARCHAR(100)
+	`Ghi_Chu_BA` VARCHAR(100),
+	FOREIGN KEY(`Ma_Benh_Nhan`) REFERENCES `Benh_Nhan`(`Ma_Benh_Nhan`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -123,20 +125,48 @@ CREATE TABLE `Benh_An`(
 
 
 INSERT INTO `Benh_An` VALUES
-(NULL,'2015-10-11 8:0:00','Sâu răng','đau','dung thuốc bôi','răng hàm sâu'),
-(NULL,'2015-10-11 8:10:00','gãy mũi','mũi gãy','cố định mũi thẳng','sau này mũi sẽ không đẹp như trước'),
-(NULL,'2015-10-11 8:30:00','lệch hàm','lệch quai hàm','chỉnh hình','mức độ nhẹ'),
-(NULL,'2015-10-11 8:53:00','đau mắt đỏ','đau mắt đỏ','bôi thuốc','mức độ nhẹ'),
-(NULL,'2015-10-11 9:10:01','Tim đạp nhanh','rối loạn','trấn tĩnh','bị stress'),
-(NULL,'2015-10-11 10:11:00','đau ruột thừa','đau ruốt thừa','đã cắt bỏ ruột thừa','ruột thừa đau'),
-(NULL,'2015-10-11 11:12:00','loét dạ dày','đau dạ dày','nhận thuốc về điều trị','đau dạ dày mãn tính'),
-(NULL,'2015-10-11 12:12:00','gãy xương','xương gãy ống chân','nỗi xương và gia cố phần gãy','xương gãy do đá bóng'),
-(NULL,'2015-10-11 14:00:00','đau dạ dày','đau dạ dày','nội soi và đưa thuốc về ','đau dạ dày cấp tính'),
-(NULL,'2015-10-11 14:30:01','trật quai hàm','quai hàm lệch','chỉnh lại quai hàm','trật quai hàm do cười lớn'),
-(NULL,'2015-10-11 15:00:00','chỉnh hình','bính thường','chỉnh lại khuôn mặt','tránh tác động mạnh đến mặt');
+(NULL,1,'2015-10-11 8:0:00','Sâu răng','đau','dung thuốc bôi','răng hàm sâu'),
+(NULL,2,'2015-10-11 8:10:00','gãy mũi','mũi gãy','cố định mũi thẳng','sau này mũi sẽ không đẹp như trước'),
+(NULL,3,'2015-10-11 8:30:00','lệch hàm','lệch quai hàm','chỉnh hình','mức độ nhẹ'),
+(NULL,11,'2015-10-11 8:53:00','đau mắt đỏ','đau mắt đỏ','bôi thuốc','mức độ nhẹ'),
+(NULL,4,'2015-10-11 9:10:01','Tim đạp nhanh','rối loạn','trấn tĩnh','bị stress'),
+(NULL,5,'2015-10-11 10:11:00','đau ruột thừa','đau ruốt thừa','đã cắt bỏ ruột thừa','ruột thừa đau'),
+(NULL,6,'2015-10-11 11:12:00','loét dạ dày','đau dạ dày','nhận thuốc về điều trị','đau dạ dày mãn tính'),
+(NULL,7,'2015-10-11 12:12:00','gãy xương','xương gãy ống chân','nỗi xương và gia cố phần gãy','xương gãy do đá bóng'),
+(NULL,8,'2015-10-11 14:00:00','đau dạ dày','đau dạ dày','nội soi và đưa thuốc về ','đau dạ dày cấp tính'),
+(NULL,9,'2015-10-11 14:30:01','trật quai hàm','quai hàm lệch','chỉnh lại quai hàm','trật quai hàm do cười lớn'),
+(NULL,10,'2015-10-11 15:00:00','chỉnh hình','bính thường','chỉnh lại khuôn mặt','tránh tác động mạnh đến mặt');
+
+
+/*===================Bảng Phiên Khám==================================*/
+
+DROP TABLE IF EXISTS `Phien_Kham`;
+CREATE TABLE `Phien_Kham`(
+	`Ma_Phien_Kham` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(`Ma_Phien_Kham`),
+	`Ma_Benh_An` INT UNSIGNED NOT NULL,
+	`Tinh_Trang` VARCHAR(100) NOT NULL,
+	`Thoi_Gian` DATETIME,
+	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/*======================================================================*/
 
 
 
+INSERT INTO `Phien_Kham` VALUES
+(NULL,1,'đau','2015-10-11 8:0:00'),
+(NULL,2,'mũi gãy','2015-10-11 8:10:00'),
+(NULL,3,'lệch quai hàm','2015-10-11 8:30:00'),
+(NULL,11,'đau mắt đỏ','2015-10-11 8:53:00'),
+(NULL,4,'rối loạn','2015-10-11 9:10:01'),
+(NULL,5,'đau ruốt thừa','2015-10-11 10:11:00'),
+(NULL,6,'đau dạ dày','2015-10-11 11:12:00'),
+(NULL,7,'xương gãy ống chân','2015-10-11 12:12:00'),
+(NULL,8,'đau dạ dày','2015-10-11 14:00:00'),
+(NULL,9,'quai hàm lệch','2015-10-11 14:30:01'),
+(NULL,10,'bính thường','2015-10-11 15:00:00');
 
 
 /*===================bảng thuốc=====================================*/
@@ -186,13 +216,13 @@ INSERT INTO `Thuoc` VALUES
 
 DROP TABLE IF EXISTS `Don_Thuoc`;
 CREATE TABLE `Don_Thuoc` (
-	`Ma_Benh_An` INT UNSIGNED NOT NULL,
+	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
 	`Ma_Thuoc` INT UNSIGNED NOT NULL,
-	PRIMARY KEY(`Ma_Benh_An`,`Ma_Thuoc`),
+	PRIMARY KEY(`Ma_Phien_Kham`,`Ma_Thuoc`),
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	`So_Luong` INT UNSIGNED,
 	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
-	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`),
+	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
 	FOREIGN KEY(`Ma_Thuoc`) REFERENCES `Thuoc`(`Ma_Thuoc`),
 	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -206,7 +236,7 @@ CREATE TABLE `Don_Thuoc` (
 
 
 
-INSERT INTO `Don_Thuoc`(`Ma_Benh_An`,`Ma_Thuoc`,`Ten_Dang_Nhap`) VALUES
+INSERT INTO `Don_Thuoc`(`Ma_Phien_Kham`,`Ma_Thuoc`,`Ten_Dang_Nhap`) VALUES
 (1,1,'thuytrang'),
 (2,2,'thuytrang'),
 (3,3,'trungthanh'),
@@ -246,12 +276,12 @@ CREATE TABLE `Dich_Vu` (
 /*===================bảng đơn dịch vụ================================*/
 DROP TABLE IF EXISTS `Don_Dich_Vu`;
 CREATE TABLE `Don_Dich_Vu`(
-	`Ma_Benh_An` INT UNSIGNED NOT NULL,
+	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
 	`Ma_Dich_Vu` INT UNSIGNED NOT NULL,
-	PRIMARY KEY(`Ma_Benh_An`,`Ma_Dich_Vu`),
+	PRIMARY KEY(`Ma_Phien_Kham`,`Ma_Dich_Vu`),
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	`Chi_Phi_Dich_Vu` FLOAT UNSIGNED,
-	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`),
+	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
 	FOREIGN KEY(`Ma_Dich_Vu`) REFERENCES `Dich_Vu`(`Ma_Dich_Vu`),
 	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -267,26 +297,14 @@ CREATE TABLE `Don_Dich_Vu`(
 
 DROP TABLE IF EXISTS `Thanh_Toan`;
 CREATE TABLE `Thanh_Toan`(
-	`Ma_Benh_An` INT UNSIGNED NOT NULL,
-	PRIMARY KEY(`Ma_Benh_An`),
+	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
+	PRIMARY KEY(`Ma_Phien_Kham`),
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	`Chi_Phi` FLOAT UNSIGNED,
-	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`),
+	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
 	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*====================================================================*/
 
-/*===================Bảng Phiên Khám==================================*/
 
-DROP TABLE IF EXISTS `Phien_Kham`;
-CREATE TABLE `Phien_Kham`(
-	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
-	PRIMARY KEY(`Ma_Phien_Kham`),
-	`Ma_Benh_Nhan` INT UNSIGNED NOT NULL,
-	`Ma_Benh_An` INT UNSIGNED NOT NULL,
-	`Tinh_Trang_Den` VARCHAR(100) NOT NULL,
-	`Tinh_Tran_Ra` VARCHAR(100) NOT NULL,
-	FOREIGN KEY(`Ma_Benh_Nhan`) REFERENCES `Benh_Nhan`(`Ma_Benh_Nhan`),
-	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
