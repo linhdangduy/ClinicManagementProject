@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox fx:id="DichVu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.BacSi.DichVuController">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="350.0" spacing="10.0">
+         <children>
+            <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="350.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thông tin dịch vụ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </FlowPane>
+            <GridPane hgap="5.0" prefHeight="144.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên dịch vụ" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Chức năng" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá" GridPane.rowIndex="2" />
+                  <Label prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
+                  <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <HBox prefHeight="100.0" prefWidth="250.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label prefHeight="35.0" text="Label" />
+                        <Label prefHeight="35.0" text="VND" />
+                     </children>
+                     <padding>
+                        <Insets bottom="6.5" left="5.0" right="5.0" top="6.5" />
+                     </padding>
+                  </HBox>
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <VBox prefHeight="145.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <HBox alignment="CENTER" prefWidth="350.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Thêm dịch vụ" />
+                        <Button mnemonicParsing="false" prefWidth="100.0" text="Xong" />
+                        <Button mnemonicParsing="false" prefWidth="100.0" text="Trở lại" />
+                     </children>
+                  </HBox>
+                  <TextArea prefHeight="100.0" prefWidth="345.0" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="30.0" text="Danh sách dịch vụ" />
+                  <ComboBox prefHeight="30.0" promptText="Hôm nay" />
+                  <Label prefHeight="30.0" text="Lọc theo" />
+                  <ComboBox prefHeight="30.0" promptText="Lọc theo" />
+                  <TextField prefHeight="30.0" />
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <TableView prefHeight="400.0" prefWidth="750.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="Mã" />
+                  <TableColumn prefWidth="245.0" text="Tên dịch vụ" />
+                  <TableColumn prefWidth="304.0" text="Chức năng" />
+                  <TableColumn prefWidth="125.0" text="Giá" />
+               </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>

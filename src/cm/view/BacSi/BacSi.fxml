@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.BacSi.BacSiController">
+   <children>
+      <TilePane prefHeight="50.0" prefWidth="1100.0">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="550.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="40.0" text="Phòng khám" />
+                  <Label prefHeight="40.0" text="Tên phòng khám">
+                     <HBox.margin>
+                        <Insets right="30.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ToggleButton fx:id="btnTiepNhan" mnemonicParsing="false" onAction="#handleBtnTiepNhan" prefHeight="40.0" text="Tiếp Nhận">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="BtnGroup" />
+                     </toggleGroup></ToggleButton>
+                  <ToggleButton fx:id="btnThuoc" mnemonicParsing="false" onAction="#handleBtnThuoc" prefHeight="40.0" text="Thuốc" toggleGroup="$BtnGroup" />
+                  <ToggleButton fx:id="btnDichVu" mnemonicParsing="false" onAction="#handleBtnDichVu" prefHeight="40.0" text="Dịch Vụ" toggleGroup="$BtnGroup" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="550.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="40.0" text="Xin chào," />
+                  <Label prefHeight="40.0" text="Bác Sĩ" />
+                  <Label prefHeight="40.0" text="tên bác sĩ" />
+                  <Label prefHeight="40.0" text="Đăng xuất" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <TilePane.margin>
+                  <Insets />
+               </TilePane.margin>
+            </HBox>
+         </children>
+      </TilePane>
+      <HBox prefHeight="50.0" prefWidth="1100.0" spacing="10.0">
+         <children>
+            <Label prefHeight="40.0" text="Trạng thái">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+            <Label prefHeight="40.0" text="Label" />
+            <Label prefHeight="40.0" text="Label" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <StackPane fx:id="StackPane" prefHeight="450.0" prefWidth="1150.0" />
+   </children>
+</VBox>
