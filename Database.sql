@@ -112,8 +112,7 @@ CREATE TABLE `Benh_An`(
 	`Ten_Benh` VARCHAR(40),
 	`Trieu_Chung` VARCHAR(100),
 	`Huong_Dieu_Tri` VARCHAR(100),
-	`Ghi_Chu_BA` VARCHAR(100),
-	FOREIGN KEY(`Ma_Benh_Nhan`) REFERENCES `Benh_Nhan`(`Ma_Benh_Nhan`)
+	`Ghi_Chu_BA` VARCHAR(100)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
