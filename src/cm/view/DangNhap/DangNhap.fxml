@@ -24,18 +24,18 @@
          <children>
             <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="105.0" text="Người dùng" />
             <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="105.0" text="Mật khẩu" GridPane.rowIndex="1" />
-            <TextField prefHeight="35.0" promptText="tên đăng nhập" GridPane.columnIndex="1" />
-            <PasswordField prefHeight="35.0" promptText="mật khẩu" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfName" prefHeight="35.0" promptText="tên đăng nhập" GridPane.columnIndex="1" />
+            <PasswordField fx:id="tfPass" prefHeight="35.0" promptText="mật khẩu" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Đăng nhập" />
-                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Thoát" />
+                  <Button mnemonicParsing="false" onAction="#dangnhap" prefHeight="35.0" prefWidth="100.0" text="Đăng nhập" />
+                  <Button mnemonicParsing="false" onAction="#thoat" prefHeight="35.0" prefWidth="100.0" text="Thoát" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" />
                </padding>
             </HBox>
-            <Label alignment="CENTER" prefHeight="25.0" prefWidth="234.0" text="trạng thái" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="lbThongBao" alignment="CENTER" prefHeight="25.0" prefWidth="234.0" text="trạng thái" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

@@ -5,10 +5,12 @@
  */
 package cm;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -16,15 +18,13 @@ import javafx.stage.Stage;
  * @author linhsan
  */
 public class ClinicManager extends Application {
-    
+    public static Stage primaryStage;
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/cm/view/DangNhap/DangNhap.fxml"));
+        this.primaryStage = stage;
+        this.primaryStage.setTitle("ClinicManagement");
         
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+        initRootLayout();
     }
 
     /**
@@ -32,6 +32,19 @@ public class ClinicManager extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void initRootLayout() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(ClinicManager.class.getResource("/cm/view/DangNhap/DangNhap.fxml"));
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
 }
