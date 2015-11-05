@@ -7,6 +7,7 @@ package cm.controller.BacSi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,42 +28,53 @@ import javafx.scene.layout.StackPane;
 public class BacSiController implements Initializable {
     
     @FXML
-    private ToggleButton btnTiepNhan;
-    private ToggleButton btnThuoc;
-    private ToggleButton btnDichVu;
     private StackPane StackPane;
-    @FXML
-    private void handleBtnTiepNhan(ActionEvent event) {
+    
+    private HashMap<String, HBox> screens = new HashMap<>();
+    
+    private void loadPane() {
         try {
-            HBox n = FXMLLoader.load(getClass().getResource("/cm/view/BacSi/TiepNhan.fxml"));
-        //    if(n != null) System.out.println("fdafds");
-            StackPane.getChildren().add(n);
+            FXMLLoader load1 = new FXMLLoader(getClass().getResource("/cm/view/BacSi/TiepNhan.fxml"));
+            FXMLLoader load2 = new FXMLLoader(getClass().getResource("/cm/view/BacSi/Thuoc.fxml"));
+            FXMLLoader load3 = new FXMLLoader(getClass().getResource("/cm/view/BacSi/DichVu.fxml"));
+            HBox paneTiepNhan = load1.load();
+            HBox paneThuoc = load2.load();
+            HBox paneDichVu = load3.load();
+            screens.put("tiepnhan", paneTiepNhan);
+            screens.put("thuoc", paneThuoc);
+            screens.put("dichvu", paneDichVu);
+            
         } catch (IOException ex) {
             Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        /*    TiepNhanController.setVisible(true);
-        ThuocController.setVisible(false);
-        DichVuController.setVisible(false);
-    */}
+    }
+    
+    private void setPane(String pane) {
+        if (!StackPane.getChildren().isEmpty()) {
+            StackPane.getChildren().remove(0);
+        }
+        StackPane.getChildren().add(0, screens.get(pane));
+    }
+    
+    @FXML
+    private void handleBtnTiepNhan(ActionEvent event) {        
+        setPane("tiepnhan");
+    }
     
     @FXML
     private void handleBtnThuoc(ActionEvent event) {
-    /*    TiepNhanController.setVisible(false);
-        ThuocController.setVisible(true);
-        DichVuController.setVisible(false);
-    */}
+        setPane("thuoc");
+    }
     
     @FXML
     private void handleBtnDichVu(ActionEvent event) {
-    /*    TiepNhanController.setVisible(false);
-        ThuocController.setVisible(false);
-        DichVuController.setVisible(true);
-    */}
+        setPane("dichvu");
+    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+        loadPane();
+        setPane("tiepnhan");
     }
     
 }

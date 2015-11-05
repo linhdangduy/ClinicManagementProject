@@ -7,22 +7,36 @@ package cm.controller.BacSi;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.HBox;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.VBox;
 /**
  *
  * @author linhsan
  */
 public class TiepNhanController implements Initializable {
-
-    @FXML
-    private static HBox TiepNhan;
     
-    public static HBox get() {
-        return TiepNhan;
+    @FXML
+    private Button btnChiTiet;
+    @FXML
+    private VBox boxDanhSachBN;
+    @FXML
+    private TabPane tabDieuTri;
+    
+    @FXML
+    private void handleBtnChiTiet(ActionEvent event) {
+        tabDieuTri.setVisible(true);
+        boxDanhSachBN.setVisible(false);
     }
+    @FXML
+    private void handleBtnTroLai(ActionEvent event) {
+        tabDieuTri.setVisible(false);
+        boxDanhSachBN.setVisible(true);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         

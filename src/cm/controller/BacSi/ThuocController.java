@@ -17,12 +17,7 @@ import javafx.scene.layout.HBox;
  */
 public class ThuocController implements Initializable {
 
-    @FXML
-    private static HBox Thuoc;
-    
-    public static HBox get() {
-        return Thuoc;
-    }
+   
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         

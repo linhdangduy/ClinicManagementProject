@@ -50,7 +50,7 @@
                <children>
                   <HBox alignment="CENTER" prefWidth="350.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Thêm dịch vụ" />
+                        <Button mnemonicParsing="false" prefWidth="100.0" text="Thêm thuốc" />
                         <Button mnemonicParsing="false" prefWidth="100.0" text="Xong" />
                         <Button mnemonicParsing="false" prefWidth="100.0" text="Trở lại" />
                      </children>

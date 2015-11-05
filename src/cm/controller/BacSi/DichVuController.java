@@ -17,12 +17,7 @@ import javafx.scene.layout.HBox;
  */
 public class DichVuController implements Initializable {
     
-    @FXML
-    private static HBox DichVu;
-    
-    public static void setVisible(boolean b) {
-        DichVu.setVisible(b);
-    }
+   
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         

@@ -24,8 +24,8 @@
                      <toggleGroup>
                         <ToggleGroup fx:id="BtnGroup" />
                      </toggleGroup></ToggleButton>
-                  <ToggleButton fx:id="btnThuoc" mnemonicParsing="false" onAction="#handleBtnThuoc" prefHeight="40.0" text="Thuốc" toggleGroup="$BtnGroup" />
-                  <ToggleButton fx:id="btnDichVu" mnemonicParsing="false" onAction="#handleBtnDichVu" prefHeight="40.0" text="Dịch Vụ" toggleGroup="$BtnGroup" />
+                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnThuoc" prefHeight="40.0" text="Thuốc" toggleGroup="$BtnGroup" />
+                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnDichVu" prefHeight="40.0" text="Dịch Vụ" toggleGroup="$BtnGroup" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
