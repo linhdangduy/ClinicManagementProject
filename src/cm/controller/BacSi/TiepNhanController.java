@@ -26,6 +26,8 @@ public class TiepNhanController implements Initializable {
     @FXML
     private TabPane tabDieuTri;
     
+    private BacSiController parent;
+    
     @FXML
     private void handleBtnChiTiet(ActionEvent event) {
         tabDieuTri.setVisible(true);
@@ -36,10 +38,17 @@ public class TiepNhanController implements Initializable {
         tabDieuTri.setVisible(false);
         boxDanhSachBN.setVisible(true);
     }
-
+    
+    @FXML
+    private void handleBtnKeDon(ActionEvent event) {
+        
+    }
+    @FXML
+    private void handleBtnSuDung(ActionEvent event) {
+        
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
     }
     
 }

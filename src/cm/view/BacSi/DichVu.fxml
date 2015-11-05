@@ -48,7 +48,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <VBox prefHeight="145.0" prefWidth="100.0" spacing="10.0">
+            <VBox fx:id="paneThemDichVu" prefHeight="145.0" prefWidth="100.0" spacing="10.0">
                <children>
                   <HBox alignment="CENTER" prefWidth="350.0" spacing="10.0">
                      <children>

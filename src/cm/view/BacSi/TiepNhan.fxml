@@ -131,8 +131,8 @@
                                     <Label prefHeight="35.0" text="Ghi chú" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Nhập ghi chú" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Nhập hướng điều trị" GridPane.rowIndex="3" />
-                                    <Button mnemonicParsing="false" prefHeight="35.0" text="Kê đơn thuốc" GridPane.rowIndex="4" />
-                                    <Button mnemonicParsing="false" prefHeight="35.0" text="Sử dụng dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Button mnemonicParsing="false" onAction="#handleBtnKeDon" prefHeight="35.0" text="Kê đơn thuốc" GridPane.rowIndex="4" />
+                                    <Button mnemonicParsing="false" onAction="#handleBtnSuDung" prefHeight="35.0" text="Sử dụng dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Kê đơn thuốc" GridPane.rowIndex="5" />
                                     <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Sử dụng dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                  </children>
