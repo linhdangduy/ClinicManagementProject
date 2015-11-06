@@ -48,12 +48,6 @@ public class BacSiController implements Initializable {
         }
     }
     
-    public void setPane1(String pane, boolean b) {
-        if (!StackPane.getChildren().isEmpty()) {
-            StackPane.getChildren().remove(0);
-        }
-        StackPane.getChildren().add(0, screens.get(pane));
-    }
     
     public void setPane(String pane) {
         if (!StackPane.getChildren().isEmpty()) {
