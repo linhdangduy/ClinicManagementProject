@@ -179,7 +179,8 @@ CREATE TABLE `Thuoc`(
 	`Gia_Thuoc` FLOAT UNSIGNED,
 	`Cong_Dung` VARCHAR(100),
 	`So_Luong` INT UNSIGNED,
-	`Don_Vi` CHAR(8)
+	`Don_Vi` CHAR(8),
+	`Ghi_Chu_Thuoc` VARCHAR(100)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
