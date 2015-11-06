@@ -179,8 +179,7 @@ CREATE TABLE `Thuoc`(
 	`Gia_Thuoc` FLOAT UNSIGNED,
 	`Cong_Dung` VARCHAR(100),
 	`So_Luong` INT UNSIGNED,
-	`Don_Vi` CHAR(8),
-	`Ghi_Chu_Thuoc` VARCHAR(100)
+	`Don_Vi` CHAR(8)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -222,6 +221,7 @@ CREATE TABLE `Don_Thuoc` (
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	`So_Luong` INT UNSIGNED,
 	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
+	`Ghi_Chu_Thuoc` VARCHAR(100),
 	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
 	FOREIGN KEY(`Ma_Thuoc`) REFERENCES `Thuoc`(`Ma_Thuoc`),
 	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
@@ -257,15 +257,13 @@ INSERT INTO `Don_Thuoc`(`Ma_Phien_Kham`,`Ma_Thuoc`,`Ten_Dang_Nhap`) VALUES
 
 
 
-
-
 DROP TABLE IF EXISTS `Dich_Vu`;
 CREATE TABLE `Dich_Vu` (
 	`Ma_Dich_Vu` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(`Ma_Dich_Vu`),
 	`Ten_Dich_Vu` VARCHAR(50) NOT NULL,
 	`Gia_Dich_Vu` FLOAT UNSIGNED,
-	`Loi_Ich` VARCHAR(100)
+	`Chuc_Nang` VARCHAR(100)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*==================================================================*/

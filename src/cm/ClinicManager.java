@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * @author linhsan
  */
 public class ClinicManager extends Application {
-    public static Stage primaryStage;
+    private static Stage primaryStage;
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
@@ -34,6 +34,9 @@ public class ClinicManager extends Application {
         launch(args);
     }
 
+    public static Stage getStage() {
+        return primaryStage;
+    }
     private void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();

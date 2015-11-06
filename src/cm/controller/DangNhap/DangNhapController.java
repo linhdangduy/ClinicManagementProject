@@ -48,11 +48,8 @@ public class DangNhapController implements Initializable {
     
     
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        
-            CreateConnection();
-            System.out.println("ket noi thanh cong");
-       
+    public void initialize(URL location, ResourceBundle resources) {        
+        createConnection();       
     }
     @FXML
     private void dangnhap(ActionEvent e) throws IOException {
@@ -68,14 +65,14 @@ public class DangNhapController implements Initializable {
                 if (rs.getString("Phong").equals("phòng khám")){
                     Parent root = FXMLLoader.load(getClass().getResource("/cm/view/BacSi/BacSi.fxml"));
                     Scene scene = new Scene(root);
-                    ClinicManager.primaryStage.setScene(scene);
+                    ClinicManager.getStage().setScene(scene);
                 }
                 else if (rs.getString("Phong").equals("lễ tân")){
                     Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/LeTan.fxml"));
                     Scene scene = new Scene(root);
-                    ClinicManager.primaryStage.setScene(scene);
+                    ClinicManager.getStage().setScene(scene);
                 }
-                
+                con.close();
             }
             else{
                 lbThongBao.setText("Ten tai khoan hoac mat khau sai!");
@@ -88,12 +85,13 @@ public class DangNhapController implements Initializable {
     }
     @FXML
     private void thoat(ActionEvent e){
+        
         Platform.exit();
     }
-    private void CreateConnection(){
+    private void createConnection(){
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/clinic","root","123456");
-            st = con.createStatement();
+            con = DriverManager.getConnection("jdbc:mysql://localhost/quanlyphongkham","sampadm","secret");
+        //    con = DriverManager.getConnection("jdbc:mysql://localhost/clinic","root","123456");
         } catch (SQLException ex) {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }

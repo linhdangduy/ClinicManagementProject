@@ -5,6 +5,7 @@
  */
 package cm.controller.BacSi;
 
+import cm.ClinicManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -15,9 +16,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
@@ -29,27 +31,31 @@ public class BacSiController implements Initializable {
     
     @FXML
     private StackPane StackPane;
+    @FXML
+    private Label lblDangXuat;
     
     private HashMap<String, HBox> screens = new HashMap<>();
     
-    private void loadPane() {
+    private void loadPane(String paneName, String resource) {
         try {
-            FXMLLoader load1 = new FXMLLoader(getClass().getResource("/cm/view/BacSi/TiepNhan.fxml"));
-            FXMLLoader load2 = new FXMLLoader(getClass().getResource("/cm/view/BacSi/Thuoc.fxml"));
-            FXMLLoader load3 = new FXMLLoader(getClass().getResource("/cm/view/BacSi/DichVu.fxml"));
-            HBox paneTiepNhan = load1.load();
-            HBox paneThuoc = load2.load();
-            HBox paneDichVu = load3.load();
-            screens.put("tiepnhan", paneTiepNhan);
-            screens.put("thuoc", paneThuoc);
-            screens.put("dichvu", paneDichVu);
-            
+            FXMLLoader load = new FXMLLoader(getClass().getResource(resource));
+            HBox pane = load.load();
+            PaneInterface paneController = (PaneInterface)load.getController();
+            paneController.setScreenParent(this);
+            screens.put(paneName, pane);           
         } catch (IOException ex) {
             Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void setPane(String pane) {
+    public void setPane1(String pane, boolean b) {
+        if (!StackPane.getChildren().isEmpty()) {
+            StackPane.getChildren().remove(0);
+        }
+        StackPane.getChildren().add(0, screens.get(pane));
+    }
+    
+    public void setPane(String pane) {
         if (!StackPane.getChildren().isEmpty()) {
             StackPane.getChildren().remove(0);
         }
@@ -71,10 +77,32 @@ public class BacSiController implements Initializable {
         setPane("dichvu");
     }
     
+    @FXML
+    private void mouseEnteredLblDangXuat(MouseEvent event) {
+        
+    }
+    @FXML
+    private void mouseExitedLblDangXuat(MouseEvent event) {
+        
+    }
+    @FXML
+    private void mouseClickedLblDangXuat(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/cm/view/DangNhap/DangNhap.fxml"));
+            Scene scene = new Scene(root);
+            ClinicManager.getStage().setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadPane();
+        loadPane("tiepnhan", "/cm/view/BacSi/TiepNhan.fxml");
+        loadPane("thuoc", "/cm/view/BacSi/Thuoc.fxml");
+        loadPane("dichvu", "/cm/view/BacSi/DichVu.fxml");
         setPane("tiepnhan");
     }
+
     
 }

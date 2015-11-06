@@ -36,7 +36,7 @@
                   <Label prefHeight="40.0" text="Xin chào," />
                   <Label prefHeight="40.0" text="Bác Sĩ" />
                   <Label prefHeight="40.0" text="tên bác sĩ" />
-                  <Label prefHeight="40.0" text="Đăng xuất" />
+                  <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" onMouseEntered="#mouseEnteredLblDangXuat" onMouseExited="#mouseExitedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

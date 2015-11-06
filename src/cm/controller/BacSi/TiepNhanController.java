@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
  *
  * @author linhsan
  */
-public class TiepNhanController implements Initializable {
+public class TiepNhanController implements Initializable, PaneInterface {
     
     @FXML
     private Button btnChiTiet;
@@ -26,7 +26,7 @@ public class TiepNhanController implements Initializable {
     @FXML
     private TabPane tabDieuTri;
     
-    private BacSiController parent;
+    private BacSiController parentPane;
     
     @FXML
     private void handleBtnChiTiet(ActionEvent event) {
@@ -41,14 +41,21 @@ public class TiepNhanController implements Initializable {
     
     @FXML
     private void handleBtnKeDon(ActionEvent event) {
-        
+        parentPane.setPane("thuoc");
     }
     @FXML
     private void handleBtnSuDung(ActionEvent event) {
-        
+        parentPane.setPane("dichvu");
     }
+    
+    //override tu Initializable interface
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+    //override tu PaneInterface interface
+    @Override
+    public void setScreenParent(BacSiController mainPane) {
+        parentPane = mainPane;
     }
     
 }

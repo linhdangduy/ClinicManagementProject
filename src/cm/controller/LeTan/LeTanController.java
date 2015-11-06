@@ -5,6 +5,7 @@
  */
 package cm.controller.LeTan;
 
+import cm.ClinicManager;
 import cm.controller.BacSi.BacSiController;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,10 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
@@ -25,6 +30,8 @@ import javafx.scene.layout.StackPane;
 public class LeTanController implements Initializable {
     @FXML
     private StackPane StackPane;
+    @FXML
+    private Label lblDangXuat;
     
     private HashMap<String, HBox> screens = new HashMap<>();
     
@@ -57,6 +64,25 @@ public class LeTanController implements Initializable {
     @FXML
     private void handleBtnThanhToan() {
         setPane("thanhtoan");
+    }
+    
+    @FXML
+    private void mouseEnteredLblDangXuat(MouseEvent event) {
+        
+    }
+    @FXML
+    private void mouseExitedLblDangXuat(MouseEvent event) {
+        
+    }
+    @FXML
+    private void mouseClickedLblDangXuat(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/cm/view/DangNhap/DangNhap.fxml"));
+            Scene scene = new Scene(root);
+            ClinicManager.getStage().setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override

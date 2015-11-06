@@ -52,7 +52,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefWidth="100.0" text="Thêm thuốc" />
                         <Button mnemonicParsing="false" prefWidth="100.0" text="Xong" />
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Trở lại" />
+                        <Button mnemonicParsing="false" onAction="#handleBtnTroLai" prefWidth="100.0" text="Trở lại" />
                      </children>
                   </HBox>
                   <TextArea prefHeight="100.0" prefWidth="345.0" />
