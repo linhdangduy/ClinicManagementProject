@@ -22,13 +22,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  *
@@ -56,7 +54,8 @@ public class DangNhapController implements Initializable {
         String sql = "SELECT * FROM Tai_Khoan WHERE Ten_Dang_Nhap = ? AND Mat_Khau = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, tfName.getText());
+            String name=tfName.getText();
+            ps.setString(1, name);
             ps.setString(2, tfPass.getText());
             rs = ps.executeQuery();
             if(rs.isBeforeFirst()){
@@ -72,6 +71,12 @@ public class DangNhapController implements Initializable {
                     Scene scene = new Scene(root);
                     ClinicManager.getStage().setScene(scene);
                 }
+                ps.close();
+                sql = "UPDATE Tai_Khoan SET Trang_Thai = ? WHERE Ten_Dang_Nhap = ?";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, "ON");
+                ps.setString(2, name);
+                ps.executeUpdate();
                 con.close();
             }
             else{
@@ -90,8 +95,8 @@ public class DangNhapController implements Initializable {
     }
     private void createConnection(){
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/quanlyphongkham","sampadm","secret");
-        //    con = DriverManager.getConnection("jdbc:mysql://localhost/clinic","root","123456");
+            //con = DriverManager.getConnection("jdbc:mysql://localhost/quanlyphongkham","sampadm","secret");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/clinic","root","123456");
         } catch (SQLException ex) {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
