@@ -30,6 +30,9 @@ public class ConnectToDatabase {
             Logger.getLogger(ConnectToDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public Connection getConn(){
+        return conn;
+    }
     public ResultSet getRS(String sql){
         try {
             rs = stat.executeQuery(sql);
