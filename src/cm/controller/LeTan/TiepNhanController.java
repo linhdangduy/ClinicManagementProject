@@ -95,10 +95,10 @@ public class TiepNhanController implements Initializable{
         PhoneColumn.setCellValueFactory(new PropertyValueFactory<>("Phone"));
         TrangThaiColumn.setCellValueFactory(new PropertyValueFactory<>("TrangThai"));
         BenhNhanTable.setItems(BenhNhanData);
-        BenhNhanTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showUserDetails(newValue));
+        BenhNhanTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
     }
 
-    private void showUserDetails(BenhNhan benhnhan) {
+    private void showDetails(BenhNhan benhnhan) {
         if(benhnhan != null){
             lblTen.setText(benhnhan.getHoTen());
             lblNgaySinh.setText(benhnhan.getNgaySinh());
