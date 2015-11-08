@@ -16,11 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -58,6 +61,10 @@ public class TiepNhanController implements Initializable{
     private TableColumn ThoiGianColumn;
     @FXML
     private TableColumn TrangThaiColumn;
+    @FXML
+    private ComboBox<String> cbSearch;
+    @FXML
+    private TextField tfFilter;
     
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
     
@@ -65,6 +72,7 @@ public class TiepNhanController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         try {
             con = new ConnectToDatabase();
+            cbSearchInit();
             addBenhNhanData();
             initTable();
         } catch (SQLException ex) {
@@ -87,6 +95,10 @@ public class TiepNhanController implements Initializable{
         }
         rs.close();
     }
+    private void cbSearchInit() {
+        cbSearch.getItems().addAll("Mã","Họ Tên","Trạng Thái");
+        cbSearch.setValue("Mã");
+    }
     public void initTable(){
         MaColumn.setCellValueFactory(new PropertyValueFactory<>("Ma"));
         TenColumn.setCellValueFactory(new PropertyValueFactory<>("HoTen"));
@@ -94,10 +106,46 @@ public class TiepNhanController implements Initializable{
         GioiTinhColumn.setCellValueFactory(new PropertyValueFactory<>("GioiTinh"));
         PhoneColumn.setCellValueFactory(new PropertyValueFactory<>("Phone"));
         TrangThaiColumn.setCellValueFactory(new PropertyValueFactory<>("TrangThai"));
-        BenhNhanTable.setItems(BenhNhanData);
+        
+        
+        FilteredList<BenhNhan> filteredData = new FilteredList<>(BenhNhanData, p -> true);
+        BenhNhanTable.setItems(filteredData);
+        tfFilter.textProperty().addListener((observable, oldValue , newValue) -> {
+            filteredData.setPredicate( benhnhan -> {
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+                
+                String lowerCaseFilter = newValue.toLowerCase();
+                switch(cbSearch.getValue()) {
+                    case "Mã":
+                        if (benhnhan.getMa() == Integer.parseInt(newValue)){
+                            return true;
+                        }
+                        break;
+                    case "Họ Tên":
+                        if (benhnhan.getHoTen().toLowerCase().contains(lowerCaseFilter)){
+                            return true;
+                        }
+                        break;
+                    case "Trạng Thái":
+                        if (benhnhan.getTrangThai().toLowerCase().contains(lowerCaseFilter)){
+                            return true;
+                        }
+                        break;
+                }
+                return false;
+            });
+        });
+        //BenhNhanTable.setItems(BenhNhanData);
+        BenhNhanTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
+        
+        
+    }
+    @FXML
+    private void ThongTin(){
         BenhNhanTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
     }
-
     private void showDetails(BenhNhan benhnhan) {
         if(benhnhan != null){
             lblTen.setText(benhnhan.getHoTen());
@@ -114,5 +162,16 @@ public class TiepNhanController implements Initializable{
             lblDiaChi.setText("");
         }
     }
-   
+    @FXML
+    private void ThemMoi(){
+        
+    }
+
+    
+    @FXML
+    private void ChinhSua(){
+        
+    }
+
+    
 }
