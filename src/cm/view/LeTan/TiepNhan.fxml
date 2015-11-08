@@ -14,46 +14,46 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <tabs>
-            <Tab closable="false" text="Thông tin">
+            <Tab closable="false" onSelectionChanged="#ThongTin" text="Thông tin">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
                         <GridPane prefHeight="240.0">
                            <children>
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Họ tên" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Ngày sinh" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giới tính" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Địa chỉ" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số điện thoại" GridPane.rowIndex="4" />
-                              <Label fx:id="lblTen" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1">
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Họ tên :" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Ngày sinh :" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giới tính :" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Địa chỉ :" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số điện thoại :" GridPane.rowIndex="4" />
+                              <Label fx:id="lblTen" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="lblNgaySinh" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Label fx:id="lblNgaySinh" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="lblGioiTinh" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <Label fx:id="lblGioiTinh" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="lblDiaChi" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <Label fx:id="lblDiaChi" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="lblPhone" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Label fx:id="lblPhone" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
                            </children>
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="235.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -70,7 +70,7 @@
                   </VBox>
                </content>
             </Tab>
-            <Tab closable="false" text="Thêm mới">
+            <Tab closable="false" onSelectionChanged="#ThemMoi" text="Thêm mới">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
@@ -138,7 +138,7 @@
                   </VBox>
                </content>
             </Tab>
-            <Tab closable="false" text="Chỉnh sửa">
+            <Tab closable="false" onSelectionChanged="#ChinhSua" text="Chỉnh sửa">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
@@ -215,7 +215,7 @@
                   <Label prefHeight="30.0" text="Danh sách bệnh nhân" />
                   <ComboBox prefHeight="30.0" promptText="Hôm nay" />
                   <Label prefHeight="30.0" text="Lọc theo" />
-                  <ComboBox prefHeight="30.0" promptText="Lọc theo" />
+                  <ComboBox fx:id="cbSearch" prefHeight="30.0" promptText="Lọc theo" />
                   <TextField fx:id="tfFilter" prefHeight="30.0" />
                </children>
                <padding>
