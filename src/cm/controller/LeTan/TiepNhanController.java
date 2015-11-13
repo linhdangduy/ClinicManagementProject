@@ -7,6 +7,7 @@ package cm.controller.LeTan;
 
 import cm.ConnectToDatabase;
 import cm.model.BenhNhan;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,13 +18,16 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -46,6 +50,42 @@ public class TiepNhanController implements Initializable{
     @FXML
     private Label lblPhone;
     @FXML
+    private TextField tfTen1;
+    @FXML
+    private ComboBox<String> cbNgay1;
+    @FXML
+    private ComboBox<String> cbThang1;
+    @FXML
+    private ComboBox<String> cbNam1;
+    @FXML
+    private ToggleGroup groupLevel1;
+    @FXML
+    private RadioButton rbNam1;
+    @FXML
+    private RadioButton rbNu1;
+    @FXML
+    private TextField tfDiaChi1;
+    @FXML
+    private TextField tfPhone1;
+    @FXML
+    private TextField tfTen2;
+    @FXML
+    private ComboBox<String> cbNgay2;
+    @FXML
+    private ComboBox<String> cbThang2;
+    @FXML
+    private ComboBox<String> cbNam2;
+    @FXML
+    private ToggleGroup groupLevel2;
+    @FXML
+    private RadioButton rbNam2;
+    @FXML
+    private RadioButton rbNu2;
+    @FXML
+    private TextField tfDiaChi2;
+    @FXML
+    private TextField tfPhone2;
+    @FXML
     private TableView<BenhNhan> BenhNhanTable;
     @FXML
     private TableColumn MaColumn;
@@ -66,13 +106,24 @@ public class TiepNhanController implements Initializable{
     @FXML
     private TextField tfFilter;
     
+    private String gioitinh;
+    private String ngaysinh = "";
+    
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
+    private ObservableList<String> ngay = FXCollections.observableArrayList();
+    private ObservableList<String> thang = FXCollections.observableArrayList();
+    private ObservableList<String> nam = FXCollections.observableArrayList();
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             con = new ConnectToDatabase();
             cbSearchInit();
+            cbNgaySinhInit();
+            rbNam1.setOnAction(e -> gioitinh = "Nam");
+            rbNu1.setOnAction(e -> gioitinh = "Nữ");
+            rbNam2.setOnAction(e -> gioitinh = "Nam");
+            rbNu2.setOnAction(e -> gioitinh = "Nữ");
             addBenhNhanData();
             initTable();
         } catch (SQLException ex) {
@@ -97,7 +148,7 @@ public class TiepNhanController implements Initializable{
     }
     private void cbSearchInit() {
         cbSearch.getItems().addAll("Mã","Họ Tên","Trạng Thái");
-        cbSearch.setValue("Mã");
+        cbSearch.setValue("Họ Tên");
     }
     public void initTable(){
         MaColumn.setCellValueFactory(new PropertyValueFactory<>("Ma"));
@@ -142,10 +193,7 @@ public class TiepNhanController implements Initializable{
         
         
     }
-    @FXML
-    private void ThongTin(){
-        BenhNhanTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
-    }
+    
     private void showDetails(BenhNhan benhnhan) {
         if(benhnhan != null){
             lblTen.setText(benhnhan.getHoTen());
@@ -162,16 +210,83 @@ public class TiepNhanController implements Initializable{
             lblDiaChi.setText("");
         }
     }
-    @FXML
-    private void ThemMoi(){
-        
-    }
-
     
+    
+    private void cbNgaySinhInit(){
+        /*int[] ngay = new int[31];
+        int[] thang = new int[12];
+        int[] nam = new int[150];*/
+        int i;
+        String a;
+        for (i=1;i<32;i++){
+            if (i<10){
+                a = "0"+i;
+            }else{
+                a=""+i;
+            }
+            ngay.add(a);
+        }
+        for (i=1;i<13;i++){
+            if (i<10){
+                a = "0"+i;
+            }else{
+                a=""+i;
+            }
+            thang.add(a);
+        }
+        for (i=1900;i<=2100;i++){
+            a=""+i;
+            nam.add(a);
+        }
+        cbNgay1.getItems().addAll(ngay);
+        cbThang1.getItems().addAll(thang);
+        cbNam1.getItems().addAll(nam);
+        
+        cbNgay2.getItems().addAll(ngay);
+        cbThang2.getItems().addAll(thang);
+        cbNam2.getItems().addAll(nam);
+    }
     @FXML
-    private void ChinhSua(){
+    private void Them (ActionEvent e) throws IOException, SQLException {
+        BenhNhan benhnhan = new BenhNhan();
+        benhnhan.setHoTen(tfTen1.getText());
+        ngaysinh = "" + cbNam1.getValue();
+        ngaysinh = ngaysinh +"-";
+        ngaysinh = ngaysinh + cbThang1.getValue();
+        ngaysinh = ngaysinh +"-";
+        ngaysinh = ngaysinh + cbNgay1.getValue();
+        benhnhan.setNgaySinh(ngaysinh);
+        benhnhan.setGioiTinh(gioitinh);
+        benhnhan.setDiaChi(tfDiaChi1.getText());
+        benhnhan.setPhone(tfPhone1.getText());
+        benhnhan.setTrangThai("phòng khám");
+        // nhap vao du lieu
+        String sql1 = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
+        ps = con.getPS(sql1);
+        ps.setString(1, benhnhan.getHoTen());
+        ps.setString(2, benhnhan.getNgaySinh());
+        ps.setString(3, benhnhan.getDiaChi());
+        ps.setString(4, benhnhan.getGioiTinh());
+        ps.setString(5, benhnhan.getPhone());
+        ps.setString(6, benhnhan.getTrangThai());
+        ps.executeUpdate();
+        ps.close();
+        // lay ma benhn nhan da nhap
+        String sql2 = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
+        ps = con.getPS(sql2);
+        ps.setString(1, benhnhan.getHoTen());
+        ps.setString(2, benhnhan.getPhone());
+        rs = ps.executeQuery();
+        rs.next();
+        benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
+        ps.close();
+        BenhNhanData.add(benhnhan);
         
     }
+    @FXML void Huy(ActionEvent e){
+        
+    }
+    
 
     
 }
