@@ -14,7 +14,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <tabs>
-            <Tab closable="false" onSelectionChanged="#ThongTin" text="Thông tin">
+            <Tab closable="false" text="Thông tin">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
@@ -70,7 +70,7 @@
                   </VBox>
                </content>
             </Tab>
-            <Tab closable="false" onSelectionChanged="#ThemMoi" text="Thêm mới">
+            <Tab closable="false" text="Thêm mới">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
@@ -81,32 +81,35 @@
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giới tính" GridPane.rowIndex="2" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Địa chỉ" GridPane.rowIndex="3" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số điện thoại" GridPane.rowIndex="4" />
-                              <TextField prefHeight="35.0" GridPane.columnIndex="1">
+                              <TextField fx:id="tfTen1" prefHeight="35.0" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <TextField fx:id="tfDiaChi1" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <TextField fx:id="tfPhone1" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <ComboBox prefHeight="35.0" promptText="dd" />
-                                    <ComboBox prefHeight="35.0" promptText="mm" />
-                                    <ComboBox prefHeight="35.0" promptText="yyyy" />
+                                    <ComboBox fx:id="cbNgay1" prefHeight="35.0" promptText="dd" />
+                                    <ComboBox fx:id="cbThang1" prefHeight="35.0" promptText="mm" />
+                                    <ComboBox fx:id="cbNam1" prefHeight="35.0" promptText="yyyy" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <children>
-                                    <RadioButton mnemonicParsing="false" prefHeight="35.0" text="Nam" />
-                                    <RadioButton mnemonicParsing="false" prefHeight="35.0" text="Nữ" />
+                                    <RadioButton fx:id="rbNam1" mnemonicParsing="false" prefHeight="35.0" text="Nam">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="groupLevel1" />
+                                       </toggleGroup></RadioButton>
+                                    <RadioButton fx:id="rbNu1" mnemonicParsing="false" prefHeight="35.0" text="Nữ" toggleGroup="$groupLevel1" />
                                  </children>
                               </HBox>
                            </children>
@@ -124,8 +127,8 @@
                         </GridPane>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="350.0" spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Thêm" />
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Hủy" />
+                              <Button mnemonicParsing="false" onAction="#Them" prefWidth="100.0" text="Thêm" />
+                              <Button mnemonicParsing="false" onAction="#Huy" prefWidth="100.0" text="Hủy" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -138,7 +141,7 @@
                   </VBox>
                </content>
             </Tab>
-            <Tab closable="false" onSelectionChanged="#ChinhSua" text="Chỉnh sửa">
+            <Tab closable="false" text="Chỉnh sửa">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
@@ -149,32 +152,35 @@
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giới tính" GridPane.rowIndex="2" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Địa chỉ" GridPane.rowIndex="3" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số điện thoại" GridPane.rowIndex="4" />
-                              <TextField prefHeight="35.0" GridPane.columnIndex="1">
+                              <TextField fx:id="tfTen2" prefHeight="35.0" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <TextField fx:id="tfDiaChi2" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <TextField fx:id="tfPhone2" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <ComboBox prefHeight="35.0" promptText="dd" />
-                                    <ComboBox prefHeight="35.0" promptText="mm" />
-                                    <ComboBox prefHeight="35.0" promptText="yyyy" />
+                                    <ComboBox fx:id="cbNgay2" prefHeight="35.0" promptText="dd" />
+                                    <ComboBox fx:id="cbThang2" prefHeight="35.0" promptText="mm" />
+                                    <ComboBox fx:id="cbNam2" prefHeight="35.0" promptText="yyyy" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <children>
-                                    <RadioButton mnemonicParsing="false" prefHeight="35.0" text="Nam" />
-                                    <RadioButton mnemonicParsing="false" prefHeight="35.0" text="Nữ" />
+                                    <RadioButton fx:id="rbNam2" mnemonicParsing="false" prefHeight="35.0" text="Nam">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="groupLevel2" />
+                                       </toggleGroup></RadioButton>
+                                    <RadioButton fx:id="rbNu2" mnemonicParsing="false" prefHeight="35.0" text="Nữ" toggleGroup="$groupLevel2" />
                                  </children>
                               </HBox>
                            </children>
