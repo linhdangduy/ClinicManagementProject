@@ -21,10 +21,11 @@ import java.util.logging.Logger;
 public class ConnectToDatabase {
     private Connection conn;
     private Statement stat;
+    private PreparedStatement ps;
     private ResultSet rs;
     public ConnectToDatabase(){
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/clinic", "root", "123456");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/clinic?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true", "root", "123456");
             stat = conn.createStatement();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectToDatabase.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,7 +42,12 @@ public class ConnectToDatabase {
         }
         return rs;
     }
-    public void close() throws SQLException{
+    public PreparedStatement getPS(String sql) throws SQLException{
+        ps = null;
+        ps = conn.prepareStatement(sql);
+        return ps;
+    }
+    public void conClose() throws SQLException{
         conn.close();
     }
     public static void main(String[] args) {
