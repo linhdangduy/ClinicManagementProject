@@ -234,7 +234,7 @@ public class TiepNhanController implements Initializable{
             }
             thang.add(a);
         }
-        for (i=1900;i<=2100;i++){
+        for (i=1900;i<=2015;i++){
             a=""+i;
             nam.add(a);
         }
