@@ -70,13 +70,13 @@ public class TiepNhanController implements Initializable, PaneInterface {
     }
     
     public void initTable() {
-        colMa.setCellValueFactory(new PropertyValueFactory<>("maProperty"));
-        colHoten.setCellValueFactory(new PropertyValueFactory<>("hotenProperty"));
-        colNgaysinh.setCellValueFactory(new PropertyValueFactory<>("ngaysinhProperty"));
-        colGioitinh.setCellValueFactory(new PropertyValueFactory<>("gioitinhProperty"));
-        colSdt.setCellValueFactory(new PropertyValueFactory<>("sdtProperty"));
-        colThoigiankham.setCellValueFactory(new PropertyValueFactory<>("thoigiankhamProperty"));
-        colTrangthai.setCellValueFactory(new PropertyValueFactory<>("trangthaiProperty"));
+        colMa.setCellValueFactory(new PropertyValueFactory<>("Ma"));
+        colHoten.setCellValueFactory(new PropertyValueFactory<>("HoTen"));
+        colNgaysinh.setCellValueFactory(new PropertyValueFactory<>("NgaySinh"));
+        colGioitinh.setCellValueFactory(new PropertyValueFactory<>("GioiTinh"));
+        colSdt.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        colThoigiankham.setCellValueFactory(new PropertyValueFactory<>("ThoiGian"));
+        colTrangthai.setCellValueFactory(new PropertyValueFactory<>("TrangThai"));
         
         tblBenhNhan.setItems(benhnhanData);
     }
