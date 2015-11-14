@@ -198,8 +198,8 @@
                         </GridPane>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="350.0" spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Sửa xong" />
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Xóa" />
+                              <Button mnemonicParsing="false" onAction="#Sua" prefWidth="100.0" text="Sửa xong" />
+                              <Button mnemonicParsing="false" onAction="#Xoa" prefWidth="100.0" text="Xóa" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
