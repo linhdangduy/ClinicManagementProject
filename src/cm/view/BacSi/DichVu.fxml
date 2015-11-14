@@ -26,11 +26,11 @@
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên dịch vụ" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Chức năng" GridPane.rowIndex="1" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá" GridPane.rowIndex="2" />
-                  <Label prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
-                  <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="lblTenDichVu" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
+                  <TextArea fx:id="taChucNang" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <HBox prefHeight="100.0" prefWidth="250.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Label prefHeight="35.0" text="Label" />
+                        <Label fx:id="lblGia" prefHeight="35.0" text="Label" />
                         <Label prefHeight="35.0" text="VND" />
                      </children>
                      <padding>
@@ -52,8 +52,8 @@
                <children>
                   <HBox alignment="CENTER" prefWidth="350.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Thêm dịch vụ" />
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Xong" />
+                        <Button mnemonicParsing="false" onAction="#handleBtnThem" text="Thêm dịch vụ" />
+                        <Button mnemonicParsing="false" onAction="#handleBtnXong" prefWidth="100.0" text="Xong" />
                         <Button mnemonicParsing="false" onAction="#handleBtnTroLai" prefWidth="100.0" text="Trở lại" />
                      </children>
                   </HBox>
@@ -72,19 +72,19 @@
                   <Label prefHeight="30.0" text="Danh sách dịch vụ" />
                   <ComboBox prefHeight="30.0" promptText="Hôm nay" />
                   <Label prefHeight="30.0" text="Lọc theo" />
-                  <ComboBox prefHeight="30.0" promptText="Lọc theo" />
-                  <TextField prefHeight="30.0" />
+                  <ComboBox fx:id="cbLoc" prefHeight="30.0" promptText="Lọc theo" />
+                  <TextField fx:id="tfLoc" prefHeight="30.0" />
                </children>
                <padding>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView prefHeight="400.0" prefWidth="750.0">
+            <TableView fx:id="DichvuTable" prefHeight="400.0" prefWidth="750.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="Mã" />
-                  <TableColumn prefWidth="245.0" text="Tên dịch vụ" />
-                  <TableColumn prefWidth="304.0" text="Chức năng" />
-                  <TableColumn prefWidth="125.0" text="Giá" />
+                  <TableColumn fx:id="ColDichvuMa" prefWidth="75.0" text="Mã" />
+                  <TableColumn fx:id="ColDichvuTen" prefWidth="245.0" text="Tên dịch vụ" />
+                  <TableColumn fx:id="ColDichvuChucnang" prefWidth="304.0" text="Chức năng" />
+                  <TableColumn fx:id="ColDichvuGia" prefWidth="125.0" text="Giá" />
                </columns>
             </TableView>
          </children>
