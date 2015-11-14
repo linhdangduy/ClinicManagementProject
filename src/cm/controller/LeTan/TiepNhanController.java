@@ -38,7 +38,6 @@ public class TiepNhanController implements Initializable{
     ConnectToDatabase con;
     private PreparedStatement ps;
     private ResultSet rs;
-    
     @FXML
     private Label lblTen;
     @FXML
@@ -106,8 +105,10 @@ public class TiepNhanController implements Initializable{
     @FXML
     private TextField tfFilter;
     
-    private String gioitinh;
+    private String gioitinh1;
+    private String gioitinh2;
     private String ngaysinh = "";
+    private BenhNhan bnSelected;
     
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
     private ObservableList<String> ngay = FXCollections.observableArrayList();
@@ -120,10 +121,10 @@ public class TiepNhanController implements Initializable{
             con = new ConnectToDatabase();
             cbSearchInit();
             cbNgaySinhInit();
-            rbNam1.setOnAction(e -> gioitinh = "Nam");
-            rbNu1.setOnAction(e -> gioitinh = "Nữ");
-            rbNam2.setOnAction(e -> gioitinh = "Nam");
-            rbNu2.setOnAction(e -> gioitinh = "Nữ");
+            rbNam1.setOnAction(e -> gioitinh1 = "Nam");
+            rbNu1.setOnAction(e -> gioitinh1 = "Nữ");
+            rbNam2.setOnAction(e -> gioitinh2 = "Nam");
+            rbNu2.setOnAction(e -> gioitinh2 = "Nữ");
             addBenhNhanData();
             initTable();
         } catch (SQLException ex) {
@@ -196,11 +197,40 @@ public class TiepNhanController implements Initializable{
     
     private void showDetails(BenhNhan benhnhan) {
         if(benhnhan != null){
+            //Show thong tin o tab thong tin
             lblTen.setText(benhnhan.getHoTen());
             lblNgaySinh.setText(benhnhan.getNgaySinh());
             lblGioiTinh.setText(benhnhan.getGioiTinh());
             lblPhone.setText(benhnhan.getPhone());
             lblDiaChi.setText(benhnhan.getDiaChi());
+            
+            //Show thong tin o tab chinh sua
+            bnSelected = benhnhan;
+            tfTen2.setText(benhnhan.getHoTen());
+            //Cat xau ngaysinh tra ket qua ngay, thang, nam
+            ngaysinh = benhnhan.getNgaySinh();
+            String result[] = ngaysinh.split("[-]");
+            int i = 1;
+            for (String tmp : result){
+                if (i==1) cbNam2.setValue(tmp);
+                else if (i==2) cbThang2.setValue(tmp);
+                else if (i==3) cbNgay2.setValue(tmp);
+                i++;
+            }
+            
+            switch (benhnhan.getGioiTinh()){
+                case "Nam":
+                    rbNam2.setSelected(true);
+                    gioitinh2 = "Nam";
+                    break;
+                case "Nữ":
+                    rbNu2.setSelected(true);
+                    gioitinh2 = "Nữ";
+                    break;
+            }
+            tfDiaChi2.setText(benhnhan.getDiaChi());
+            tfPhone2.setText(benhnhan.getPhone());
+            
         }
         else{
             lblTen.setText("");
@@ -247,46 +277,102 @@ public class TiepNhanController implements Initializable{
         cbNam2.getItems().addAll(nam);
     }
     @FXML
-    private void Them (ActionEvent e) throws IOException, SQLException {
-        BenhNhan benhnhan = new BenhNhan();
-        benhnhan.setHoTen(tfTen1.getText());
-        ngaysinh = "" + cbNam1.getValue();
-        ngaysinh = ngaysinh +"-";
-        ngaysinh = ngaysinh + cbThang1.getValue();
-        ngaysinh = ngaysinh +"-";
-        ngaysinh = ngaysinh + cbNgay1.getValue();
-        benhnhan.setNgaySinh(ngaysinh);
-        benhnhan.setGioiTinh(gioitinh);
-        benhnhan.setDiaChi(tfDiaChi1.getText());
-        benhnhan.setPhone(tfPhone1.getText());
-        benhnhan.setTrangThai("phòng khám");
-        // nhap vao du lieu
-        String sql1 = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
-        ps = con.getPS(sql1);
-        ps.setString(1, benhnhan.getHoTen());
-        ps.setString(2, benhnhan.getNgaySinh());
-        ps.setString(3, benhnhan.getDiaChi());
-        ps.setString(4, benhnhan.getGioiTinh());
-        ps.setString(5, benhnhan.getPhone());
-        ps.setString(6, benhnhan.getTrangThai());
-        ps.executeUpdate();
-        ps.close();
-        // lay ma benhn nhan da nhap
-        String sql2 = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
-        ps = con.getPS(sql2);
-        ps.setString(1, benhnhan.getHoTen());
-        ps.setString(2, benhnhan.getPhone());
-        rs = ps.executeQuery();
-        rs.next();
-        benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-        ps.close();
-        BenhNhanData.add(benhnhan);
-        
+    private void Them (ActionEvent e) throws IOException {
+        try { 
+            BenhNhan benhnhan = new BenhNhan();
+            benhnhan.setHoTen(tfTen1.getText());
+            ngaysinh = "" + cbNam1.getValue();
+            ngaysinh = ngaysinh +"-";
+            ngaysinh = ngaysinh + cbThang1.getValue();
+            ngaysinh = ngaysinh +"-";
+            ngaysinh = ngaysinh + cbNgay1.getValue();
+            benhnhan.setNgaySinh(ngaysinh);
+            benhnhan.setGioiTinh(gioitinh1);
+            benhnhan.setDiaChi(tfDiaChi1.getText());
+            benhnhan.setPhone(tfPhone1.getText());
+            benhnhan.setTrangThai("phòng khám");
+            // nhap vao du lieu
+            String sql1 = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
+            ps = con.getPS(sql1);
+            ps.setString(1, benhnhan.getHoTen());
+            ps.setString(2, benhnhan.getNgaySinh());
+            ps.setString(3, benhnhan.getDiaChi());
+            ps.setString(4, benhnhan.getGioiTinh());
+            ps.setString(5, benhnhan.getPhone());
+            ps.setString(6, benhnhan.getTrangThai());
+            ps.executeUpdate();
+            ps.close();
+            // lay ma benhn nhan da nhap
+            String sql2 = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
+            ps = con.getPS(sql2);
+            ps.setString(1, benhnhan.getHoTen());
+            ps.setString(2, benhnhan.getPhone());
+            rs = ps.executeQuery();
+            rs.next();
+            benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
+            ps.close();
+            BenhNhanData.add(benhnhan);
+        } catch (SQLException ex) {
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    @FXML void Huy(ActionEvent e){
-        
+    @FXML 
+        private void Huy(ActionEvent e) throws IOException {
+        tfTen1.setText("");
+        cbNgay1.setValue("dd");
+        cbThang1.setValue("mm");
+        cbNam1.setValue("yyyy");
+        rbNam1.setSelected(false);
+        rbNu1.setSelected(false);
+        gioitinh1 = "";
+        tfDiaChi1.setText("");
+        tfPhone1.setText("");
     }
     
-
+    @FXML
+    private void Sua(ActionEvent e) throws IOException{
+        try {
+            //cap nhat vao du lieu
+            String sql = "Update Benh_Nhan set Ho_Ten = ?, Ngay_Sinh = ? , Dia_Chi = ? , Gioi_Tinh = ?, SDT_BN = ? where Ma_Benh_Nhan = ?";
+            ps = con.getPS(sql);
+            ngaysinh = "" + cbNam2.getValue() + "-" + cbThang2.getValue() + "-" +cbNgay2.getValue();
+            ps.setString(1, tfTen2.getText());
+            ps.setString(2, ngaysinh);
+            ps.setString(3, tfDiaChi2.getText());
+            ps.setString(4, gioitinh2);
+            ps.setString(5, tfPhone2.getText());
+            ps.setInt(6, bnSelected.getMa());
+            ps.executeUpdate();
+            ps.close();
+            
+            //cap nhat vao bang
+            bnSelected.setHoTen(tfTen2.getText());
+            bnSelected.setNgaySinh(ngaysinh);
+            bnSelected.setDiaChi(tfDiaChi2.getText());
+            bnSelected.setGioiTinh(gioitinh2);
+            bnSelected.setPhone(tfPhone2.getText());
+            int index = BenhNhanData.indexOf(bnSelected);
+            BenhNhanData.set(index, bnSelected);
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    //xoa van con loi khong xoa trong du lieu duoc do khoa ngoai
+    @FXML
+    private void Xoa(ActionEvent e) throws IOException{
+        try {
+            String sql = "delete from Benh_Nhan where Ma_Benh_Nhan = ?";
+            ps = con.getPS(sql);
+            ps.setInt(1, bnSelected.getMa());
+            ps.executeUpdate();
+            ps.close();
+            BenhNhanData.remove(bnSelected);
+        } catch (SQLException ex) {
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
