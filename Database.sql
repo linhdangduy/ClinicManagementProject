@@ -114,7 +114,11 @@ CREATE TABLE `Benh_An`(
 	`Trieu_Chung` VARCHAR(100),
 	`Huong_Dieu_Tri` VARCHAR(100),
 	`Ghi_Chu_BA` VARCHAR(100),
-	FOREIGN KEY(`Ma_Benh_Nhan`) REFERENCES `Benh_Nhan`(`Ma_Benh_Nhan`)
+	CONSTRAINT fk_BenhAn_MaBenhNhan 
+		FOREIGN KEY(`Ma_Benh_Nhan`) REFERENCES `Benh_Nhan`(`Ma_Benh_Nhan`)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -147,7 +151,10 @@ CREATE TABLE `Phien_Kham`(
 	`Ma_Benh_An` INT UNSIGNED NOT NULL,
 	`Tinh_Trang` VARCHAR(100) NOT NULL,
 	`Thoi_Gian` DATETIME,
+	CONSTRAINT fk_PhienKham_MaBenhAn 
 	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -223,9 +230,17 @@ CREATE TABLE `Don_Thuoc` (
 	`So_Luong` INT UNSIGNED,
 	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
 	`Ghi_Chu_Thuoc` VARCHAR(100),
-	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
-	FOREIGN KEY(`Ma_Thuoc`) REFERENCES `Thuoc`(`Ma_Thuoc`),
-	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
+	CONSTRAINT fk_DonThuoc_MaPhienKham 
+		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_DonThuoc_MaThuoc 
+		FOREIGN KEY(`Ma_Thuoc`) REFERENCES `Thuoc`(`Ma_Thuoc`) 
+		ON DELETE NO ACTION
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_DonThuoc_TenDangNhap 
+		FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`) 
+		ON DELETE NO ACTION
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -280,9 +295,18 @@ CREATE TABLE `Don_Dich_Vu`(
 	PRIMARY KEY(`Ma_Phien_Kham`,`Ma_Dich_Vu`),
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	`Chi_Phi_Dich_Vu` FLOAT UNSIGNED,
-	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
-	FOREIGN KEY(`Ma_Dich_Vu`) REFERENCES `Dich_Vu`(`Ma_Dich_Vu`),
-	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
+	CONSTRAINT fk_DonDichVu_MaPhienKham 
+		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_DonDichVu_MaDichVu 
+		FOREIGN KEY(`Ma_Dich_Vu`) REFERENCES `Dich_Vu`(`Ma_Dich_Vu`) 
+		ON DELETE NO ACTION
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_DonDichVu_TenDangNhap
+		FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`) 
+		ON DELETE NO ACTION
+		ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*==================================================================*/
@@ -300,8 +324,14 @@ CREATE TABLE `Thanh_Toan`(
 	PRIMARY KEY(`Ma_Phien_Kham`),
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	`Chi_Phi` FLOAT UNSIGNED,
-	FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`),
-	FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`)
+	CONSTRAINT fk_ThanhToan_MaPhienKham 
+		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_ThanhToan_TenDanhNhap 
+		FOREIGN KEY(`Ten_Dang_Nhap`) REFERENCES `Tai_Khoan`(`Ten_Dang_Nhap`) 
+		ON DELETE NO ACTION
+		ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*====================================================================*/
