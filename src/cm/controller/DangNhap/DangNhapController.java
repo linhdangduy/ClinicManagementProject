@@ -6,10 +6,9 @@
 package cm.controller.DangNhap;
 
 import cm.ClinicManager;
+import cm.ConnectToDatabase;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +38,7 @@ public class DangNhapController implements Initializable {
     private PasswordField tfPass;
     @FXML
     private Label lbThongBao;
-    private Connection con;
+    private ConnectToDatabase con;
     private Statement st;
     private ResultSet rs;
     private PreparedStatement ps;
@@ -47,13 +46,14 @@ public class DangNhapController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {        
-        createConnection();       
+        con = new ConnectToDatabase();
+        lbThongBao.setText("");
     }
     @FXML
     private void dangnhap(ActionEvent e) throws IOException {
         String sql = "SELECT * FROM Tai_Khoan WHERE Ten_Dang_Nhap = ? AND Mat_Khau = ?";
         try {
-            ps = con.prepareStatement(sql);
+            ps = con.getPS(sql);
             String name=tfName.getText();
             ps.setString(1, name);
             ps.setString(2, tfPass.getText());
@@ -73,11 +73,11 @@ public class DangNhapController implements Initializable {
                 }
                 ps.close();
                 sql = "UPDATE Tai_Khoan SET Trang_Thai = ? WHERE Ten_Dang_Nhap = ?";
-                ps = con.prepareStatement(sql);
+                ps = con.getPS(sql);
                 ps.setString(1, "ON");
                 ps.setString(2, name);
                 ps.executeUpdate();
-                con.close();
+                con.conClose();
             }
             else{
                 lbThongBao.setText("Ten tai khoan hoac mat khau sai!");
@@ -90,16 +90,13 @@ public class DangNhapController implements Initializable {
     }
     @FXML
     private void thoat(ActionEvent e){
-        
-        Platform.exit();
-    }
-    private void createConnection(){
         try {
-            //con = DriverManager.getConnection("jdbc:mysql://localhost/quanlyphongkham","sampadm","secret");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/clinic","root","123456");
+            con.conClose();
+            Platform.exit();
         } catch (SQLException ex) {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     
 }
