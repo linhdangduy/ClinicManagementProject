@@ -284,7 +284,10 @@ CREATE TABLE `Dich_Vu` (
 
 /*==================================================================*/
 
-
+INSERT INTO `Dich_Vu` VALUES
+(1,'Phục Vụ Nước',100000,'Quý khách được phục vụ nước khi ngồi đợi'),
+(2,'Ăn trưa',300000,'Ăn trưa dành cho những vị khác chờ đợi lâu'),
+(3,'Nghe nhạc theo yêu cầu',400000,'Quý khách có thể yêu cầu nhạc tùy thích');
 
 
 /*===================bảng đơn dịch vụ================================*/
