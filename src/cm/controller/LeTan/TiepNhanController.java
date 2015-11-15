@@ -278,7 +278,8 @@ public class TiepNhanController implements Initializable{
     }
     @FXML
     private void Them (ActionEvent e) throws IOException {
-        try { 
+        try {
+            String sql;
             BenhNhan benhnhan = new BenhNhan();
             benhnhan.setHoTen(tfTen1.getText());
             ngaysinh = "" + cbNam1.getValue();
@@ -291,33 +292,48 @@ public class TiepNhanController implements Initializable{
             benhnhan.setDiaChi(tfDiaChi1.getText());
             benhnhan.setPhone(tfPhone1.getText());
             benhnhan.setTrangThai("phòng khám");
-            // nhap vao du lieu
-            String sql1 = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
-            ps = con.getPS(sql1);
-            ps.setString(1, benhnhan.getHoTen());
-            ps.setString(2, benhnhan.getNgaySinh());
-            ps.setString(3, benhnhan.getDiaChi());
-            ps.setString(4, benhnhan.getGioiTinh());
-            ps.setString(5, benhnhan.getPhone());
-            ps.setString(6, benhnhan.getTrangThai());
-            ps.executeUpdate();
-            ps.close();
-            // lay ma benhn nhan da nhap
-            String sql2 = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
-            ps = con.getPS(sql2);
-            ps.setString(1, benhnhan.getHoTen());
-            ps.setString(2, benhnhan.getPhone());
+            //kiem tra da ton tai benh nhan trong du lieu
+            sql = "select * from Benh_Nhan where Ho_Ten = ? and SDT_BN = ?";
+            ps = con.getPS(sql);
+            ps.setString(1, tfTen1.getText());
+            ps.setString(2, tfPhone1.getText());
             rs = ps.executeQuery();
-            rs.next();
-            benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-            ps.close();
-            BenhNhanData.add(benhnhan);
+            if (rs.next()){
+                System.out.println("Thêm Thất Bại! \n Đã Tồn Tại Bệnh Nhân");
+                ps.close();
+            }
+            
+            else{
+                // nhap vao du lieu
+                sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
+                ps.close();
+                ps = con.getPS(sql);
+                ps.setString(1, benhnhan.getHoTen());
+                ps.setString(2, benhnhan.getNgaySinh());
+                ps.setString(3, benhnhan.getDiaChi());
+                ps.setString(4, benhnhan.getGioiTinh());
+                ps.setString(5, benhnhan.getPhone());
+                ps.setString(6, benhnhan.getTrangThai());
+                ps.executeUpdate();
+                ps.close();
+                // lay ma benhn nhan da nhap
+                sql = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
+                ps = con.getPS(sql);
+                ps.setString(1, benhnhan.getHoTen());
+                ps.setString(2, benhnhan.getPhone());
+                rs = ps.executeQuery();
+                rs.next();
+                benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
+                ps.close();
+                BenhNhanData.add(benhnhan);
+            }
+
+            refreshTabThemMoi();
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    @FXML 
-        private void Huy(ActionEvent e) throws IOException {
+    private void refreshTabThemMoi(){
         tfTen1.setText("");
         cbNgay1.setValue("dd");
         cbThang1.setValue("mm");
@@ -328,7 +344,12 @@ public class TiepNhanController implements Initializable{
         tfDiaChi1.setText("");
         tfPhone1.setText("");
     }
-    
+   
+    @FXML 
+    private void Huy(ActionEvent e) throws IOException {
+        refreshTabThemMoi();
+    }
+        
     @FXML
     private void Sua(ActionEvent e) throws IOException{
         try {
@@ -360,7 +381,7 @@ public class TiepNhanController implements Initializable{
         }
         
     }
-    //xoa van con loi khong xoa trong du lieu duoc do khoa ngoai
+
     @FXML
     private void Xoa(ActionEvent e) throws IOException{
         try {
@@ -370,6 +391,7 @@ public class TiepNhanController implements Initializable{
             ps.executeUpdate();
             ps.close();
             BenhNhanData.remove(bnSelected);
+            bnSelected = null;
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
