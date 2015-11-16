@@ -20,12 +20,12 @@
                         <Insets right="30.0" />
                      </HBox.margin>
                   </Label>
-                  <ToggleButton fx:id="btnTiepNhan" mnemonicParsing="false" onAction="#handleBtnTiepNhan" prefHeight="40.0" text="Tiếp Nhận">
+                  <ToggleButton fx:id="btnTiepNhan" mnemonicParsing="false" onAction="#handleBtnTiepNhan" prefHeight="40.0" selected="true" text="Tiếp Nhận">
                      <toggleGroup>
                         <ToggleGroup fx:id="BtnGroup" />
                      </toggleGroup></ToggleButton>
-                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnThuoc" prefHeight="40.0" text="Thuốc" toggleGroup="$BtnGroup" />
-                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnDichVu" prefHeight="40.0" text="Dịch Vụ" toggleGroup="$BtnGroup" />
+                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnThuoc" prefHeight="40.0" prefWidth="85.0" text="Thuốc" toggleGroup="$BtnGroup" />
+                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnDichVu" prefHeight="40.0" prefWidth="85.0" text="Dịch Vụ" toggleGroup="$BtnGroup" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -21,7 +21,7 @@
                         <Insets right="30.0" />
                      </HBox.margin>
                   </Label>
-                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnTiepNhan" prefHeight="40.0" text="Tiếp nhận">
+                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnTiepNhan" prefHeight="40.0" prefWidth="93.0" text="Tiếp nhận">
                      <toggleGroup>
                         <ToggleGroup fx:id="GroupBtn" />
                      </toggleGroup></ToggleButton>
