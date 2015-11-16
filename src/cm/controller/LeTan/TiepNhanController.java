@@ -12,6 +12,8 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -190,7 +192,8 @@ public class TiepNhanController implements Initializable{
             });
         });
         //BenhNhanTable.setItems(BenhNhanData);
-        BenhNhanTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
+        BenhNhanTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showDetails(newValue));
         
         
     }
@@ -279,7 +282,7 @@ public class TiepNhanController implements Initializable{
     @FXML
     private void Them (ActionEvent e) throws IOException {
         try {
-            String sql;
+            //them vao obsevablelist
             BenhNhan benhnhan = new BenhNhan();
             benhnhan.setHoTen(tfTen1.getText());
             ngaysinh = "" + cbNam1.getValue();
@@ -292,42 +295,39 @@ public class TiepNhanController implements Initializable{
             benhnhan.setDiaChi(tfDiaChi1.getText());
             benhnhan.setPhone(tfPhone1.getText());
             benhnhan.setTrangThai("phòng khám");
-            //kiem tra da ton tai benh nhan trong du lieu
-            sql = "select * from Benh_Nhan where Ho_Ten = ? and SDT_BN = ?";
+            //Them thong tin benh nhan vao co so du lieu
+            String sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
+            ps.close();
             ps = con.getPS(sql);
-            ps.setString(1, tfTen1.getText());
-            ps.setString(2, tfPhone1.getText());
+            ps.setString(1, benhnhan.getHoTen());
+            ps.setString(2, benhnhan.getNgaySinh());
+            ps.setString(3, benhnhan.getDiaChi());
+            ps.setString(4, benhnhan.getGioiTinh());
+            ps.setString(5, benhnhan.getPhone());
+            ps.setString(6, benhnhan.getTrangThai());
+            ps.executeUpdate();
+            ps.close();
+            // lay ma benhn nhan da nhap
+            sql = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
+            ps = con.getPS(sql);
+            ps.setString(1, benhnhan.getHoTen());
+            ps.setString(2, benhnhan.getPhone());
             rs = ps.executeQuery();
-            if (rs.next()){
-                System.out.println("Thêm Thất Bại! \n Đã Tồn Tại Bệnh Nhân");
-                ps.close();
-            }
+            rs.next();
+            benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
+            ps.close();
             
-            else{
-                // nhap vao du lieu
-                sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
-                ps.close();
-                ps = con.getPS(sql);
-                ps.setString(1, benhnhan.getHoTen());
-                ps.setString(2, benhnhan.getNgaySinh());
-                ps.setString(3, benhnhan.getDiaChi());
-                ps.setString(4, benhnhan.getGioiTinh());
-                ps.setString(5, benhnhan.getPhone());
-                ps.setString(6, benhnhan.getTrangThai());
-                ps.executeUpdate();
-                ps.close();
-                // lay ma benhn nhan da nhap
-                sql = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
-                ps = con.getPS(sql);
-                ps.setString(1, benhnhan.getHoTen());
-                ps.setString(2, benhnhan.getPhone());
-                rs = ps.executeQuery();
-                rs.next();
-                benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-                ps.close();
-                BenhNhanData.add(benhnhan);
-            }
-
+                
+            //them thoi gian kham vao bang Phien_Kham cho benh nhan
+            PreparedStatement ps2 = con.getPS(
+                    "INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES (?,?)");
+            ps2.setInt(1, rs.getInt("Ma_Benh_Nhan"));
+            long timeNow = Calendar.getInstance().getTimeInMillis();
+            Timestamp ts = new java.sql.Timestamp(timeNow);
+            ps2.setTimestamp(2, ts);
+            ps2.executeUpdate();
+            benhnhan.setThoiGian(ts.toString());
+            BenhNhanData.add(benhnhan);
             refreshTabThemMoi();
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
