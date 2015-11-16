@@ -134,7 +134,10 @@ public class TiepNhanController implements Initializable{
         }
     }
     public void addBenhNhanData() throws SQLException{
-        String sql = "SELECT * FROM Benh_Nhan";
+        //hien thi benh nhan theo thu tu co thoi gian kham gan nhat
+        String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk "
+                        + "group by Ma_Benh_Nhan "
+                        + "order by Thoi_Gian_Kham desc;";
         rs = con.getRS(sql);
         while(rs.next()){
             BenhNhan benhnhan = new BenhNhan();
@@ -143,6 +146,7 @@ public class TiepNhanController implements Initializable{
             benhnhan.setNgaySinh(rs.getString("Ngay_Sinh"));
             benhnhan.setGioiTinh(rs.getString("Gioi_Tinh"));
             benhnhan.setPhone(rs.getString("SDT_BN"));
+            benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
             benhnhan.setTrangThai(rs.getString("Trang_Thai"));
             benhnhan.setDiaChi(rs.getString("Dia_chi"));
             BenhNhanData.add(benhnhan);
@@ -158,6 +162,7 @@ public class TiepNhanController implements Initializable{
         TenColumn.setCellValueFactory(new PropertyValueFactory<>("HoTen"));
         NgaySinhColumn.setCellValueFactory(new PropertyValueFactory<>("NgaySinh"));
         GioiTinhColumn.setCellValueFactory(new PropertyValueFactory<>("GioiTinh"));
+        ThoiGianColumn.setCellValueFactory(new PropertyValueFactory<>("ThoiGian"));
         PhoneColumn.setCellValueFactory(new PropertyValueFactory<>("Phone"));
         TrangThaiColumn.setCellValueFactory(new PropertyValueFactory<>("TrangThai"));
         
@@ -297,7 +302,6 @@ public class TiepNhanController implements Initializable{
             benhnhan.setTrangThai("phòng khám");
             //Them thong tin benh nhan vao co so du lieu
             String sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
-            ps.close();
             ps = con.getPS(sql);
             ps.setString(1, benhnhan.getHoTen());
             ps.setString(2, benhnhan.getNgaySinh());
@@ -321,13 +325,15 @@ public class TiepNhanController implements Initializable{
             //them thoi gian kham vao bang Phien_Kham cho benh nhan
             PreparedStatement ps2 = con.getPS(
                     "INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES (?,?)");
-            ps2.setInt(1, rs.getInt("Ma_Benh_Nhan"));
+            ps2.setInt(1, benhnhan.getMa());
             long timeNow = Calendar.getInstance().getTimeInMillis();
             Timestamp ts = new java.sql.Timestamp(timeNow);
             ps2.setTimestamp(2, ts);
             ps2.executeUpdate();
             benhnhan.setThoiGian(ts.toString());
-            BenhNhanData.add(benhnhan);
+            //them benh nhan moi nhat vao dau bang
+            //Can xem lai
+            BenhNhanData.add(0,benhnhan);
             refreshTabThemMoi();
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
