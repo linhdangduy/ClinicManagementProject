@@ -18,6 +18,9 @@ public class BenhNhan extends Nguoi {
     public String getTrangThai(){
         return TrangThai.get();
     }
+    public String getThoiGian(){
+        return ThoiGian.get();
+    }
     public void setTrangThai(String s){
         this.TrangThai.set(s);
     }
