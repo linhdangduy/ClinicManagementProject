@@ -2,7 +2,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 /* có 8 bảng, thứ tự create:
- * Tai_Khoan, Benh_Nhan, Benh_An, Thuoc, Don_Thuoc, Dich_Vu, Don_Dich_Vu, Thanh_Toan
+ * Tai_Khoan, Benh_Nhan, Phien_Kham, Thuoc, Don_Thuoc, Dich_Vu, Don_Dich_Vu, Thanh_Toan
  *
  * run: 
  * tạo database quanlyphongkham trước
@@ -24,6 +24,10 @@ SET time_zone = "+00:00";
  * phân quyền tài khoản lễ tân(lễ tân), bác sĩ(phòng khám), thuốc(thuốc) bởi `Phong`,
  * Phong = 'admin' là admin
  */
+
+DROP DATABASE IF EXISTS clinic;
+CREATE DATABASE IF NOT EXISTS clinic;
+USE clinic;
 
 DROP TABLE IF EXISTS `Tai_Khoan`;
 CREATE TABLE `Tai_Khoan`(
@@ -99,15 +103,15 @@ INSERT INTO `Benh_Nhan` VALUES
 
 
 
-/*=================bảng bệnh án===============================================*/
+/*=================bảng phiên khám===============================================*/
 
 
 
 
-DROP TABLE IF EXISTS `Benh_An`;
-CREATE TABLE `Benh_An`(
-	`Ma_Benh_An` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY(`Ma_Benh_An`),
+DROP TABLE IF EXISTS `Phien_Kham`;
+CREATE TABLE `Phien_Kham`(
+	`Ma_Phien_Kham` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(`Ma_Phien_Kham`),
 	`Ma_Benh_Nhan` INT UNSIGNED NOT NULL,
 	`Thoi_Gian_Kham` DATETIME,
 	`Ten_Benh` VARCHAR(40),
@@ -128,7 +132,7 @@ CREATE TABLE `Benh_An`(
 
 
 
-INSERT INTO `Benh_An` VALUES
+INSERT INTO `Phien_Kham` VALUES
 (NULL,1,'2015-10-11 8:0:00','Sâu răng','đau','dung thuốc bôi','răng hàm sâu'),
 (NULL,2,'2015-10-11 8:10:00','gãy mũi','mũi gãy','cố định mũi thẳng','sau này mũi sẽ không đẹp như trước'),
 (NULL,3,'2015-10-11 8:30:00','lệch hàm','lệch quai hàm','chỉnh hình','mức độ nhẹ'),
@@ -141,39 +145,6 @@ INSERT INTO `Benh_An` VALUES
 (NULL,9,'2015-10-11 14:30:01','trật quai hàm','quai hàm lệch','chỉnh lại quai hàm','trật quai hàm do cười lớn'),
 (NULL,10,'2015-10-11 15:00:00','chỉnh hình','bính thường','chỉnh lại khuôn mặt','tránh tác động mạnh đến mặt');
 
-
-/*===================Bảng Phiên Khám==================================*/
-
-DROP TABLE IF EXISTS `Phien_Kham`;
-CREATE TABLE `Phien_Kham`(
-	`Ma_Phien_Kham` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY(`Ma_Phien_Kham`),
-	`Ma_Benh_An` INT UNSIGNED NOT NULL,
-	`Tinh_Trang` VARCHAR(100) NOT NULL,
-	`Thoi_Gian` DATETIME,
-	CONSTRAINT fk_PhienKham_MaBenhAn 
-	FOREIGN KEY(`Ma_Benh_An`) REFERENCES `Benh_An`(`Ma_Benh_An`)
-	ON DELETE CASCADE
-	ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-/*======================================================================*/
-
-
-
-INSERT INTO `Phien_Kham` VALUES
-(NULL,1,'đau','2015-10-11 8:0:00'),
-(NULL,2,'mũi gãy','2015-10-11 8:10:00'),
-(NULL,3,'lệch quai hàm','2015-10-11 8:30:00'),
-(NULL,11,'đau mắt đỏ','2015-10-11 8:53:00'),
-(NULL,4,'rối loạn','2015-10-11 9:10:01'),
-(NULL,5,'đau ruốt thừa','2015-10-11 10:11:00'),
-(NULL,6,'đau dạ dày','2015-10-11 11:12:00'),
-(NULL,7,'xương gãy ống chân','2015-10-11 12:12:00'),
-(NULL,8,'đau dạ dày','2015-10-11 14:00:00'),
-(NULL,9,'quai hàm lệch','2015-10-11 14:30:01'),
-(NULL,10,'bính thường','2015-10-11 15:00:00');
 
 
 /*===================bảng thuốc=====================================*/
@@ -285,9 +256,10 @@ CREATE TABLE `Dich_Vu` (
 /*==================================================================*/
 
 INSERT INTO `Dich_Vu` VALUES
-(1,'Phục Vụ Nước',100000,'Quý khách được phục vụ nước khi ngồi đợi'),
-(2,'Ăn trưa',300000,'Ăn trưa dành cho những vị khác chờ đợi lâu'),
-(3,'Nghe nhạc theo yêu cầu',400000,'Quý khách có thể yêu cầu nhạc tùy thích');
+(NULL,'Siêu âm 3 chiều',300000,'khám thai'),
+(NULL,'Chụp X quang',100000,'chẩn đoán tình trạng ban đầu'),
+(NULL,'Xét nghiệm máu',400000,'phân tích mẫu máu'),
+(NULL,'Xét nghiệm nước tiểu',400000,'phân tích mẫu nước tiểu');
 
 
 /*===================bảng đơn dịch vụ================================*/
