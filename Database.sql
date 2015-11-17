@@ -197,7 +197,7 @@ CREATE TABLE `Don_Thuoc` (
 	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
 	`Ma_Thuoc` INT UNSIGNED NOT NULL,
 	PRIMARY KEY(`Ma_Phien_Kham`,`Ma_Thuoc`),
-	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
+	`Ten_Dang_Nhap` VARCHAR(20),
 	`So_Luong` INT UNSIGNED,
 	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
 	`Ghi_Chu_Thuoc` VARCHAR(100),
@@ -223,18 +223,18 @@ CREATE TABLE `Don_Thuoc` (
 
 
 
-INSERT INTO `Don_Thuoc`(`Ma_Phien_Kham`,`Ma_Thuoc`,`Ten_Dang_Nhap`) VALUES
-(1,1,'thuytrang'),
-(2,2,'thuytrang'),
-(3,3,'trungthanh'),
-(4,4,'trungthanh'),
-(5,5,'trungthanh'),
-(6,6,'thuytrang'),
-(7,7,'thuytrang'),
-(8,7,'trungthanh'),
-(9,10,'trungthanh'),
-(10,2,'thuytrang'),
-(11,9,'thuytrang');
+INSERT INTO `Don_Thuoc`(`Ma_Phien_Kham`,`Ma_Thuoc`) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5),
+(6,6),
+(7,7),
+(8,7),
+(9,10),
+(10,2),
+(11,9);
 
 
 
@@ -268,8 +268,8 @@ CREATE TABLE `Don_Dich_Vu`(
 	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
 	`Ma_Dich_Vu` INT UNSIGNED NOT NULL,
 	PRIMARY KEY(`Ma_Phien_Kham`,`Ma_Dich_Vu`),
-	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
-	`Chi_Phi_Dich_Vu` FLOAT UNSIGNED,
+	`Ten_Dang_Nhap` VARCHAR(20),
+	`Ket_Qua` VARCHAR(100),
 	CONSTRAINT fk_DonDichVu_MaPhienKham 
 		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
 		ON DELETE CASCADE
@@ -297,7 +297,9 @@ DROP TABLE IF EXISTS `Thanh_Toan`;
 CREATE TABLE `Thanh_Toan`(
 	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
 	PRIMARY KEY(`Ma_Phien_Kham`),
-	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
+	`Ten_Dang_Nhap` VARCHAR(20),
+	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
+	`Chi_Phi_Dich_Vu` FLOAT UNSIGNED,
 	`Chi_Phi` FLOAT UNSIGNED,
 	CONSTRAINT fk_ThanhToan_MaPhienKham 
 		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
