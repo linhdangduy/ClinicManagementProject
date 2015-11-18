@@ -28,11 +28,11 @@
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
-                  <Label prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
-                  <Label prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="lblTenThuoc" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
+                  <Label fx:id="lblDonVi" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="lblGiaThuoc" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="lblTrangThai" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextArea fx:id="taCongdung" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
@@ -50,8 +50,8 @@
                <children>
                   <HBox alignment="CENTER" prefWidth="350.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Thêm thuốc" />
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Xong" />
+                        <Button mnemonicParsing="false" onAction="#handleBtnThem" prefWidth="100.0" text="Thêm thuốc" />
+                        <Button mnemonicParsing="false" onAction="#handleBtnXong" prefWidth="100.0" text="Xong" />
                         <Button mnemonicParsing="false" onAction="#handleBtnTroLai" prefWidth="100.0" text="Trở lại" />
                      </children>
                   </HBox>
@@ -68,23 +68,23 @@
             <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
                <children>
                   <Label prefHeight="30.0" text="Danh sách thuốc" />
-                  <ComboBox prefHeight="30.0" promptText="Hôm nay" />
+                  <ComboBox fx:id="cbNgay" prefHeight="30.0" promptText="Hôm nay" />
                   <Label prefHeight="30.0" text="Lọc theo" />
-                  <ComboBox prefHeight="30.0" promptText="Lọc theo" />
-                  <TextField prefHeight="30.0" />
+                  <ComboBox fx:id="cbLoc" prefHeight="30.0" promptText="Lọc theo" />
+                  <TextField fx:id="tfLoc" prefHeight="30.0" />
                </children>
                <padding>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView prefHeight="400.0" prefWidth="750.0">
+            <TableView fx:id="ThuocTable" prefHeight="400.0" prefWidth="750.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="Mã" />
-                  <TableColumn prefWidth="166.0" text="Tên thuốc" />
-                  <TableColumn prefWidth="180.0" text="Công dụng" />
-                  <TableColumn prefWidth="90.0" text="Đơn vị" />
-                  <TableColumn prefWidth="120.0" text="Giá thuốc" />
-                  <TableColumn prefWidth="120.0" text="Trạng thái" />
+                  <TableColumn fx:id="ColThuocMa" prefWidth="75.0" text="Mã" />
+                  <TableColumn fx:id="ColThuocTenthuoc" prefWidth="166.0" text="Tên thuốc" />
+                  <TableColumn fx:id="ColThuocCongdung" prefWidth="180.0" text="Công dụng" />
+                  <TableColumn fx:id="ColThuocDonvi" prefWidth="90.0" text="Đơn vị" />
+                  <TableColumn fx:id="ColThuocGiathuoc" prefWidth="120.0" text="Giá thuốc" />
+                  <TableColumn fx:id="ColThuocTrangthai" prefWidth="120.0" text="Trạng thái" />
                </columns>
             </TableView>
          </children>
