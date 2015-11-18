@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.ThuocController">
+   <children>
+      <TabPane prefHeight="450.0" prefWidth="350.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <tabs>
+            <Tab closable="false" text="Thông tin">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <GridPane prefHeight="240.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
+                              <Label fx:id="lblTenThuoc" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="lblCongDung" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="lblDonVi" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="lblGiaThuoc" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="lblTrangThai" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="235.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                     <padding>
+                        <Insets right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Thêm mới">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <GridPane prefHeight="240.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
+                              <TextField fx:id="tfTenThuoc" prefHeight="35.0" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="tfGiaThuoc" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="tfTrangThai" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <ComboBox fx:id="cbDonVi" prefHeight="35.0" prefWidth="150.0" promptText="Đơn vị" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="350.0" spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#Them" prefWidth="100.0" text="Thêm" />
+                              <Button mnemonicParsing="false" onAction="#Huy" prefWidth="100.0" text="Hủy" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Chỉnh sửa">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <GridPane prefHeight="240.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
+                              <TextField fx:id="tfTenThuoc1" prefHeight="35.0" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="tfGiaThuoc1" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="tfTrangThai1" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <ComboBox fx:id="cbDonVi1" prefHeight="35.0" prefWidth="150.0" promptText="Đơn vị" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="350.0" spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#Sua" prefWidth="100.0" text="Sửa xong" />
+                              <Button mnemonicParsing="false" onAction="#Xoa" prefWidth="100.0" text="Xóa" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="30.0" text="Danh sách thuốc" />
+                  <ComboBox prefHeight="30.0" promptText="Hôm nay" />
+                  <Label prefHeight="30.0" text="Lọc theo" />
+                  <ComboBox prefHeight="30.0" promptText="Lọc theo" />
+                  <TextField prefHeight="30.0" />
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <TableView prefHeight="400.0" prefWidth="750.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="Mã" />
+                  <TableColumn prefWidth="166.0" text="Tên thuốc" />
+                  <TableColumn prefWidth="180.0" text="Công dụng" />
+                  <TableColumn prefWidth="90.0" text="Đơn vị" />
+                  <TableColumn prefWidth="120.0" text="Giá thuốc" />
+                  <TableColumn prefWidth="120.0" text="Trạng thái" />
+               </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>

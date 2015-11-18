@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.TiepNhanController">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="30.0" text="Danh sách bệnh nhân" />
+                  <ComboBox prefHeight="30.0" promptText="Hôm nay" />
+                  <Label prefHeight="30.0" text="Lọc theo" />
+                  <ComboBox fx:id="cbSearch" prefHeight="30.0" promptText="Lọc theo" />
+                  <TextField fx:id="tfFilter" prefHeight="30.0" />
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <TableView fx:id="BenhNhanTable" prefHeight="400.0" prefWidth="750.0">
+               <columns>
+                  <TableColumn fx:id="MaColumn" prefWidth="75.0" text="Mã" />
+                  <TableColumn fx:id="TenColumn" prefWidth="128.0" text="Họ tên" />
+                  <TableColumn fx:id="NgaySinhColumn" prefWidth="107.0" text="Ngày sinh" />
+                  <TableColumn fx:id="GioiTinhColumn" prefWidth="75.0" text="Giới tính" />
+                  <TableColumn fx:id="PhoneColumn" prefWidth="123.0" text="Số điện thoại" />
+                  <TableColumn fx:id="ThoiGianColumn" prefWidth="133.0" text="Thời gian khám" />
+                  <TableColumn fx:id="TrangThaiColumn" prefWidth="108.0" text="Trạng thái" />
+               </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>

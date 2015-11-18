@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -9,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.LeTan.LeTanController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.DuocSiController">
    <children>
       <TilePane prefHeight="50.0" prefWidth="1100.0">
          <children>
@@ -24,8 +22,9 @@
                   <ToggleButton mnemonicParsing="false" onAction="#handleBtnTiepNhan" prefHeight="40.0" prefWidth="100.0" text="Tiếp nhận">
                      <toggleGroup>
                         <ToggleGroup fx:id="GroupBtn" />
-                     </toggleGroup></ToggleButton>
-                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnThanhToan" prefHeight="40.0" prefWidth="100.0" text="Thanh toán" toggleGroup="$GroupBtn" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" onAction="#handleBtnThuoc" prefHeight="40.0" prefWidth="100.0" text="Thuốc" toggleGroup="$GroupBtn" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -34,16 +33,16 @@
             <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="550.0" spacing="10.0">
                <children>
                   <Label prefHeight="40.0" text="Xin chào," />
-                  <Label prefHeight="40.0" text="Lễ Tân" />
-                  <Label prefHeight="40.0" text="tên lễ tân" />
-                  <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" onMouseEntered="#mouseEnteredLblDangXuat" onMouseExited="#mouseExitedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
+                  <Label prefHeight="40.0" text="Dược sĩ" />
+                  <Label prefHeight="40.0" text="tên dược sĩ" />
+                  <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
                </children>
-               <TilePane.margin>
-                  <Insets />
-               </TilePane.margin>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
+               <TilePane.margin>
+                  <Insets />
+               </TilePane.margin>
             </HBox>
          </children>
       </TilePane>
@@ -61,6 +60,6 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <StackPane fx:id="StackPane" prefHeight="450.0" prefWidth="1100.0" />
+      <StackPane prefHeight="450.0" prefWidth="1100.0" />
    </children>
 </VBox>

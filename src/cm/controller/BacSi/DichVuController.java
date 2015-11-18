@@ -29,6 +29,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -37,7 +38,7 @@ import javafx.scene.layout.HBox;
 public class DichVuController implements Initializable, PaneInterface {
     
     private BacSiController parentPane;
-    ConnectToDatabase con;
+    private ConnectToDatabase con;
     private PreparedStatement ps;
     private ResultSet rs;
     @FXML
@@ -60,10 +61,28 @@ public class DichVuController implements Initializable, PaneInterface {
     private Label lblGia;
     @FXML
     private TextField tfLoc;
+    @FXML
+    private VBox paneThemDichVu;
     private ObservableList<Dichvu> DichvuData=FXCollections.observableArrayList(); 
     
     private String Gia;
-     
+    
+    /*
+        Visible when press button 'Ke don thuoc' in TiepNhan.
+        when button 'Thuoc' is pressed, it is unvisible
+    */
+    public void setPaneThemDichVu(boolean b) {
+        paneThemDichVu.setVisible(b);
+    }
+    //override tu Initializable interface
+   @Override
+    public void initialize(URL location, ResourceBundle resources) {
+            cbSearchInit();
+            addDichVuData();
+            initTable();
+            ControllerMediator.getInstance().setDichVuCtrl(this);
+    }
+    
     @FXML
     private void handleBtnThem(ActionEvent event)
     {
@@ -85,21 +104,26 @@ public class DichVuController implements Initializable, PaneInterface {
 
         }
     }
-    private void addDichVuData() throws SQLException
+    private void addDichVuData()
     {
-        String sql = "SELECT* FROM Dich_Vu ORDER BY Ma_Dich_Vu ASC";
-        rs=con.getRS(sql);
-        while(rs.next())
-        {
-            Dichvu dichvu=new Dichvu();
-            dichvu.setMa(rs.getInt("Ma_Dich_Vu"));
-            dichvu.setTenDichVu(rs.getString("Ten_Dich_Vu"));
-            dichvu.setChucNang(rs.getString("Chuc_Nang"));
-            dichvu.setGia(rs.getFloat("Gia_Dich_Vu"));
-            DichvuData.add(dichvu);
-            System.out.println(DichvuData.size());
+        try {
+            con = new ConnectToDatabase();
+            String sql = "SELECT* FROM Dich_Vu ORDER BY Ma_Dich_Vu ASC";
+            rs=con.getRS(sql);
+            while(rs.next())
+            {
+                Dichvu dichvu=new Dichvu();
+                dichvu.setMa(rs.getInt("Ma_Dich_Vu"));
+                dichvu.setTenDichVu(rs.getString("Ten_Dich_Vu"));
+                dichvu.setChucNang(rs.getString("Chuc_Nang"));
+                dichvu.setGia(rs.getFloat("Gia_Dich_Vu"));
+                DichvuData.add(dichvu);
+                System.out.println(DichvuData.size());
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DichVuController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        rs.close();
     }
     public void cbSearchInit(){
         cbLoc.getItems().addAll("Mã","Tên Dịch Vụ","Giá");
@@ -150,18 +174,7 @@ public class DichVuController implements Initializable, PaneInterface {
             lblGia.setText("");
         }
     }
-    //override tu Initializable interface
-   @Override
-    public void initialize(URL location, ResourceBundle resources) {
-         try {
-            con = new ConnectToDatabase();
-             cbSearchInit();
-            addDichVuData();
-            initTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+   
     //override tu PaneInterface interface
     @Override
     public void setScreenParent(BacSiController mainPane) {

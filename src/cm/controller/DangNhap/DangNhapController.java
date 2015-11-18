@@ -71,12 +71,6 @@ public class DangNhapController implements Initializable {
                     Scene scene = new Scene(root);
                     ClinicManager.getStage().setScene(scene);
                 }
-                ps.close();
-                sql = "UPDATE Tai_Khoan SET Trang_Thai = ? WHERE Ten_Dang_Nhap = ?";
-                ps = con.getPS(sql);
-                ps.setString(1, "ON");
-                ps.setString(2, name);
-                ps.executeUpdate();
                 con.conClose();
             }
             else{

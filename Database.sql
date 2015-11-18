@@ -5,9 +5,9 @@ SET time_zone = "+00:00";
  * Tai_Khoan, Benh_Nhan, Phien_Kham, Thuoc, Don_Thuoc, Dich_Vu, Don_Dich_Vu, Thanh_Toan
  *
  * run: 
- * tạo database quanlyphongkham trước
+ *
  * cd vào thư mục chứa database.sql => 
- * mysql -u root -p quanlyphongkham < database.sql
+ * mysql -u root -p < database.sql
  *
  * để kiểm tra thuộc tính của bảng: desc [tên bảng];
 */
@@ -34,15 +34,14 @@ CREATE TABLE `Tai_Khoan`(
 	`Ten_Dang_Nhap` VARCHAR(20) NOT NULL,
 	PRIMARY KEY(`Ten_Dang_Nhap`),
 	`Mat_Khau` VARCHAR(15) NOT NULL,
-	`Ten_Nguoi_Dung` CHAR(30) NOT NULL,
+	`Ten_Nhan_Vien` CHAR(30) NOT NULL,
 	`Ngay_Sinh` DATE,
 	`Dia_Chi` VARCHAR(100),
 	`Gioi_Tinh` ENUM('Nam', 'Nữ'),
 	`SDT` CHAR(12),
 	`Chuyen_Nganh` VARCHAR(20),
 	`Bac_Hoc`CHAR(14),
-	`Phong` VARCHAR(20) NOT NULL,
-	`Trang_Thai` ENUM('ON', 'OFF')
+	`Phong` VARCHAR(20) NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -54,15 +53,15 @@ CREATE TABLE `Tai_Khoan`(
 
 
 INSERT INTO `Tai_Khoan` VALUES
-('hoangduc','12345678','Mai Hoàng ĐỨc','1995-1-1','Hà Nội','Nam','0949887586','Đa Khoa','Thạc Sĩ','phòng khám','OFF'),
-('vanchien','12345678','Trần Văn Chiến','1996-2-1','Thanh Hóa','Nam','0192741244','Y Tá','Cao Đẳng','lễ tân','OFF'),
-('thuytrang','12345678','Đặng Thùy Trang','2000-4-3','Nghệ An','Nam','0941247124','Dược','Đại Học','phòng thuốc','OFF'),
-('thanhtrung','12345678','Nghiêm Thành Trung','1989-2-2','Hà Tĩnh','Nữ','0957255252','Y Tá','Cao Đẳng','lễ tân','OFF'),
-('trungthanh','12345678','Đới Trung Thành','1968-12-8','Ninh Bình','Nữ','0988888888','Dược','Cao Đẳng','phòng thuốc','OFF'),
-('vantu','12345678','Trịnh Văn Tú','1999-11-17','Hồ Chí Minh','Nữ','091236174','Ruột','Tiến Sĩ','phòng khám','OFF'),
-('baduy','12345678','Nguyễn Bá Duy','1996-10-12','Huế','Nam','0912487124','Dạ Dày','Thạc Sĩ','phòng khám','OFF'),
-('vietnam','12345678','Nguyễn Việt Nam','1990-9-24','Cà Mau','Nam','0924612414','Xương','Thạc sĩ','phòng khám','OFF'),
-('admin','12345678','Trần Bảo Ngọc','1990-9-24','Cà Mau','Nam','091274124','Gan','Tiến Sĩ','admin','OFF');
+('hoangduc','12345678','Mai Hoàng ĐỨc','1995-1-1','Hà Nội','Nam','0949887586','Đa Khoa','Thạc Sĩ','phòng khám'),
+('vanchien','12345678','Trần Văn Chiến','1996-2-1','Thanh Hóa','Nam','0192741244','Y Tá','Cao Đẳng','lễ tân'),
+('thuytrang','12345678','Đặng Thùy Trang','2000-4-3','Nghệ An','Nam','0941247124','Dược','Đại Học','phòng thuốc'),
+('thanhtrung','12345678','Nghiêm Thành Trung','1989-2-2','Hà Tĩnh','Nữ','0957255252','Y Tá','Cao Đẳng','lễ tân'),
+('trungthanh','12345678','Đới Trung Thành','1968-12-8','Ninh Bình','Nữ','0988888888','Dược','Cao Đẳng','phòng thuốc'),
+('vantu','12345678','Trịnh Văn Tú','1999-11-17','Hồ Chí Minh','Nữ','091236174','Ruột','Tiến Sĩ','phòng khám'),
+('baduy','12345678','Nguyễn Bá Duy','1996-10-12','Huế','Nam','0912487124','Dạ Dày','Thạc Sĩ','phòng khám'),
+('vietnam','12345678','Nguyễn Việt Nam','1990-9-24','Cà Mau','Nam','0924612414','Xương','Thạc sĩ','phòng khám'),
+('admin','12345678','Trần Bảo Ngọc','1990-9-24','Cà Mau','Nam','091274124','Gan','Tiến Sĩ','admin');
 
 
 /*================bảng bệnh nhân===================================*/

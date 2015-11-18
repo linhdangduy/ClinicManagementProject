@@ -40,7 +40,9 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private ConnectToDatabase con;
     private ResultSet rs;
     private PreparedStatement ps;
+    
     private BacSiController parentPane;
+    
     @FXML
     private Button btnChiTiet;
     @FXML
@@ -73,7 +75,6 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private TableColumn colMa, colHoten, colNgaysinh, colGioitinh, 
             colSdt, colThoigiankham, colTrangthai;
     private ObservableList<BenhNhan> benhnhanData = FXCollections.observableArrayList();
-    private BenhNhan benhnhanDangKham;
     
     //override tu Initializable interface
     @Override
@@ -81,6 +82,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
         createConnection();
         initTable();
         initCbLoc();
+        ControllerMediator.getInstance().setTiepNhanCtrl(this);
     }
     
     private void initCbLoc() {
@@ -192,6 +194,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
             lblCanhBao.setText("Chưa chọn bệnh nhân nào!");
         }
     }
+    //luu phien kham vao ho so benh nhan
     @FXML
     private void handleBtnLuu(ActionEvent event) {
         try {
@@ -220,24 +223,13 @@ public class TiepNhanController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnKeDon(ActionEvent event) {
         parentPane.setPane("thuoc");
-        benhnhanDangKham = tblBenhNhan.getSelectionModel().getSelectedItem();
+        ControllerMediator.getInstance().getThuocCtrl().setPaneThemThuoc(true);
     }    
     
     @FXML
     private void handleBtnSuDung(ActionEvent event) {
         parentPane.setPane("dichvu");
-        benhnhanDangKham = tblBenhNhan.getSelectionModel().getSelectedItem();
-    }
-    
-    public BenhNhan getBenhNhan() {
-        return benhnhanDangKham;
-    }
-    
-    
-    //override tu PaneInterface interface
-    @Override
-    public void setScreenParent(BacSiController mainPane) {
-        parentPane = mainPane;
+        ControllerMediator.getInstance().getDichVuCtrl().setPaneThemDichVu(true);
     }
     
     private void createConnection() {
@@ -263,4 +255,10 @@ public class TiepNhanController implements Initializable, PaneInterface {
         }
     }
     
+    //override tu PaneInterface interface
+    @Override
+    public void setScreenParent(BacSiController mainPane) {
+        parentPane = mainPane;
+    }
+  
 }

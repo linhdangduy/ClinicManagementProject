@@ -12,5 +12,4 @@ package cm.controller.BacSi;
 //interface ho tro chuyen giua cac tab
 public interface PaneInterface {
     public void setScreenParent(BacSiController mainPane);
-    
 }
