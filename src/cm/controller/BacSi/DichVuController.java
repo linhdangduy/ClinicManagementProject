@@ -6,7 +6,7 @@
 package cm.controller.BacSi;
 
 import cm.ConnectToDatabase;
-import cm.model.Bacsi.Dichvu;
+import cm.model.Dichvu;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
