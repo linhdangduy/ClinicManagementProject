@@ -89,9 +89,14 @@ public class ThuocController implements Initializable, PaneInterface  {
     private TextField tfLoc;
     @FXML
     private VBox paneThemThuoc;
-   
-    //=======================================================================================
-
+    
+    /*
+        Visible when press button 'Ke don thuoc' in TiepNhan.
+        when button 'Thuoc' is pressed, it is unvisible
+    */
+    public void setPaneThemThuoc(boolean b) {
+        paneThemThuoc.setVisible(b);
+    }
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
         parentPane.setPane("tiepnhan");
@@ -184,12 +189,11 @@ public class ThuocController implements Initializable, PaneInterface  {
         cbSearchInit();
             addThuocData();
             initTable();
+             ControllerMediator.getInstance().setThuocCtrl(this);
          } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
-
     //override tu PaneInterface interface
 
     @Override
