@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -35,7 +36,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" />
                </padding>
             </HBox>
-            <Label fx:id="lbThongBao" alignment="CENTER" prefHeight="25.0" prefWidth="234.0" text="trạng thái" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="lbThongBao" alignment="CENTER" prefHeight="25.0" prefWidth="234.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

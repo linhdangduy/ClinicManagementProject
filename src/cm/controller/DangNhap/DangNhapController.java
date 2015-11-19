@@ -61,15 +61,18 @@ public class DangNhapController implements Initializable {
             if(rs.isBeforeFirst()){
                 rs.next();
                 lbThongBao.setText("Thanh cong!");
-                if (rs.getString("Phong").equals("phòng khám")){
-                    Parent root = FXMLLoader.load(getClass().getResource("/cm/view/BacSi/BacSi.fxml"));
-                    Scene scene = new Scene(root);
-                    ClinicManager.getStage().setScene(scene);
+                String phong = rs.getString("Phong");
+                if (phong.equals("phòng khám")){
+                    setView("/cm/view/BacSi/BacSi.fxml");
                 }
-                else if (rs.getString("Phong").equals("lễ tân")){
-                    Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/LeTan.fxml"));
-                    Scene scene = new Scene(root);
-                    ClinicManager.getStage().setScene(scene);
+                else if (phong.equals("lễ tân")){
+                    setView("/cm/view/LeTan/LeTan.fxml");
+                }
+                else if (phong.equals("phòng thuốc")) {
+                    setView("/cm/view/DuocSi/DuocSi.fxml");
+                }
+                else if (phong.equals("admin")) {
+                    setView("/cm/view/QuanLy/QuanLy.fxml");
                 }
                 con.conClose();
             }
@@ -81,6 +84,15 @@ public class DangNhapController implements Initializable {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    private void setView(String url) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(url));
+            Scene scene = new Scene(root);
+            ClinicManager.getStage().setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @FXML
     private void thoat(ActionEvent e){
