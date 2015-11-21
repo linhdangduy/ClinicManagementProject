@@ -133,6 +133,15 @@ public class DichVuController implements Initializable, PaneInterface {
 
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
+        initTable(DichvuData);
+        Them="";
+        S="";
+        for(i=0;i<=n;i++)
+        {
+            arrayInt[i]=0;
+        }
+        taChucNang.setText("");
+        taThem.setText("");
         parentPane.setPane("tiepnhan");
     }
 
