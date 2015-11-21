@@ -27,7 +27,7 @@
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Chức năng" GridPane.rowIndex="1" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá" GridPane.rowIndex="2" />
                   <Label fx:id="lblTenDichVu" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
-                  <TextArea fx:id="taChucNang" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextArea fx:id="taChucNang" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <HBox prefHeight="100.0" prefWidth="250.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <Label fx:id="lblGia" prefHeight="35.0" text="Label" />
@@ -57,7 +57,7 @@
                         <Button mnemonicParsing="false" onAction="#handleBtnTroLai" prefWidth="100.0" text="Trở lại" />
                      </children>
                   </HBox>
-                  <TextArea prefHeight="100.0" prefWidth="345.0" />
+                  <TextArea fx:id="taThem" editable="false" prefHeight="100.0" prefWidth="345.0" wrapText="true" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -70,8 +70,6 @@
             <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
                <children>
                   <Label prefHeight="30.0" text="Danh sách dịch vụ" />
-                  <ComboBox prefHeight="30.0" promptText="Hôm nay" />
-                  <Label prefHeight="30.0" text="Lọc theo" />
                   <ComboBox fx:id="cbLoc" prefHeight="30.0" promptText="Lọc theo" />
                   <TextField fx:id="tfLoc" prefHeight="30.0" />
                </children>
@@ -79,12 +77,12 @@
                   <Insets left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView fx:id="DichvuTable" prefHeight="400.0" prefWidth="740.0">
+            <TableView fx:id="DichvuTable" prefHeight="400.0" prefWidth="750.0">
                <columns>
                   <TableColumn fx:id="ColDichvuMa" prefWidth="75.0" text="Mã" />
                   <TableColumn fx:id="ColDichvuTen" prefWidth="245.0" text="Tên dịch vụ" />
                   <TableColumn fx:id="ColDichvuChucnang" prefWidth="304.0" text="Chức năng" />
-                  <TableColumn fx:id="ColDichvuGia" prefWidth="115.0" text="Giá" />
+                  <TableColumn fx:id="ColDichvuGia" prefWidth="125.0" text="Giá" />
                </columns>
             </TableView>
          </children>
