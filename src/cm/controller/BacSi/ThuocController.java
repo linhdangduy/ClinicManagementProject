@@ -92,8 +92,11 @@ public class ThuocController implements Initializable, PaneInterface  {
     private ObservableList<Thuoc> ThuocData=FXCollections.observableArrayList();
     private ObservableList<KeDonThuoc> KeDonThuocData=FXCollections.observableArrayList();
     
+    private KeDonThuocController KeDonThuocCtrl=ControllerMediator.getInstance().getKeDonThuocCtrl();
+     Stage dStage = new Stage();
     float Giaf;
     int flag=0;
+    int Flag;
     int n=0;
     int Ma;
     private String Them = "";
@@ -171,21 +174,29 @@ public class ThuocController implements Initializable, PaneInterface  {
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
-            Stage dStage = new Stage();
+           
            // dStage.setTitle("Enter your Email");
-            //dStage.initModality(Modality.WINDOW_MODAL);
+//            dStage.initModality(Modality.WINDOW_MODAL);
             Scene scene = new Scene(page);
             dStage.setScene(scene);
-
             dStage.showAndWait();
-
             
-        } else {
+            
+            
+         } else {
+         Them="";
+        S="";
+        for(int i=0;i<=n;i++)
+        {
+            arrayInt[i]=0;
+        }
+        taCongdung.setText("");
+        taThem.setText("");
             KeDonThuocData.clear();
             initTable(ThuocData);
         }
     }
-
+   
     public void addThuocData() throws SQLException
     {
         String sql ="SELECT * FROM Thuoc ORDER BY Ma_Thuoc ASC";
