@@ -8,15 +8,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="348.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.BacSi.KeDonThuocController">
    <children>
-      <TableView fx:id="KeDonThuocTable" layoutY="-3.0" prefHeight="293.0" prefWidth="602.0">
+      <TableView fx:id="KeDonThuocTable" editable="true" layoutY="-3.0" prefHeight="293.0" prefWidth="602.0">
         <columns>
-            <TableColumn fx:id="ColKedonTenthuoc" editable="false" prefWidth="106.0" text="Tên Thuốc" />
-            <TableColumn fx:id="ColKedonSoluong" editable="false" prefWidth="126.0" text="Số Lượng" />
-            <TableColumn fx:id="ColKedonGhichu" editable="false" prefWidth="369.0" text="Ghi Chú" />
+            <TableColumn fx:id="ColKedonTenthuoc" prefWidth="106.0" text="Tên Thuốc" />
+            <TableColumn fx:id="ColKedonSoluong" prefWidth="126.0" text="Số Lượng" />
+            <TableColumn fx:id="ColKedonGhichu" prefWidth="369.0" text="Ghi Chú" />
         </columns>
       </TableView>
-      <Button layoutX="442.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleBtnOk" prefHeight="25.0" prefWidth="59.0" text="Ok" />
-      <Button layoutX="530.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleBtnCancel" text="Cancel" />
-      <Label fx:id="lblShow" layoutX="20.0" layoutY="301.0" prefHeight="35.0" prefWidth="330.0" text="Label" />
+      <Button layoutX="442.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleBtnOk" prefHeight="25.0" prefWidth="137.0" text="Xong" />
+      <Label fx:id="lblShow" layoutX="20.0" layoutY="301.0" prefHeight="35.0" prefWidth="330.0" text="Chỉnh sửa số lượng và ghi chú thuốc." />
    </children>
 </AnchorPane>
