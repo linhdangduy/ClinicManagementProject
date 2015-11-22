@@ -6,7 +6,10 @@
 package cm.controller.BacSi;
 
 import cm.ConnectToDatabase;
+import cm.model.KeDonThuoc;
+
 import cm.model.Thuoc;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Observable;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +32,13 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -37,7 +46,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static javax.management.remote.JMXConnectorFactory.connect;
 import javax.swing.plaf.nimbus.State;
@@ -56,8 +67,10 @@ public class ThuocController implements Initializable, PaneInterface  {
     private Label lblGiaThuoc;
     @FXML
     private Label lblTrangThai;
+   
     @FXML
     private TableView<Thuoc> ThuocTable;
+  
     @FXML
     private TableColumn ColThuocMa;
     @FXML
@@ -70,11 +83,22 @@ public class ThuocController implements Initializable, PaneInterface  {
     private TableColumn ColThuocCongdung;
     @FXML 
     private TableColumn ColThuocDonvi;
+   
     @FXML
     private TextArea taCongdung;
     @FXML
-    private ObservableList<Thuoc> ThuocData=FXCollections.observableArrayList(); 
+    private TextArea taThem;
+    @FXML
+    private ObservableList<Thuoc> ThuocData=FXCollections.observableArrayList();
+    private ObservableList<KeDonThuoc> KeDonThuocData=FXCollections.observableArrayList();
     
+    float Giaf;
+    int flag=0;
+    int n=0;
+    int Ma;
+    private String Them = "";
+    private String S = "";
+    private int[] arrayInt = new int[100];
     private String Gia;
     ConnectToDatabase con;
     private Statement st;
@@ -90,6 +114,7 @@ public class ThuocController implements Initializable, PaneInterface  {
     @FXML
     private VBox paneThemThuoc;
     
+    
     /*
         Visible when press button 'Ke don thuoc' in TiepNhan.
         when button 'Thuoc' is pressed, it is unvisible
@@ -98,20 +123,69 @@ public class ThuocController implements Initializable, PaneInterface  {
         paneThemThuoc.setVisible(b);
     }
     @FXML
-    private void handleBtnTroLai(ActionEvent event) {
+    private void handleBtnTroLai(ActionEvent event) throws SQLException {
+      //  initTable(ThuocData);
+        Them="";
+        S="";
+        for(int i=0;i<=n;i++)
+        {
+            arrayInt[i]=0;
+        }
+        taCongdung.setText("");
+        taThem.setText("");
         parentPane.setPane("tiepnhan");
     }
 
     @FXML
     private void handleBtnThem(ActionEvent event) {
-
+        KeDonThuoc thuoc = new KeDonThuoc();
+        thuoc.setTenThuoc(lblTenThuoc.getText());
+        thuoc.setSoLuong(0);
+        thuoc.setGhiChuThuoc("");
+        flag = 0;
+        for (int i = 0; i <= n; i++) {
+            if (arrayInt[i] == Ma) {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 0) {
+            n++;
+            arrayInt[n] = Ma;
+            KeDonThuocData.add(thuoc);
+            Them = S.concat(lblTenThuoc.getText());
+            S = Them.concat(", ");
+            taThem.setText(Them);
+        }
     }
     
     @FXML
-    private void handleBtnXong(ActionEvent event) throws SQLException {
-      
+    private void handleBtnXong(ActionEvent event) throws SQLException, IOException {
+       Alert dialogStage = new Alert(Alert.AlertType.CONFIRMATION);
+        dialogStage.setTitle("XÁC NHẬN");
+        dialogStage.setHeaderText("Bạn có muốn thêm Thuoc ?");
+        Optional<ButtonType> result = dialogStage.showAndWait();
+        if (result.get() == ButtonType.OK) {
+           FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/cm/view/BacSi/KeDonThuoc.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dStage = new Stage();
+           // dStage.setTitle("Enter your Email");
+            //dStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(page);
+            dStage.setScene(scene);
+
+            dStage.showAndWait();
+
+            
+        } else {
+            KeDonThuocData.clear();
+            initTable(ThuocData);
+        }
     }
-   
+
     public void addThuocData() throws SQLException
     {
         String sql ="SELECT * FROM Thuoc ORDER BY Ma_Thuoc ASC";
@@ -134,7 +208,7 @@ public class ThuocController implements Initializable, PaneInterface  {
         }
         rs.close();
     }
-    public void initTable() throws SQLException
+    public void initTable(ObservableList<Thuoc> Data) throws SQLException
     {
       ColThuocMa.setCellValueFactory(new PropertyValueFactory<>("ma"));
       ColThuocTenthuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
@@ -143,7 +217,7 @@ public class ThuocController implements Initializable, PaneInterface  {
       ColThuocTrangthai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
       ColThuocDonvi.setCellValueFactory(new PropertyValueFactory<>("donVi"));
       
-      FilteredList<Thuoc> filteredData= new  FilteredList<>(ThuocData, p-> true);
+      FilteredList<Thuoc> filteredData= new  FilteredList<>(Data, p-> true);
       ThuocTable.setItems(filteredData);
       tfLoc.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)-> {
             filteredData.setPredicate((Thuoc thuoc) -> {
@@ -173,7 +247,7 @@ public class ThuocController implements Initializable, PaneInterface  {
                 return false;
         });
         });
-      
+       ThuocTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
     }
     private void cbSearchInit()
     {
@@ -181,18 +255,40 @@ public class ThuocController implements Initializable, PaneInterface  {
         cbLoc.setValue("Mã");
     }
     //override tu Initializable interface
-   
+    private void showDetails(Thuoc thuoc) {
+        if (thuoc != null) {
+            Ma = thuoc.getMa();
+            lblTenThuoc.setText(thuoc.getTenThuoc());
+            Giaf = thuoc.getGiaThuoc();
+            Gia = Float.toString(thuoc.getGiaThuoc());
+            taCongdung.setText(thuoc.getCongDung());
+            lblGiaThuoc.setText(Gia);
+            lblDonVi.setText(thuoc.getDonVi());
+            lblTrangThai.setText(thuoc.getTrangThai());
+        } else {
+            lblTenThuoc.setText("");
+            lblGiaThuoc.setText("");
+            lblDonVi.setText("");
+            lblTrangThai.setText("");
+        }
+    }
+    public ObservableList<KeDonThuoc> getKeDonThuocData()
+    {
+        return KeDonThuocData;
+    }
+  
     @Override
     public void initialize(URL location, ResourceBundle resources) {
        try {
         con =  new ConnectToDatabase();
-        cbSearchInit();
+                cbSearchInit();
             addThuocData();
-            initTable();
+            initTable(ThuocData);
              ControllerMediator.getInstance().setThuocCtrl(this);
          } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
     }
     //override tu PaneInterface interface
 
