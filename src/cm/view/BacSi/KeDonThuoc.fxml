@@ -15,7 +15,7 @@
             <TableColumn fx:id="ColKedonGhichu" prefWidth="369.0" text="Ghi Chú" />
         </columns>
       </TableView>
-      <Button layoutX="442.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleBtnOk" prefHeight="25.0" prefWidth="137.0" text="Xong" />
-      <Label fx:id="lblShow" layoutX="20.0" layoutY="301.0" prefHeight="35.0" prefWidth="330.0" text="Chỉnh sửa số lượng và ghi chú thuốc." />
+      <Button layoutX="484.0" layoutY="306.0" mnemonicParsing="false" onAction="#handleBtnOk" prefHeight="25.0" prefWidth="85.0" text="Xong" />
+      <Label fx:id="lblShow" layoutX="20.0" layoutY="301.0" prefHeight="35.0" prefWidth="330.0" text="Nhập số lượng và ghi chú thuốc." />
    </children>
 </AnchorPane>
