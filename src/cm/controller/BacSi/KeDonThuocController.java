@@ -34,6 +34,7 @@ import javafx.util.converter.NumberStringConverter;
  * @author Mai Hoang Duc
  */
 public class KeDonThuocController implements Initializable {
+
     @FXML
     private TableView<KeDonThuoc> KeDonThuocTable;
     @FXML
@@ -44,69 +45,66 @@ public class KeDonThuocController implements Initializable {
     private TableColumn ColKedonGhichu;
     @FXML
     private Label lblShow;
-    
-    public ObservableList<KeDonThuoc> Data=FXCollections.observableArrayList();
-    private ThuocController ThuocCtrl;
-    
-    private int flag=0;
-    public int Flag;
-    public int test=0;
+
+    private ThuocController ThuocCtrl = ControllerMediator.getInstance().getThuocCtrl();
+    public ObservableList<KeDonThuoc> Data = FXCollections.observableArrayList(ThuocCtrl.getKeDonThuocData());
+
+    private int flag = 0;
+    public int FlagData;
+    public int test = 0;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-           initable();
-           setEditable();
-          ControllerMediator.getInstance().setKeDonThuocCtrl(this);
-    }    
+        ControllerMediator.getInstance().setKeDonThuocCtrl(this);
+        initable();
+        setEditable();
+
+    }
 
     @FXML
     private void handleBtnOk(ActionEvent event) {
-        Stage stage=ThuocCtrl.dStage;
+        Stage stage = ThuocCtrl.dStage;
         stage.hide();
     }
 
-    private void initable()
-    {
-        Data.removeAll();
-        ThuocCtrl=ControllerMediator.getInstance().getThuocCtrl();
+    private void initable() {
         ColKedonTenthuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
-      ColKedonSoluong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
-      ColKedonGhichu.setCellValueFactory(new PropertyValueFactory<>("ghiChuThuoc"));
-      Data=ThuocCtrl.getKeDonThuocData();
-      KeDonThuocTable.setItems(Data);
-        
+        ColKedonSoluong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
+        ColKedonGhichu.setCellValueFactory(new PropertyValueFactory<>("ghiChuThuoc"));
+        KeDonThuocTable.setItems(Data);
+
     }
-    private void setEditable()
-    {
+
+    private void setEditable() {
         KeDonThuocTable.setEditable(true);
         ColKedonSoluong.setEditable(true);
-        ColKedonSoluong.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter() {}));
+        ColKedonSoluong.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter() {
+        }));
         ColKedonSoluong.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<KeDonThuoc, Integer>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<KeDonThuoc, Integer> t) {
                 KeDonThuoc thuoc = ((KeDonThuoc) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-               int index = Data.indexOf(thuoc);
-                
-                thuoc.setSoLuong(t.getNewValue());  
-                Data.set(index,null);
-                Data.set(index,thuoc);
-    }
-    });
+
+                thuoc.setSoLuong(t.getNewValue());
+            }
+        });
         ColKedonGhichu.setEditable(true);
         ColKedonGhichu.setCellFactory(TextFieldTableCell.forTableColumn());
         ColKedonGhichu.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<KeDonThuoc, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<KeDonThuoc, String> t) {
                 KeDonThuoc thuoc = ((KeDonThuoc) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-               
-                thuoc.setGhiChuThuoc(t.getNewValue());  
-              
+
+                thuoc.setGhiChuThuoc(t.getNewValue());
+
+            }
+        });
     }
-    });
-    }
-     public void forceRefresh() {
+
+    public void forceRefresh() {
         new java.util.Timer().schedule(new java.util.TimerTask() {
             public void run() {
                 Platform.runLater(() -> {
@@ -118,13 +116,5 @@ public class KeDonThuocController implements Initializable {
             }
         }, 50);
     }
-     public int getFlag()
-     {
-         return Flag;
-     }
-     public ObservableList<KeDonThuoc> getData()
-     {
-         return Data;
-     }
+
 }
-    
