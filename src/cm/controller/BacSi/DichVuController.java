@@ -7,6 +7,7 @@ package cm.controller.BacSi;
 
 import cm.ConnectToDatabase;
 import cm.model.Dichvu;
+import cm.model.DonDichVu;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -76,7 +77,7 @@ public class DichVuController implements Initializable, PaneInterface {
     @FXML
     private VBox paneThemDichVu;
     private ObservableList<Dichvu> DichvuData = FXCollections.observableArrayList();
-    private ObservableList<Dichvu> KeDonDichvuData = FXCollections.observableArrayList();
+    private ObservableList<DonDichVu> DonDichVuData = FXCollections.observableArrayList();
     private int Ma;
     private float Giaf;
     private String Gia;
@@ -86,6 +87,7 @@ public class DichVuController implements Initializable, PaneInterface {
     private int i = 0;
     private int n = 0;
     private int flag = 0;
+    public Stage dStage = new Stage();
 
     /*
      Visible when press button 'Ke don thuoc' in TiepNhan.
@@ -96,7 +98,6 @@ public class DichVuController implements Initializable, PaneInterface {
     }
 
     //override tu Initializable interface
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cbSearchInit();
@@ -107,11 +108,10 @@ public class DichVuController implements Initializable, PaneInterface {
 
     @FXML
     private void handleBtnThem(ActionEvent event) {
-        Dichvu dichvu = new Dichvu();
-        dichvu.setMa(Ma);
+        DonDichVu dichvu = new DonDichVu();
         dichvu.setTenDichVu(lblTenDichVu.getText());
-        dichvu.setChucNang(taChucNang.getText());
-        dichvu.setGia(Giaf);
+        // dichvu.setChucNang(taChucNang.getText());
+        //dichvu.setGia(Giaf);
         flag = 0;
         for (i = 0; i <= n; i++) {
             if (arrayInt[i] == Ma) {
@@ -122,7 +122,7 @@ public class DichVuController implements Initializable, PaneInterface {
         if (flag == 0) {
             n++;
             arrayInt[n] = Ma;
-            KeDonDichvuData.add(dichvu);
+            DonDichVuData.add(dichvu);
             Them = S.concat(lblTenDichVu.getText());
             S = Them.concat(", ");
             taThem.setText(Them);
@@ -134,11 +134,10 @@ public class DichVuController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
         initTable(DichvuData);
-        Them="";
-        S="";
-        for(i=0;i<=n;i++)
-        {
-            arrayInt[i]=0;
+        Them = "";
+        S = "";
+        for (i = 0; i <= n; i++) {
+            arrayInt[i] = 0;
         }
         taChucNang.setText("");
         taThem.setText("");
@@ -146,15 +145,29 @@ public class DichVuController implements Initializable, PaneInterface {
     }
 
     @FXML
-    private void handleBtnXong(ActionEvent event) throws SQLException {
+    private void handleBtnXong(ActionEvent event) throws SQLException, IOException {
         Alert dialogStage = new Alert(AlertType.CONFIRMATION);
-        dialogStage.setTitle("XÁC NHẬN");
-        dialogStage.setHeaderText("Bạn có muốn thêm dịch vụ?");
+        dialogStage.setTitle("Bạn có muốn chỉnh sửa?");
+        dialogStage.setHeaderText("Ok để chỉnh sửa. Cancel để xóa đơn.");
         Optional<ButtonType> result = dialogStage.showAndWait();
         if (result.get() == ButtonType.OK) {
-            initTable(KeDonDichvuData);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/cm/view/BacSi/DonDichVu.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Scene scene = new Scene(page);
+            dStage.setScene(scene);
+            dStage.showAndWait();
         } else {
-            KeDonDichvuData.clear();
+            Them = "";
+            S = "";
+            for (int i = 0; i <= n; i++) {
+                arrayInt[i] = 0;
+            }
+            taChucNang.setText("");
+            taThem.setText("");
+            DonDichVuData.clear();
             initTable(DichvuData);
         }
     }
@@ -234,7 +247,12 @@ public class DichVuController implements Initializable, PaneInterface {
         }
     }
 
+    public ObservableList<DonDichVu> getDonDichVuData() {
+        return DonDichVuData;
+    }
+
     //override tu PaneInterface interface
+
     @Override
     public void setScreenParent(BacSiController mainPane) {
         parentPane = mainPane;
