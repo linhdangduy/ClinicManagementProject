@@ -63,6 +63,11 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                         </GridPane>
+                        <HBox alignment="CENTER" prefHeight="78.0" prefWidth="335.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#taoPhienKhamMoi" prefHeight="40.0" prefWidth="162.0" text="Tạo Phiên Khám Mới" />
+                           </children>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets right="5.0" top="10.0" />
