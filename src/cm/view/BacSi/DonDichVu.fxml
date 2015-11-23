@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="345.0" prefWidth="602.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="cm.controller.BacSi.DonDichVuController">
+   <children>
+      <TableView fx:id="DonDichVuTable" editable="true" prefHeight="268.0" prefWidth="602.0">
+        <columns>
+          <TableColumn fx:id="ColDonTendichvu" prefWidth="173.0" text="Tên Dịch Vụ" />
+          <TableColumn fx:id="ColDonKetqua" prefWidth="428.0" text="Kết Quả" />
+        </columns>
+      </TableView>
+      <Label fx:id="lblShow" layoutX="27.0" layoutY="295.0" prefHeight="30.0" prefWidth="300.0" text="Nhập kết quả Dịch Vụ" />
+      <Button layoutX="483.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleBtnOk" prefHeight="25.0" prefWidth="82.0" text="Xong" />
+   </children>
+</AnchorPane>

@@ -53,7 +53,7 @@
                   <HBox alignment="CENTER" prefWidth="350.0" spacing="10.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#handleBtnThem" text="Thêm dịch vụ" />
-                        <Button mnemonicParsing="false" onAction="#handleBtnXong" prefWidth="100.0" text="Xong" />
+                        <Button mnemonicParsing="false" onAction="#handleBtnXong" prefWidth="100.0" text="Chỉnh Sửa" />
                         <Button mnemonicParsing="false" onAction="#handleBtnTroLai" prefWidth="100.0" text="Trở lại" />
                      </children>
                   </HBox>

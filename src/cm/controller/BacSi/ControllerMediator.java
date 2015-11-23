@@ -18,6 +18,7 @@ public class ControllerMediator {
    private DichVuController dichvuCtrl;
    private TiepNhanController tiepnhanCtrl;
    private KeDonThuocController kedonthuocCtrl;
+   private DonDichVuController dondichvuCtrl;
    //make the constructor private so that this class cannot be
    //instantiated
    private ControllerMediator(){}
@@ -42,6 +43,10 @@ public class ControllerMediator {
    public void setKeDonThuocCtrl(KeDonThuocController kedonthuocCtrl){
        this.kedonthuocCtrl =kedonthuocCtrl;
    }
+   
+     public void setDonDichVuCtrl(DonDichVuController dondichvuCtrl) {
+       this.dondichvuCtrl = dondichvuCtrl;
+   }
    //cac ham nhan controller
    public ThuocController getThuocCtrl() {
        return thuocCtrl;
@@ -57,7 +62,9 @@ public class ControllerMediator {
     public KeDonThuocController getKeDonThuocCtrl() {
        return kedonthuocCtrl;
    }
-   
+    public DonDichVuController getDonDichVuCtrl() {
+       return dondichvuCtrl;
+   }
    public void showMessage(){
       System.out.println("Hello World!");
    }
