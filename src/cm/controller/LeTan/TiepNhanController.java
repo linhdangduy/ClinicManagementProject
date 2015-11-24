@@ -207,6 +207,7 @@ public class TiepNhanController implements Initializable{
     }
     
     private void showDetails(BenhNhan benhnhan) {
+        bnSelected = benhnhan;
         if(benhnhan != null){
             //Show thong tin o tab thong tin
             lblTen.setText(benhnhan.getHoTen());
@@ -216,7 +217,7 @@ public class TiepNhanController implements Initializable{
             lblDiaChi.setText(benhnhan.getDiaChi());
             
             //Show thong tin o tab chinh sua
-            bnSelected = benhnhan;
+            
             tfTen2.setText(benhnhan.getHoTen());
             //Cat xau ngaysinh tra ket qua ngay, thang, nam
             ngaysinh = benhnhan.getNgaySinh();
@@ -254,9 +255,6 @@ public class TiepNhanController implements Initializable{
     
     
     private void cbNgaySinhInit(){
-        /*int[] ngay = new int[31];
-        int[] thang = new int[12];
-        int[] nam = new int[150];*/
         int i;
         String a;
         for (i=1;i<32;i++){
