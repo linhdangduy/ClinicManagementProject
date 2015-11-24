@@ -21,6 +21,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -28,6 +30,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -167,9 +176,9 @@ public class ThanhToanController implements Initializable {
     private void showDetails(BenhNhan benhnhan) throws SQLException {
             
             String sql1 = "select sum(Gia_Dich_Vu) as tien from Dich_Vu natural join Don_Dich_Vu natural join Phien_Kham"
-                    +" where Ma_Benh_Nhan = ? having tien>0;";
+                    +" where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tien>0;";
             String sql2 = "select sum(Chi_Phi_Thuoc) as tient from Don_Thuoc natural join Phien_Kham"
-                    +"where Ma_Benh_Nhan = ? having tient> 0";
+                    +"where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tient> 0;";
             ps = con.getPS(sql1);
             ps.setInt(1,benhnhan.getMa());
             rs = ps.executeQuery();
@@ -184,7 +193,7 @@ public class ThanhToanController implements Initializable {
             ps = con.getPS(sql2);
             ps.setInt(1,benhnhan.getMa());
             rs = ps.executeQuery();
-            if(rs.isBeforeFirst())
+            if(rs.wasNull() == false)
             {
                 rs.next();
                 TienThuoc = rs.getFloat("tient");
@@ -223,6 +232,8 @@ public class ThanhToanController implements Initializable {
     }
     @FXML
     private void ThanhToan(ActionEvent e) throws SQLException {
+        if(lblTen.getText() == "" || lblTen.getText() == null)
+            return;
         String sql = "insert into Thanh_Toan values (?,?,?,?,?)";
         ps.setInt(1,getMaPK(MaBN));
         //ps.setString(); insert Ten_Dang_Nhap
@@ -230,10 +241,10 @@ public class ThanhToanController implements Initializable {
         ps.setFloat(4,TienDV);
         ps.setFloat(5,TongTien);
         ps.executeQuery();
-        
-        JFrame f = new JFrame("Thông Báo");
-        String mess = "Đã thanh toán khách cho bệnh nhân "+lblTen.getText();
-        JOptionPane.showMessageDialog(f, mess,"Thông Báo",JOptionPane.PLAIN_MESSAGE);
+
+        Notice.display(lblTen.getText(), lblNgaySinh.getText(), lblGioiTinh.getText(),
+                lblDiaChi.getText(), lblPhone.getText(), lblTienThuoc.getText(),
+                lblTienDV.getText(), lblTongTien.getText());
     }
     public int getMaPK(int Ma_Benh_Nhan) throws SQLException{
         String sql = "select Ma_Phien_Kham from Phien_Kham where Ma_Benh_Nhan = ?";
@@ -246,4 +257,92 @@ public class ThanhToanController implements Initializable {
         
     }
         
+}
+class Notice{
+        public static void display(String ht, String ns, String gt, String dc, String sdt,
+                                String tienthuoc, String tiendv, String tongt){
+            Stage window =  new Stage();
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setTitle("Thông Báo");
+            window.setWidth(450);
+            window.setHeight(270);
+            window.setResizable(false);
+            
+            
+            VBox layout1 = new VBox();
+            layout1.setPrefWidth(200);
+            layout1.setPrefHeight(50);
+            layout1.setAlignment(Pos.CENTER);
+            Text textlayout = new Text();
+            textlayout.setText("Thanh Toán");
+            textlayout.setFont(new Font("Arial",20));
+
+            
+            GridPane pane = new GridPane();
+            Label lblten = new Label("Họ Tên : ");
+            lblten.setFont(new Font("Arial",16));
+            GridPane.setConstraints(lblten, 0, 0);
+            Label lblngays = new Label("Ngày Sinh : ");
+            lblngays.setFont(new Font("Arial",16));
+            GridPane.setConstraints(lblngays, 0, 1);            
+            Label lblgt = new Label("Giới Tính : ");
+            GridPane.setConstraints(lblgt, 0, 2);
+            lblgt.setFont(new Font("Arial",16));
+            Label lbldc = new Label("Địa Chỉ : ");
+            GridPane.setConstraints(lbldc, 0, 3);
+            lbldc.setFont(new Font("Arial",16));
+            Label lblsdt = new Label("Số Điện Thoại : ");
+            GridPane.setConstraints(lblsdt, 0, 4);
+            lblsdt.setFont(new Font("Arial",16));
+            Label lbltienthuoc = new Label("Tiền Thuốc : ");
+            GridPane.setConstraints(lbltienthuoc, 0, 5);
+            lbltienthuoc.setFont(new Font("Arial",16));
+            Label lbltiendv = new Label("Tiền Dịch Vụ : ");
+            GridPane.setConstraints(lbltiendv, 0, 6);
+            lbltiendv.setFont(new Font("Arial",16));
+            Label lbltongtien = new Label("Tổng Tiền : ");
+            GridPane.setConstraints(lbltongtien, 0, 7);
+            lbltongtien.setFont(new Font("Arial",16));
+            Label lbl1 = new Label(ht);
+            GridPane.setConstraints(lbl1, 1, 0);
+            lbl1.setFont(new Font("Arial",16));
+            Label lbl2 = new Label(ns);
+            GridPane.setConstraints(lbl2, 1, 1);
+            lbl2.setFont(new Font("Arial",16));
+            Label lbl3 = new Label(gt);
+            GridPane.setConstraints(lbl3, 1, 2);
+            lbl3.setFont(new Font("Arial",16));
+            Label lbl4 = new Label(dc);
+            GridPane.setConstraints(lbl4, 1, 3);
+            lbl4.setFont(new Font("Arial",16));
+            Label lbl5 = new Label(sdt);
+            GridPane.setConstraints(lbl5, 1, 4);
+            lbl5.setFont(new Font("Arial",16));
+            Label lbl6 = new Label(tienthuoc);
+            GridPane.setConstraints(lbl6, 1, 5);
+            lbl6.setFont(new Font("Arial",16));
+            Label lbl7 = new Label(tiendv);
+            GridPane.setConstraints(lbl7, 1, 6);
+            lbl7.setFont(new Font("Arial",16));
+            Label lbl8 = new Label(tongt);
+            GridPane.setConstraints(lbl8, 1, 7);
+            lbl8.setFont(new Font("Arial",16));
+            pane.getChildren().addAll(lblten,lbl1,lblngays,lbl2,lblgt,lbl3,lbldc,lbl4,lblsdt,lbl5,lbltienthuoc,lbl6,lbltiendv,lbl7,lbltongtien,lbl8);
+            pane.setAlignment(Pos.CENTER);
+            
+            Text notice = new Text("Đã thanh toán!");
+            notice.setFont(new Font("Arial",14));
+            notice.setFill(Color.RED);
+            
+            Button button =new Button("OK");
+            button.setOnAction(e -> window.close());
+            button.setAlignment(Pos.CENTER);
+            
+            layout1.getChildren().addAll(textlayout,pane,notice,button);
+          
+            Scene scene = new Scene(layout1,900,700);
+            window.setScene(scene);
+            window.showAndWait();
+            
+        }
 }
