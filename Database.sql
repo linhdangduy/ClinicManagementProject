@@ -41,7 +41,8 @@ CREATE TABLE `Tai_Khoan`(
 	`SDT` CHAR(12),
 	`Chuyen_Nganh` VARCHAR(20),
 	`Bac_Hoc`CHAR(14),
-	`Phong` VARCHAR(20) NOT NULL
+	`Phong` VARCHAR(20) NOT NULL,
+	`Trang_Thai` ENUM('Hoạt động', 'Nghỉ', 'Đăng Ký')
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -53,15 +54,15 @@ CREATE TABLE `Tai_Khoan`(
 
 
 INSERT INTO `Tai_Khoan` VALUES
-('hoangduc','12345678','Mai Hoàng ĐỨc','1995-1-1','Hà Nội','Nam','0949887586','Đa Khoa','Thạc Sĩ','phòng khám'),
-('vanchien','12345678','Trần Văn Chiến','1996-2-1','Thanh Hóa','Nam','0192741244','Y Tá','Cao Đẳng','lễ tân'),
-('thuytrang','12345678','Đặng Thùy Trang','2000-4-3','Nghệ An','Nam','0941247124','Dược','Đại Học','phòng thuốc'),
-('thanhtrung','12345678','Nghiêm Thành Trung','1989-2-2','Hà Tĩnh','Nữ','0957255252','Y Tá','Cao Đẳng','lễ tân'),
-('trungthanh','12345678','Đới Trung Thành','1968-12-8','Ninh Bình','Nữ','0988888888','Dược','Cao Đẳng','phòng thuốc'),
-('vantu','12345678','Trịnh Văn Tú','1999-11-17','Hồ Chí Minh','Nữ','091236174','Ruột','Tiến Sĩ','phòng khám'),
-('baduy','12345678','Nguyễn Bá Duy','1996-10-12','Huế','Nam','0912487124','Dạ Dày','Thạc Sĩ','phòng khám'),
-('vietnam','12345678','Nguyễn Việt Nam','1990-9-24','Cà Mau','Nam','0924612414','Xương','Thạc sĩ','phòng khám'),
-('admin','12345678','Trần Bảo Ngọc','1990-9-24','Cà Mau','Nam','091274124','Gan','Tiến Sĩ','admin');
+('hoangduc','12345678','Mai Hoàng ĐỨc','1995-1-1','Hà Nội','Nam','0949887586','Đa Khoa','Thạc Sĩ','phòng khám', 'Nghỉ'),
+('vanchien','12345678','Trần Văn Chiến','1996-2-1','Thanh Hóa','Nam','0192741244','Y Tá','Cao Đẳng','lễ tân', 'Nghỉ'),
+('thuytrang','12345678','Đặng Thùy Trang','2000-4-3','Nghệ An','Nam','0941247124','Dược','Đại Học','phòng thuốc', 'Nghỉ'),
+('thanhtrung','12345678','Nghiêm Thành Trung','1989-2-2','Hà Tĩnh','Nữ','0957255252','Y Tá','Cao Đẳng','lễ tân', 'Nghỉ'),
+('trungthanh','12345678','Đới Trung Thành','1968-12-8','Ninh Bình','Nữ','0988888888','Dược','Cao Đẳng','phòng thuốc', 'Nghỉ'),
+('vantu','12345678','Trịnh Văn Tú','1999-11-17','Hồ Chí Minh','Nữ','091236174','Ruột','Tiến Sĩ','phòng khám', 'Nghỉ'),
+('baduy','12345678','Nguyễn Bá Duy','1996-10-12','Huế','Nam','0912487124','Dạ Dày','Thạc Sĩ','phòng khám', 'Nghỉ'),
+('vietnam','12345678','Nguyễn Việt Nam','1990-9-24','Cà Mau','Nam','0924612414','Xương','Thạc sĩ','phòng khám', 'Nghỉ'),
+('admin','12345678','Trần Bảo Ngọc','1990-9-24','Cà Mau','Nam','091274124','Gan','Tiến Sĩ','admin', 'Nghỉ');
 
 
 /*================bảng bệnh nhân===================================*/
