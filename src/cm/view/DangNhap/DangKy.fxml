@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="340.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Đăng ký" wrappingWidth="123.13671875">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Text>
+         </children>
+      </FlowPane>
+      <GridPane prefHeight="432.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đăng nhập" />
+            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Ngày sinh" GridPane.rowIndex="3" />
+            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giới tính" GridPane.rowIndex="4" />
+            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Địa chỉ" GridPane.rowIndex="5" />
+            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số điện thoại" GridPane.rowIndex="6" />
+            <TextField fx:id="tfDangNhap" prefHeight="35.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="tfDiaChi" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="tfPhone" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <ComboBox fx:id="cbNgay" prefHeight="35.0" promptText="dd" />
+                  <ComboBox fx:id="cbThang" prefHeight="35.0" promptText="mm" />
+                  <ComboBox fx:id="cbNam" prefHeight="35.0" promptText="yyyy" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <RadioButton fx:id="rbNam" mnemonicParsing="false" prefHeight="35.0" text="Nam">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="groupLevel1" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="rbNu" mnemonicParsing="false" prefHeight="35.0" text="Nữ" toggleGroup="$groupLevel1" />
+                  <ComboBox fx:id="cbBacHoc" prefHeight="30.0" prefWidth="120.0" promptText="Bậc học" />
+               </children>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </HBox>
+            <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="17.0" prefHeight="35.0" prefWidth="100.0" text="Nhân viên" GridPane.rowIndex="1" />
+            <TextField fx:id="tfNhanVien" layoutX="105.0" layoutY="17.0" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="257.0" prefHeight="35.0" prefWidth="100.0" text="Ngành" GridPane.rowIndex="7" />
+            <TextField fx:id="tfNganh" layoutX="105.0" layoutY="65.0" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="17.0" prefHeight="35.0" prefWidth="100.0" text="Mật khẩu" GridPane.rowIndex="2" />
+            <PasswordField fx:id="tfMatKhau" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </PasswordField>
+            <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="330.0" prefHeight="35.0" prefWidth="100.0" text="Phòng" GridPane.rowIndex="8" />
+            <ComboBox prefHeight="35.0" prefWidth="150.0" promptText="Phòng" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets left="45.0" right="45.0" />
+               </GridPane.margin>
+            </ComboBox>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="350.0" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#DangKy" prefHeight="35.0" prefWidth="100.0" text="Đăng Ký" />
+            <Button mnemonicParsing="false" onAction="#Huy" prefHeight="35.0" prefWidth="100.0" text="Hủy" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets right="5.0" />
+   </padding>
+</VBox>
