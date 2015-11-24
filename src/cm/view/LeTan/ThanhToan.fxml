@@ -89,7 +89,7 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="350.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="100.0" text="Thanh toán" />
+                  <Button mnemonicParsing="false" onAction="#ThanhToan" prefWidth="100.0" text="Thanh toán" />
                </children>
             </HBox>
          </children>
