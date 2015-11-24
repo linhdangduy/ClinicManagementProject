@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="500.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.view.QuanLy.QuanLyController">
+<VBox prefHeight="500.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.QuanLy.QuanLyController">
    <children>
       <TilePane prefHeight="50.0" prefWidth="1100.0">
          <children>
@@ -54,11 +54,11 @@
                            <children>
                               <GridPane prefHeight="384.0">
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên đăng nhập" />
-                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Nhân viên" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Ngày sinh" GridPane.rowIndex="2" />
-                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giới tính" GridPane.rowIndex="3" />
-                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Địa chỉ" GridPane.rowIndex="4" />
+                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="112.0" text="Tên đăng nhập :" />
+                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="109.0" text="Nhân viên :" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="108.0" text="Ngày sinh :" GridPane.rowIndex="2" />
+                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="106.0" text="Giới tính :" GridPane.rowIndex="3" />
+                                    <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="107.0" text="Địa chỉ :" GridPane.rowIndex="4" />
                                     <Label fx:id="lblTenDangNhap" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1">
                                        <padding>
                                           <Insets left="5.0" />
@@ -84,9 +84,9 @@
                                           <Insets left="5.0" />
                                        </padding>
                                     </Label>
-                                    <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="161.0" prefHeight="35.0" prefWidth="100.0" text="Số điện thoại" GridPane.rowIndex="5" />
-                                    <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="257.0" prefHeight="35.0" prefWidth="100.0" text="Chuyên ngành" GridPane.rowIndex="6" />
-                                    <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="305.0" prefHeight="35.0" prefWidth="100.0" text="Bậc học" GridPane.rowIndex="7" />
+                                    <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="161.0" prefHeight="35.0" prefWidth="112.0" text="Số điện thoại :" GridPane.rowIndex="5" />
+                                    <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="257.0" prefHeight="35.0" prefWidth="114.0" text="Chuyên ngành :" GridPane.rowIndex="6" />
+                                    <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="305.0" prefHeight="35.0" prefWidth="114.0" text="Bậc học :" GridPane.rowIndex="7" />
                                     <Label fx:id="lblSoDienThoai" layoutX="110.0" layoutY="17.0" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <padding>
                                           <Insets left="5.0" />
@@ -104,8 +104,8 @@
                                     </Label>
                                  </children>
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="235.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="121.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="214.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -320,15 +320,15 @@
                         <Insets left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <TableView fx:id="BenhNhanTable" prefHeight="400.0" prefWidth="750.0">
+                  <TableView fx:id="NhanVienTable" prefHeight="400.0" prefWidth="750.0">
                      <columns>
                         <TableColumn fx:id="MaColumn" prefWidth="121.0" text="Tên đăng nhập" />
                         <TableColumn fx:id="TenColumn" prefWidth="123.0" text="Tên nhân viên" />
                         <TableColumn fx:id="NgaySinhColumn" prefWidth="110.0" text="Ngày sinh" />
                         <TableColumn fx:id="GioiTinhColumn" prefWidth="74.0" text="Giới tính" />
                         <TableColumn fx:id="PhoneColumn" prefWidth="110.0" text="Số điện thoại" />
-                        <TableColumn fx:id="ThoiGianColumn" prefWidth="116.0" text="Chuyên ngành" />
-                        <TableColumn fx:id="TrangThaiColumn" prefWidth="95.0" text="Bậc học" />
+                        <TableColumn fx:id="ChuyennganhColumn" prefWidth="116.0" text="Chuyên ngành" />
+                        <TableColumn fx:id="BachocColumn" prefWidth="95.0" text="Bậc học" />
                      </columns>
                   </TableView>
                </children>
