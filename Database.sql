@@ -198,7 +198,7 @@ CREATE TABLE `Don_Thuoc` (
 	`Ma_Thuoc` INT UNSIGNED NOT NULL,
 	PRIMARY KEY(`Ma_Phien_Kham`,`Ma_Thuoc`),
 	`Ten_Dang_Nhap` VARCHAR(20),
-	`So_Luong` INT UNSIGNED,
+	`So_Luong_Ke` INT UNSIGNED,
 	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
 	`Ghi_Chu_Thuoc` VARCHAR(100),
 	CONSTRAINT fk_DonThuoc_MaPhienKham 
