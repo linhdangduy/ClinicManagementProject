@@ -159,6 +159,7 @@ public class TiepNhanController implements Initializable {
                 ps.close();
                 addDonThuoc(maPhienKham);
                 initTableThuoc();
+                lblHoTen.setText(bnselected.getHoTen());
 
             } catch (SQLException ex) {
                 Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,6 +172,7 @@ public class TiepNhanController implements Initializable {
         
     }
     private void initTableThuoc(){
+        
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
         colSoLuong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
         colGiaThuoc.setCellValueFactory(new PropertyValueFactory<>("chiPhiThuoc"));
@@ -179,7 +181,7 @@ public class TiepNhanController implements Initializable {
     }
     private void addDonThuoc(int maPhienKham){
         try {
-            String sql = "select * from Don_Thuoc natural join Thuoc where Ma_Phien_Kham = ?";
+            String sql = "select Ten_Thuoc, So_Luong_Ke , (So_Luong_Ke*Gia_Thuoc) as Chi_Phi_Thuoc from Don_Thuoc natural join Thuoc where Ma_Phien_Kham = ?";
             DonThuocData.clear();
             ps = con.getPS(sql);
             ps.setInt(1, maPhienKham);
@@ -207,6 +209,18 @@ public class TiepNhanController implements Initializable {
             ps.executeUpdate();
             ps.close();
             
+            sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
+            ps = con.getPS(sql);
+            ps.setInt(2, bnselected.getMa());
+            DonThuocData.forEach((thuoc) -> {
+                try {
+                    ps.setFloat(1, thuoc.getChiPhiThuoc());
+                    ps.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            ps.close();
             BenhNhanData.remove(BenhNhanData.indexOf(bnselected));
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -216,6 +230,16 @@ public class TiepNhanController implements Initializable {
 
     @FXML
     private void Huy(ActionEvent event) {
+        try {
+            String sql = "update Benh_Nhan set Trang_Thai = 'thanh toán' where Ma_Benh_Nhan = ?";
+            ps = con.getPS(sql);
+            ps.setInt(1, bnselected.getMa());
+            ps.executeUpdate();
+            ps.close();
+            BenhNhanData.remove(BenhNhanData.indexOf(bnselected));
+        } catch (SQLException ex) {
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
