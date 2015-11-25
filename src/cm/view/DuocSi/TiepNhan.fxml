@@ -30,7 +30,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="98.0" text="Họ tên" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="98.0" text="Họ tên : " />
                   <Label fx:id="lblHoTen" layoutX="10.0" layoutY="17.0" prefHeight="35.0" prefWidth="305.0" GridPane.columnIndex="1">
                      <padding>
                         <Insets left="5.0" />
