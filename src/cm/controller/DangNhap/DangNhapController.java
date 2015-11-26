@@ -50,7 +50,7 @@ public class DangNhapController implements Initializable {
         lbThongBao.setText("");
     }
     @FXML
-    private void dangnhap(ActionEvent e) throws IOException {
+    private void dangnhap(ActionEvent e) {
         String sql = "SELECT * FROM Tai_Khoan WHERE Ten_Dang_Nhap = ? AND Mat_Khau = ?";
         try {
             ps = con.getPS(sql);
@@ -60,7 +60,6 @@ public class DangNhapController implements Initializable {
             rs = ps.executeQuery();
             if(rs.isBeforeFirst()){
                 rs.next();
-                lbThongBao.setText("Thanh cong!");
                 String phong = rs.getString("Phong");
                 if (phong.equals("phòng khám")){
                     setView("/cm/view/BacSi/BacSi.fxml");
@@ -77,7 +76,7 @@ public class DangNhapController implements Initializable {
                 con.conClose();
             }
             else{
-                lbThongBao.setText("Ten tai khoan hoac mat khau sai!");
+                lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
             }
             
         } catch (SQLException ex) {
@@ -85,6 +84,12 @@ public class DangNhapController implements Initializable {
         }
         
     }
+    
+    @FXML
+    private void handleBtnDangKy(ActionEvent e) {
+        setView("/cm/view/DangNhap/DangKy.fxml");
+    }
+    
     private void setView(String url) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(url));
@@ -94,6 +99,8 @@ public class DangNhapController implements Initializable {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
     @FXML
     private void thoat(ActionEvent e){
         try {

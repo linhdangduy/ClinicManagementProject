@@ -45,7 +45,7 @@ public class LeTanController implements Initializable {
             screens.put("thanhtoan", paneThanhToan);
             
         } catch (IOException ex) {
-            Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeTanController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
