@@ -146,6 +146,7 @@ public class ThuocController implements Initializable, PaneInterface {
         thuoc.setTenThuoc(lblTenThuoc.getText());
         thuoc.setSoLuong(0);
         thuoc.setGhiChuThuoc("");
+        thuoc.setChiPhiThuoc(0);
         flag = 0;
         for (int i = 0; i <= n; i++) {
             if (arrayInt[i] == Ma) {
