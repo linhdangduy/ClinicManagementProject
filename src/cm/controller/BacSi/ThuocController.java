@@ -68,7 +68,7 @@ public class ThuocController implements Initializable, PaneInterface {
     @FXML
     private Label lblGiaThuoc;
     @FXML
-    private Label lblTrangThai;
+    private Label lblSoLuong;
 
     @FXML
     private TableView<Thuoc> ThuocTable;
@@ -80,7 +80,7 @@ public class ThuocController implements Initializable, PaneInterface {
     @FXML
     private TableColumn ColThuocGiathuoc;
     @FXML
-    private TableColumn ColThuocTrangthai;
+    private TableColumn ColThuocSoluong;
     @FXML
     private TableColumn ColThuocCongdung;
     @FXML
@@ -146,6 +146,7 @@ public class ThuocController implements Initializable, PaneInterface {
         thuoc.setTenThuoc(lblTenThuoc.getText());
         thuoc.setSoLuong(0);
         thuoc.setGhiChuThuoc("");
+        thuoc.setChiPhiThuoc(0);
         flag = 0;
         for (int i = 0; i <= n; i++) {
             if (arrayInt[i] == Ma) {
@@ -208,11 +209,7 @@ public class ThuocController implements Initializable, PaneInterface {
             thuoc.setCongDung(rs.getString("Cong_Dung"));
             thuoc.setGiaThuoc(rs.getFloat("Gia_Thuoc"));
             thuoc.setDonVi(rs.getString("Don_Vi"));
-            if (rs.getInt("So_Luong") > 0) {
-                thuoc.setTrangThai("Còn");
-            } else {
-                thuoc.setTrangThai("Hết");
-            }
+            thuoc.setSoLuong(rs.getInt("So_Luong"));
             ThuocData.add(thuoc);
 
         }
@@ -224,7 +221,7 @@ public class ThuocController implements Initializable, PaneInterface {
         ColThuocTenthuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
         ColThuocGiathuoc.setCellValueFactory(new PropertyValueFactory<>("giaThuoc"));
         ColThuocCongdung.setCellValueFactory(new PropertyValueFactory<>("congDung"));
-        ColThuocTrangthai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        ColThuocSoluong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
         ColThuocDonvi.setCellValueFactory(new PropertyValueFactory<>("donVi"));
 
         FilteredList<Thuoc> filteredData = new FilteredList<>(Data, p -> true);
@@ -277,12 +274,14 @@ public class ThuocController implements Initializable, PaneInterface {
             taCongdung.setText(thuoc.getCongDung());
             lblGiaThuoc.setText(Gia);
             lblDonVi.setText(thuoc.getDonVi());
-            lblTrangThai.setText(thuoc.getTrangThai());
+            String soluong;
+            soluong=Integer.toString(thuoc.getSoLuong());
+            lblSoLuong.setText(soluong);
         } else {
             lblTenThuoc.setText("");
             lblGiaThuoc.setText("");
             lblDonVi.setText("");
-            lblTrangThai.setText("");
+            lblSoLuong.setText("");
         }
     }
 

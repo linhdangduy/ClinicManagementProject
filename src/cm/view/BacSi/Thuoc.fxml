@@ -27,11 +27,11 @@
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số Lượng" GridPane.rowIndex="4" />
                   <Label fx:id="lblTenThuoc" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" />
                   <Label fx:id="lblDonVi" prefHeight="35.0" prefWidth="126.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label fx:id="lblGiaThuoc" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label fx:id="lblTrangThai" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="lblSoLuong" prefHeight="35.0" prefWidth="250.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextArea fx:id="taCongdung" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
                <columnConstraints>
@@ -82,7 +82,7 @@
                   <TableColumn fx:id="ColThuocCongdung" prefWidth="180.0" text="Công dụng" />
                   <TableColumn fx:id="ColThuocDonvi" prefWidth="90.0" text="Đơn vị" />
                   <TableColumn fx:id="ColThuocGiathuoc" prefWidth="120.0" text="Giá thuốc" />
-                  <TableColumn fx:id="ColThuocTrangthai" prefWidth="120.0" text="Trạng thái" />
+                  <TableColumn fx:id="ColThuocSoluong" prefWidth="120.0" text="Tổng Số Thuốc" />
                </columns>
             </TableView>
          </children>
