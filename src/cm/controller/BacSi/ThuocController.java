@@ -38,6 +38,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -163,11 +165,17 @@ public class ThuocController implements Initializable, PaneInterface {
 
     @FXML
     private void handleBtnXong(ActionEvent event) throws SQLException, IOException {
-        Alert dialogStage = new Alert(Alert.AlertType.CONFIRMATION);
-        dialogStage.setTitle("Bạn có muốn chỉnh sửa đơn?");
-        dialogStage.setHeaderText("Ok để chỉnh sửa. Cancel để xóa đơn.");
+        Alert dialogStage = new Alert(AlertType.CONFIRMATION);
+        dialogStage.setTitle("Chỉnh Sửa Đơn Thuốc");
+        dialogStage.setHeaderText("Bạn có muốn chỉnh sửa Đơn Thuốc");
+        //dialogStage.setContentText("Chọn ");
+
+        ButtonType buttonTypeOne = new ButtonType("Sửa Đơn Thuốc");
+        ButtonType buttonTypeTwo = new ButtonType("Xóa Đơn Thuốc");
+        ButtonType buttonTypeCancel = new ButtonType("Thoát", ButtonData.CANCEL_CLOSE);
+        dialogStage.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
         Optional<ButtonType> result = dialogStage.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (dialogStage.getResult() == buttonTypeOne) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/cm/view/BacSi/KeDonThuoc.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
@@ -177,7 +185,7 @@ public class ThuocController implements Initializable, PaneInterface {
             dStage.setScene(scene);
             dStage.showAndWait();
 
-        } else {
+        } else if (dialogStage.getResult() == buttonTypeTwo) {
             Them = "";
             S = "";
             for (int i = 0; i <= n; i++) {
