@@ -21,6 +21,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -217,12 +219,44 @@ public class ThuocController implements Initializable {
          }
     }
     @FXML
-    private void Them(ActionEvent event) {
-        System.out.println("1414");
+    private void Them(ActionEvent event) throws SQLException {
+        if (!tfTenThuoc.getText().isEmpty() 
+                && !tfCongDung.getText().isEmpty() 
+                && !cbDonVi.getValue().equals("Đơn Vị") 
+                && !tfGiaThuoc.getText().isEmpty()
+                && !tfSoLuong.getText().isEmpty()
+                && !tfGhiChu.getText().isEmpty()
+                )
+        {
+            String sql = "insert into Thuoc values (NULL, ?,?,?,?,?,?)";
+            ps = con.getPS(sql);
+            ps.setString(1,tfTenThuoc.getText());
+            ps.setFloat(2, Float.parseFloat(tfGiaThuoc.getText()));
+            ps.setString(3,tfCongDung.getText());
+            ps.setInt(4, Integer.parseInt(tfSoLuong.getText()));
+            ps.setString(5, cbDonVi.getValue());
+            ps.setString(6,tfGhiChu.getText());
+            ps.executeUpdate();
+            ps.close();
+
+            addThuocData();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Bạn đã nhập thiếu thông tin" , ButtonType.OK);
+            alert.showAndWait();
+        } 
+        
+        
     }
 
     @FXML
     private void Huy(ActionEvent event) {
+        tfTenThuoc.setText(null);
+        tfCongDung.setText(null);
+        cbDonVi.setValue("Đơn Vị");
+        tfGiaThuoc.setText(null);
+        tfSoLuong.setText(null);
+        tfGhiChu.setText(null);
     }
 
     @FXML
