@@ -28,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -147,10 +148,16 @@ public class DichVuController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnXong(ActionEvent event) throws SQLException, IOException {
         Alert dialogStage = new Alert(AlertType.CONFIRMATION);
-        dialogStage.setTitle("Bạn có muốn chỉnh sửa?");
-        dialogStage.setHeaderText("Ok để chỉnh sửa. Cancel để xóa đơn.");
+        dialogStage.setTitle("Dich Vụ Sử Dụng");
+        dialogStage.setHeaderText("Bạn có muốn chỉnh sửa Dịch Vụ đang sử dụng");
+        //dialogStage.setContentText("Chọn ");
+
+        ButtonType buttonTypeOne = new ButtonType("Sửa Dịch Vụ");
+        ButtonType buttonTypeTwo = new ButtonType("Xóa Dịch Vụ");
+        ButtonType buttonTypeCancel = new ButtonType("Thoát", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialogStage.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
         Optional<ButtonType> result = dialogStage.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (dialogStage.getResult() == buttonTypeOne) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/cm/view/BacSi/DonDichVu.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
@@ -159,7 +166,7 @@ public class DichVuController implements Initializable, PaneInterface {
             Scene scene = new Scene(page);
             dStage.setScene(scene);
             dStage.showAndWait();
-        } else {
+        } else if (dialogStage.getResult() == buttonTypeTwo) {
             Them = "";
             S = "";
             for (int i = 0; i <= n; i++) {
@@ -252,7 +259,6 @@ public class DichVuController implements Initializable, PaneInterface {
     }
 
     //override tu PaneInterface interface
-
     @Override
     public void setScreenParent(BacSiController mainPane) {
         parentPane = mainPane;
