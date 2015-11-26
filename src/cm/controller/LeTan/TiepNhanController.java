@@ -141,6 +141,7 @@ public class TiepNhanController implements Initializable{
         String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk "
                         + "group by Ma_Benh_Nhan "
                         + "order by Thoi_Gian_Kham desc;";
+        BenhNhanData.clear();
         rs = con.getRS(sql);
         while(rs.next()){
             BenhNhan benhnhan = new BenhNhan();

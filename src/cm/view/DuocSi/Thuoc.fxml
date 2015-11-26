@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.ThuocController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.ThuocController">
    <children>
       <TabPane prefHeight="450.0" prefWidth="350.0">
          <padding>
@@ -18,19 +18,19 @@
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <GridPane prefHeight="240.0">
+                        <GridPane prefHeight="261.0" prefWidth="335.0">
                            <children>
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc : " />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng : " GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị : " GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc : " GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số Lượng : " GridPane.rowIndex="4" />
                               <Label fx:id="lblTenThuoc" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="lblCongDung" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Label fx:id="lblCongDung" prefHeight="35.0" prefWidth="250.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
@@ -45,17 +45,20 @@
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="lblTrangThai" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Label fx:id="lblSoLuong" prefHeight="35.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <padding>
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
+                              <Label alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="101.0" text="Ghi Chú : " GridPane.rowIndex="5" />
+                              <Label fx:id="lblGhiChu" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="229.0" prefHeight="58.0" prefWidth="251.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="235.0" />
                            </columnConstraints>
                            <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -74,13 +77,13 @@
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <GridPane prefHeight="240.0">
+                        <GridPane prefHeight="274.0" prefWidth="335.0">
                            <children>
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Đơn vị" GridPane.rowIndex="2" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Giá thuốc" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Trạng thái" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Số Lượng" GridPane.rowIndex="4" />
                               <TextField fx:id="tfTenThuoc" prefHeight="35.0" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
@@ -91,7 +94,7 @@
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="tfTrangThai" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <TextField fx:id="tfSoLuong" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
@@ -101,12 +104,16 @@
                                     <ComboBox fx:id="cbDonVi" prefHeight="35.0" prefWidth="150.0" promptText="Đơn vị" />
                                  </children>
                               </HBox>
+                              <TextArea fx:id="tfCongDung" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="113.0" text="Ghi Chú" GridPane.rowIndex="5" />
+                              <TextArea fx:id="tfGhiChu" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
                            </columnConstraints>
                            <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -134,7 +141,7 @@
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <GridPane prefHeight="240.0">
+                        <GridPane prefHeight="267.0" prefWidth="335.0">
                            <children>
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Tên thuốc" />
                               <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="100.0" text="Công dụng" GridPane.rowIndex="1" />
@@ -151,7 +158,7 @@
                                     <Insets left="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="tfTrangThai1" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <TextField fx:id="tfSoLuong1" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
@@ -161,12 +168,16 @@
                                     <ComboBox fx:id="cbDonVi1" prefHeight="35.0" prefWidth="150.0" promptText="Đơn vị" />
                                  </children>
                               </HBox>
+                              <TextArea fx:id="tfCongDung1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="113.0" text="Ghi Chú" GridPane.rowIndex="5" />
+                              <TextArea fx:id="tfGhiChu1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="252.0" />
                            </columnConstraints>
                            <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -199,21 +210,21 @@
                   <Label prefHeight="30.0" text="Danh sách thuốc" />
                   <ComboBox prefHeight="30.0" promptText="Hôm nay" />
                   <Label prefHeight="30.0" text="Lọc theo" />
-                  <ComboBox prefHeight="30.0" promptText="Lọc theo" />
-                  <TextField prefHeight="30.0" />
+                  <ComboBox fx:id="cbSearch" prefHeight="30.0" promptText="Lọc theo" />
+                  <TextField fx:id="tfFilter" prefHeight="30.0" />
                </children>
                <padding>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView prefHeight="400.0" prefWidth="750.0">
+            <TableView fx:id="ThuocTable" prefHeight="400.0" prefWidth="750.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="Mã" />
-                  <TableColumn prefWidth="166.0" text="Tên thuốc" />
-                  <TableColumn prefWidth="180.0" text="Công dụng" />
-                  <TableColumn prefWidth="90.0" text="Đơn vị" />
-                  <TableColumn prefWidth="120.0" text="Giá thuốc" />
-                  <TableColumn prefWidth="120.0" text="Trạng thái" />
+                  <TableColumn fx:id="colMa" prefWidth="75.0" text="Mã" />
+                  <TableColumn fx:id="colTenThuoc" prefWidth="166.0" text="Tên thuốc" />
+                  <TableColumn fx:id="colCongDung" prefWidth="180.0" text="Công dụng" />
+                  <TableColumn fx:id="colDonVi" prefWidth="90.0" text="Đơn vị" />
+                  <TableColumn fx:id="colGiaThuoc" prefWidth="120.0" text="Giá thuốc" />
+                  <TableColumn fx:id="colSoLuong" prefWidth="120.0" text="Số Lượng" />
                </columns>
             </TableView>
          </children>
