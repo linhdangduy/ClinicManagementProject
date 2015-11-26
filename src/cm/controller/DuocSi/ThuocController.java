@@ -218,6 +218,7 @@ public class ThuocController implements Initializable {
     }
     @FXML
     private void Them(ActionEvent event) {
+        System.out.println("1414");
     }
 
     @FXML
