@@ -136,7 +136,7 @@ public class ThuocController implements Initializable {
             thuoc.setCongDung(rs.getString("Cong_Dung"));
             thuoc.setDonVi(rs.getString("Don_Vi"));
             thuoc.setGiaThuoc(rs.getFloat("Gia_Thuoc"));
-            thuoc.setsoLuong(rs.getInt("So_Luong"));
+            thuoc.setSoLuong(rs.getInt("So_Luong"));
             thuoc.setGhiChu(rs.getString("Ghi_Chu_Thuoc"));
             ThuocData.add(thuoc);
         }

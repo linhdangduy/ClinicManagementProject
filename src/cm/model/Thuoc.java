@@ -21,6 +21,8 @@ public class Thuoc {
     public SimpleStringProperty donVi = new SimpleStringProperty();
     public SimpleFloatProperty giaThuoc = new SimpleFloatProperty();
     public SimpleIntegerProperty soLuong = new SimpleIntegerProperty();
+    public SimpleStringProperty ghiChu = new SimpleStringProperty();
+            
 
     public Integer getMa() {
         return ma.get();
@@ -45,6 +47,9 @@ public class Thuoc {
     public String getCongDung() {
         return congDung.get();
     }
+    public String getGhiChu(){
+        return ghiChu.get();
+    }
 
     public void setMa(int ma) {
         this.ma.set(ma);
@@ -68,5 +73,8 @@ public class Thuoc {
 
     public void setCongDung(String congDung) {
         this.congDung.set(congDung);
+    }
+    public void setGhiChu(String ghiChu){
+        this.ghiChu.set(ghiChu);
     }
 }
