@@ -219,31 +219,36 @@ public class ThuocController implements Initializable {
     }
     @FXML
     private void Them(ActionEvent event) throws SQLException {
-        if (!tfTenThuoc.getText().isEmpty() 
-                && !tfCongDung.getText().isEmpty() 
-                && !cbDonVi.getValue().equals("Đơn Vị") 
-                && !tfGiaThuoc.getText().isEmpty()
-                && !tfSoLuong.getText().isEmpty()
-                && !tfGhiChu.getText().isEmpty()
-                )
-        {
-            String sql = "insert into Thuoc values (NULL, ?,?,?,?,?,?)";
-            ps = con.getPS(sql);
-            ps.setString(1,tfTenThuoc.getText());
-            ps.setFloat(2, Float.parseFloat(tfGiaThuoc.getText()));
-            ps.setString(3,tfCongDung.getText());
-            ps.setInt(4, Integer.parseInt(tfSoLuong.getText()));
-            ps.setString(5, cbDonVi.getValue());
-            ps.setString(6,tfGhiChu.getText());
-            ps.executeUpdate();
-            ps.close();
+        Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION , "Xác Nhận Thêm Thuốc? " , ButtonType.YES, ButtonType.NO);
+        alert1.showAndWait();
+        if (alert1.getResult() == ButtonType.YES){
+            if (!tfTenThuoc.getText().isEmpty() 
+                    && !tfCongDung.getText().isEmpty() 
+                    && !cbDonVi.getValue().equals("Đơn Vị") 
+                    && !tfGiaThuoc.getText().isEmpty()
+                    && !tfSoLuong.getText().isEmpty()
+                    && !tfGhiChu.getText().isEmpty()
+                    )
+            {
+                String sql = "insert into Thuoc values (NULL, ?,?,?,?,?,?)";
+                ps = con.getPS(sql);
+                ps.setString(1,tfTenThuoc.getText());
+                ps.setFloat(2, Float.parseFloat(tfGiaThuoc.getText()));
+                ps.setString(3,tfCongDung.getText());
+                ps.setInt(4, Integer.parseInt(tfSoLuong.getText()));
+                ps.setString(5, cbDonVi.getValue());
+                ps.setString(6,tfGhiChu.getText());
+                ps.executeUpdate();
+                ps.close();
 
-            addThuocData();
+                addThuocData();
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Bạn đã nhập thiếu thông tin" , ButtonType.OK);
+                alert.showAndWait();
+            }    
         }
-        else{
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Bạn đã nhập thiếu thông tin" , ButtonType.OK);
-            alert.showAndWait();
-        } 
+         
         
         
     }
@@ -260,55 +265,65 @@ public class ThuocController implements Initializable {
 
     @FXML
     private void Sua(ActionEvent event) throws SQLException {
-        if (!tfTenThuoc1.getText().isEmpty() 
-                && !tfCongDung1.getText().isEmpty() 
-                && !cbDonVi1.getValue().equals("Đơn Vị") 
-                && !tfGiaThuoc1.getText().isEmpty()
-                && !tfSoLuong1.getText().isEmpty()
-                && !tfGhiChu1.getText().isEmpty()
-                )
-        {
-            String sql = "update Thuoc set Ten_Thuoc = ? , Cong_Dung = ? , Don_Vi =? , Gia_Thuoc =? , So_Luong =? ,Ghi_Chu_Thuoc =? where Ma_Thuoc =? ";
-            ps = con.getPS(sql);
-            ps.setString(1, tfTenThuoc1.getText());
-            ps.setString(2, tfCongDung1.getText());
-            ps.setString(3,cbDonVi1.getValue());
-            ps.setFloat(4, Float.parseFloat(tfGiaThuoc1.getText()));
-            ps.setInt(5, Integer.parseInt(tfSoLuong1.getText()));
-            ps.setString(6, tfGhiChu1.getText());
-            ps.setInt(7, thuocSelected.getMa());
-            ps.executeUpdate();
-            ps.close();
-            
-            thuocSelected.setTenThuoc(tfTenThuoc1.getText());
-            thuocSelected.setCongDung(tfCongDung1.getText());
-            thuocSelected.setDonVi(cbDonVi1.getValue());
-            thuocSelected.setGiaThuoc(Float.parseFloat(tfGiaThuoc1.getText()));
-            thuocSelected.setSoLuong(Integer.parseInt(tfSoLuong1.getText()));
-            thuocSelected.setGhiChu(tfGhiChu1.getText());
-            ThuocData.set(ThuocData.indexOf(thuocSelected), thuocSelected);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION , "Xác Nhận Thêm Thuốc? " , ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES){
+            if (!tfTenThuoc1.getText().isEmpty() 
+                    && !tfCongDung1.getText().isEmpty() 
+                    && !cbDonVi1.getValue().equals("Đơn Vị") 
+                    && !tfGiaThuoc1.getText().isEmpty()
+                    && !tfSoLuong1.getText().isEmpty()
+                    && !tfGhiChu1.getText().isEmpty()
+                    )
+            {
+                String sql = "update Thuoc set Ten_Thuoc = ? , Cong_Dung = ? , Don_Vi =? , Gia_Thuoc =? , So_Luong =? ,Ghi_Chu_Thuoc =? where Ma_Thuoc =? ";
+                ps = con.getPS(sql);
+                ps.setString(1, tfTenThuoc1.getText());
+                ps.setString(2, tfCongDung1.getText());
+                ps.setString(3,cbDonVi1.getValue());
+                ps.setFloat(4, Float.parseFloat(tfGiaThuoc1.getText()));
+                ps.setInt(5, Integer.parseInt(tfSoLuong1.getText()));
+                ps.setString(6, tfGhiChu1.getText());
+                ps.setInt(7, thuocSelected.getMa());
+                ps.executeUpdate();
+                ps.close();
+
+                thuocSelected.setTenThuoc(tfTenThuoc1.getText());
+                thuocSelected.setCongDung(tfCongDung1.getText());
+                thuocSelected.setDonVi(cbDonVi1.getValue());
+                thuocSelected.setGiaThuoc(Float.parseFloat(tfGiaThuoc1.getText()));
+                thuocSelected.setSoLuong(Integer.parseInt(tfSoLuong1.getText()));
+                thuocSelected.setGhiChu(tfGhiChu1.getText());
+                ThuocData.set(ThuocData.indexOf(thuocSelected), thuocSelected);
+            }
+            else{
+                Alert alert1 = new Alert(Alert.AlertType.ERROR , "Thiếu thông tin" , ButtonType.OK);
+                alert1.showAndWait();
+            }    
         }
-        else{
-            Alert alert = new Alert(Alert.AlertType.ERROR , "Thiếu thông tin" , ButtonType.OK);
-            alert.showAndWait();
-        }
+        
             
     }
 
     @FXML
     private void Xoa(ActionEvent event) throws SQLException {
-        if (thuocSelected != null){
-            String sql = "delete from Thuoc where Ma_Thuoc =? ";
-            ps = con.getPS(sql);
-            ps.setInt(1, thuocSelected.getMa());
-            ps.executeUpdate();
-            ps.close();
-            ThuocData.remove(thuocSelected);
+        Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION , "Xác Nhận Xóa Thuốc?", ButtonType.YES, ButtonType.NO  );
+        alert1.showAndWait();
+        if(alert1.getResult() == ButtonType.YES){
+            if (thuocSelected != null){
+                String sql = "delete from Thuoc where Ma_Thuoc =? ";
+                ps = con.getPS(sql);
+                ps.setInt(1, thuocSelected.getMa());
+                ps.executeUpdate();
+                ps.close();
+                ThuocData.remove(thuocSelected);
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR , "Chưa chọn thuốc" , ButtonType.OK);
+                alert.showAndWait();
+            }    
         }
-        else{
-            Alert alert = new Alert(Alert.AlertType.ERROR , "Chưa chọn thuốc" , ButtonType.OK);
-            alert.showAndWait();
-        }
+        
         
     }
 
