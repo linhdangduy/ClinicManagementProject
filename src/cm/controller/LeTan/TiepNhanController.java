@@ -339,56 +339,68 @@ public class TiepNhanController implements Initializable{
             //dialogStage.setHeaderText("Bạn có xác nhận thêm bệnh nhân?");
             dialogStage.showAndWait();
             if (dialogStage.getResult() == ButtonType.YES) {
-                //them vao obsevablelist
-                BenhNhan benhnhan = new BenhNhan();
-                benhnhan.setHoTen(tfTen1.getText());
-                ngaysinh = "" + cbNam1.getValue();
-                ngaysinh = ngaysinh + "-";
-                ngaysinh = ngaysinh + cbThang1.getValue();
-                ngaysinh = ngaysinh + "-";
-                ngaysinh = ngaysinh + cbNgay1.getValue();
-                benhnhan.setNgaySinh(ngaysinh);
-                benhnhan.setGioiTinh(gioitinh1);
-                benhnhan.setDiaChi(tfDiaChi1.getText());
-                benhnhan.setPhone(tfPhone1.getText());
-                benhnhan.setTrangThai("phòng khám");
-                //Them thong tin benh nhan vao co so du lieu
-                String sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
-                ps = con.getPS(sql);
-                ps.setString(1, benhnhan.getHoTen());
-                ps.setString(2, benhnhan.getNgaySinh());
-                ps.setString(3, benhnhan.getDiaChi());
-                ps.setString(4, benhnhan.getGioiTinh());
-                ps.setString(5, benhnhan.getPhone());
-                ps.setString(6, benhnhan.getTrangThai());
-                ps.executeUpdate();
-                ps.close();
-                // lay ma benhn nhan da nhap
-                sql = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
-                ps = con.getPS(sql);
-                ps.setString(1, benhnhan.getHoTen());
-                ps.setString(2, benhnhan.getPhone());
-                rs = ps.executeQuery();
-                rs.next();
-                benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-                ps.close();
+                if (!tfTen1.getText().isEmpty()
+                        && !cbNam1.getValue().isEmpty()
+                        && !cbThang1.getValue().isEmpty()
+                        && !cbNgay1.getValue().isEmpty()
+                        && !gioitinh1.isEmpty()
+                        && !tfDiaChi1.getText().isEmpty()
+                        && !tfPhone1.getText().isEmpty()
+                        ) {
+                    //them vao obsevablelist
+                    BenhNhan benhnhan = new BenhNhan();
+                    benhnhan.setHoTen(tfTen1.getText());
+                    ngaysinh = "" + cbNam1.getValue();
+                    ngaysinh = ngaysinh + "-";
+                    ngaysinh = ngaysinh + cbThang1.getValue();
+                    ngaysinh = ngaysinh + "-";
+                    ngaysinh = ngaysinh + cbNgay1.getValue();
+                    benhnhan.setNgaySinh(ngaysinh);
+                    benhnhan.setGioiTinh(gioitinh1);
+                    benhnhan.setDiaChi(tfDiaChi1.getText());
+                    benhnhan.setPhone(tfPhone1.getText());
+                    benhnhan.setTrangThai("phòng khám");
+                    //Them thong tin benh nhan vao co so du lieu
+                    String sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
+                    ps = con.getPS(sql);
+                    ps.setString(1, benhnhan.getHoTen());
+                    ps.setString(2, benhnhan.getNgaySinh());
+                    ps.setString(3, benhnhan.getDiaChi());
+                    ps.setString(4, benhnhan.getGioiTinh());
+                    ps.setString(5, benhnhan.getPhone());
+                    ps.setString(6, benhnhan.getTrangThai());
+                    ps.executeUpdate();
+                    ps.close();
+                    // lay ma benhn nhan da nhap
+                    sql = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
+                    ps = con.getPS(sql);
+                    ps.setString(1, benhnhan.getHoTen());
+                    ps.setString(2, benhnhan.getPhone());
+                    rs = ps.executeQuery();
+                    rs.next();
+                    benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
+                    ps.close();
 
-                //them thoi gian kham vao bang Phien_Kham cho benh nhan
-                PreparedStatement ps2 = con.getPS("INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES (?,?)");
-                ps2.setInt(1, benhnhan.getMa());
-                long timeNow = Calendar.getInstance().getTimeInMillis();
-                Timestamp ts = new java.sql.Timestamp(timeNow);
-                ps2.setTimestamp(2, ts);
-                ps2.executeUpdate();
-                benhnhan.setThoiGian(ts.toString());
-                //them benh nhan moi nhat vao dau bang
-                //Can xem lai
-                BenhNhanData.add(0, benhnhan);
-                refreshTabThemMoi();
-            }
-            else if (dialogStage.getResult() == ButtonType.NO){
+                    //them thoi gian kham vao bang Phien_Kham cho benh nhan
+                    PreparedStatement ps2 = con.getPS("INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES (?,?)");
+                    ps2.setInt(1, benhnhan.getMa());
+                    long timeNow = Calendar.getInstance().getTimeInMillis();
+                    Timestamp ts = new java.sql.Timestamp(timeNow);
+                    ps2.setTimestamp(2, ts);
+                    ps2.executeUpdate();
+                    benhnhan.setThoiGian(ts.toString());
+                    //them benh nhan moi nhat vao dau bang
+                    //Can xem lai
+                    BenhNhanData.add(0, benhnhan);
+                    refreshTabThemMoi();    
+                }
+                else{
+                    Alert alert2 =new Alert(Alert.AlertType.CONFIRMATION , "Thiếu Thông Tin" , ButtonType.OK);
+                    alert2.showAndWait();
+                }
                 
             }
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -418,30 +430,40 @@ public class TiepNhanController implements Initializable{
             alert.setTitle("Xác Nhận");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES){
-                //cap nhat vao du lieu
-                String sql = "Update Benh_Nhan set Ho_Ten = ?, Ngay_Sinh = ? , Dia_Chi = ? , Gioi_Tinh = ?, SDT_BN = ? where Ma_Benh_Nhan = ?";
-                ps = con.getPS(sql);
-                ngaysinh = "" + cbNam2.getValue() + "-" + cbThang2.getValue() + "-" +cbNgay2.getValue();
-                ps.setString(1, tfTen2.getText());
-                ps.setString(2, ngaysinh);
-                ps.setString(3, tfDiaChi2.getText());
-                ps.setString(4, gioitinh2);
-                ps.setString(5, tfPhone2.getText());
-                ps.setInt(6, bnSelected.getMa());
-                ps.executeUpdate();
-                ps.close();
+                if (!tfTen2.getText().isEmpty()
+                        && !cbNam2.getValue().isEmpty()
+                        && !cbThang2.getValue().isEmpty()
+                        && !cbNgay2.getValue().isEmpty()
+                        && !gioitinh2.isEmpty()
+                        && !tfDiaChi2.getText().isEmpty()
+                        && !tfPhone2.getText().isEmpty()
+                        ) {
+                    //cap nhat vao du lieu
+                    String sql = "Update Benh_Nhan set Ho_Ten = ?, Ngay_Sinh = ? , Dia_Chi = ? , Gioi_Tinh = ?, SDT_BN = ? where Ma_Benh_Nhan = ?";
+                    ps = con.getPS(sql);
+                    ngaysinh = "" + cbNam2.getValue() + "-" + cbThang2.getValue() + "-" +cbNgay2.getValue();
+                    ps.setString(1, tfTen2.getText());
+                    ps.setString(2, ngaysinh);
+                    ps.setString(3, tfDiaChi2.getText());
+                    ps.setString(4, gioitinh2);
+                    ps.setString(5, tfPhone2.getText());
+                    ps.setInt(6, bnSelected.getMa());
+                    ps.executeUpdate();
+                    ps.close();
 
-                //cap nhat vao bang
-                bnSelected.setHoTen(tfTen2.getText());
-                bnSelected.setNgaySinh(ngaysinh);
-                bnSelected.setDiaChi(tfDiaChi2.getText());
-                bnSelected.setGioiTinh(gioitinh2);
-                bnSelected.setPhone(tfPhone2.getText());
-                int index = BenhNhanData.indexOf(bnSelected);
-                BenhNhanData.set(index, bnSelected);
-            }
-            else if(alert.getResult() == ButtonType.NO){
-                
+                    //cap nhat vao bang
+                    bnSelected.setHoTen(tfTen2.getText());
+                    bnSelected.setNgaySinh(ngaysinh);
+                    bnSelected.setDiaChi(tfDiaChi2.getText());
+                    bnSelected.setGioiTinh(gioitinh2);
+                    bnSelected.setPhone(tfPhone2.getText());
+                    int index = BenhNhanData.indexOf(bnSelected);
+                    BenhNhanData.set(index, bnSelected);
+                }
+                else{
+                    Alert alert2 =new Alert(Alert.AlertType.CONFIRMATION , "Thiếu Thông Tin" , ButtonType.OK);
+                    alert2.showAndWait();
+                }
             }
             
             
