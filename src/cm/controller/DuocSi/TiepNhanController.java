@@ -181,7 +181,7 @@ public class TiepNhanController implements Initializable {
     }
     private void addDonThuoc(int maPhienKham){
         try {
-            String sql = "select Ten_Thuoc, So_Luong_Ke , (So_Luong_Ke*Gia_Thuoc) as Chi_Phi_Thuoc from Don_Thuoc natural join Thuoc where Ma_Phien_Kham = ?";
+            String sql = "select Ten_Thuoc, So_Luong_Ke , (So_Luong_Ke*Gia_Thuoc) as Chi_Phi_Thuoc from Don_Thuoc ,Thuoc where Ma_Phien_Kham = ? and Don_Thuoc.Ma_Thuoc = Thuoc.Ma_Thuoc";
             DonThuocData.clear();
             ps = con.getPS(sql);
             ps.setInt(1, maPhienKham);

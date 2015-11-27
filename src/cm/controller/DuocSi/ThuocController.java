@@ -8,7 +8,6 @@ package cm.controller.DuocSi;
 import cm.ConnectToDatabase;
 import cm.model.Thuoc;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -260,11 +259,57 @@ public class ThuocController implements Initializable {
     }
 
     @FXML
-    private void Sua(ActionEvent event) {
+    private void Sua(ActionEvent event) throws SQLException {
+        if (!tfTenThuoc1.getText().isEmpty() 
+                && !tfCongDung1.getText().isEmpty() 
+                && !cbDonVi1.getValue().equals("Đơn Vị") 
+                && !tfGiaThuoc1.getText().isEmpty()
+                && !tfSoLuong1.getText().isEmpty()
+                && !tfGhiChu1.getText().isEmpty()
+                )
+        {
+            String sql = "update Thuoc set Ten_Thuoc = ? , Cong_Dung = ? , Don_Vi =? , Gia_Thuoc =? , So_Luong =? ,Ghi_Chu_Thuoc =? where Ma_Thuoc =? ";
+            ps = con.getPS(sql);
+            ps.setString(1, tfTenThuoc1.getText());
+            ps.setString(2, tfCongDung1.getText());
+            ps.setString(3,cbDonVi1.getValue());
+            ps.setFloat(4, Float.parseFloat(tfGiaThuoc1.getText()));
+            ps.setInt(5, Integer.parseInt(tfSoLuong1.getText()));
+            ps.setString(6, tfGhiChu1.getText());
+            ps.setInt(7, thuocSelected.getMa());
+            ps.executeUpdate();
+            ps.close();
+            
+            thuocSelected.setTenThuoc(tfTenThuoc1.getText());
+            thuocSelected.setCongDung(tfCongDung1.getText());
+            thuocSelected.setDonVi(cbDonVi1.getValue());
+            thuocSelected.setGiaThuoc(Float.parseFloat(tfGiaThuoc1.getText()));
+            thuocSelected.setSoLuong(Integer.parseInt(tfSoLuong1.getText()));
+            thuocSelected.setGhiChu(tfGhiChu1.getText());
+            ThuocData.set(ThuocData.indexOf(thuocSelected), thuocSelected);
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR , "Thiếu thông tin" , ButtonType.OK);
+            alert.showAndWait();
+        }
+            
     }
 
     @FXML
-    private void Xoa(ActionEvent event) {
+    private void Xoa(ActionEvent event) throws SQLException {
+        if (thuocSelected != null){
+            String sql = "delete from Thuoc where Ma_Thuoc =? ";
+            ps = con.getPS(sql);
+            ps.setInt(1, thuocSelected.getMa());
+            ps.executeUpdate();
+            ps.close();
+            ThuocData.remove(thuocSelected);
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR , "Chưa chọn thuốc" , ButtonType.OK);
+            alert.showAndWait();
+        }
+        
     }
 
     
