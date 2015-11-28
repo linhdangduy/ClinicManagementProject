@@ -14,12 +14,16 @@ import javafx.beans.property.SimpleStringProperty;
  * @author linhsan
  */
 public class KeDonThuoc {
+    private SimpleIntegerProperty maThuoc = new SimpleIntegerProperty();
     private SimpleStringProperty tenThuoc = new SimpleStringProperty();
     private SimpleStringProperty tenDangNhap = new SimpleStringProperty();
     private SimpleIntegerProperty soLuong = new SimpleIntegerProperty();
     private SimpleFloatProperty chiPhiThuoc = new SimpleFloatProperty();
     private SimpleStringProperty ghiChuThuoc = new SimpleStringProperty();
     
+    public void setMa(int s) {
+        maThuoc.set(s);
+    }
     public void setTenThuoc(String s) {
         tenThuoc.set(s);
     }
@@ -36,6 +40,9 @@ public class KeDonThuoc {
         ghiChuThuoc.set(s);
     }
     
+    public int getMaThuoc() {
+        return maThuoc.get();
+    }
     public String getTenThuoc() {
         return tenThuoc.get();
     }

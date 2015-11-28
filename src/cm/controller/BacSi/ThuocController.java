@@ -143,6 +143,7 @@ public class ThuocController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnThem(ActionEvent event) {
         KeDonThuoc thuoc = new KeDonThuoc();
+        thuoc.setMa(ThuocTable.getSelectionModel().getSelectedItem().getMa());
         thuoc.setTenThuoc(lblTenThuoc.getText());
         thuoc.setSoLuong(0);
         thuoc.setGhiChuThuoc("");

@@ -8,10 +8,15 @@ package cm.controller.BacSi;
 import cm.ConnectToDatabase;
 import cm.controller.DangNhap.DangNhapController;
 import cm.model.BenhNhan;
+import cm.model.DonDichVu;
+import cm.model.KeDonThuoc;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,8 +25,13 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
@@ -31,6 +41,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 /**
  *
  * @author linhsan
@@ -75,6 +86,11 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private TableColumn colMa, colHoten, colNgaysinh, colGioitinh, 
             colSdt, colThoigiankham, colTrangthai;
     private ObservableList<BenhNhan> benhnhanData = FXCollections.observableArrayList();
+    private ThuocController thuocCtrl = ControllerMediator.getInstance().getThuocCtrl();
+    private ObservableList<KeDonThuoc> keDonThuocData;
+    private DichVuController dichVuCtrl = ControllerMediator.getInstance().getDichVuCtrl();
+    private ObservableList<DonDichVu> donDichVuData;
+    
     
     //override tu Initializable interface
     @Override
@@ -197,22 +213,106 @@ public class TiepNhanController implements Initializable, PaneInterface {
     //luu phien kham vao ho so benh nhan
     @FXML
     private void handleBtnLuu(ActionEvent event) {
-        try {
-            String query = 
+    //  encounter thread error, don't know why.
+    //  keDonThuocData = FXCollections.observableArrayList(thuocCtrl.getKeDonThuocData());
+    //  donDichVuData = FXCollections.observableArrayList(dichVuCtrl.getDonDichVuData());
+        //take donthuoc, dondichvu
+        keDonThuocData = ControllerMediator.getInstance().getThuocCtrl().getKeDonThuocData();
+        donDichVuData = ControllerMediator.getInstance().getDichVuCtrl().getDonDichVuData();
+        BenhNhan benhNhanSelected = tblBenhNhan.getSelectionModel().getSelectedItem();       
+        String name = benhNhanSelected.getHoTen();
+      
+        String tenBenh = tfTenBenh.getText();
+        String trieuChung = tfTrieuChung.getText();
+        String huongDieuTri = taHuongDieuTri.getText();
+        String ghiChu = taGhiChu.getText();
+        StringBuilder warning = new StringBuilder();
+        warning.append("");
+        Alert dialogStage = new Alert(Alert.AlertType.CONFIRMATION);
+        dialogStage.setTitle("Lưu phiên khám");
+        dialogStage.setHeaderText("Bệnh nhân "+name);
+        dialogStage.setResizable(true);
+        dialogStage.getDialogPane().setPrefSize(400, 200);
+        
+        if (tenBenh.isEmpty())
+            warning.append("Tên bệnh, ");
+        if (trieuChung.isEmpty())
+            warning.append("Triệu chứng, ");
+        if (huongDieuTri.isEmpty())
+            warning.append("Hướng điều trị, ");
+        if (ghiChu.isEmpty())
+            warning.append("Ghi chú, ");
+        if (keDonThuocData.isEmpty())
+            warning.append("Đơn thuốc, ");
+        if (donDichVuData.isEmpty())
+            warning.append("Dịch vụ, ");
+        if (warning.length() == 0) {
+            dialogStage.setContentText("Bạn có lưu phiên khám này không?"); 
+        }
+        else {
+            warning.deleteCharAt(warning.lastIndexOf(", "));
+            String warn = warning.toString();
+            dialogStage.setContentText(warn+"còn trống.\n"+ "Bạn vẫn muốn lưu?");
+        }
+        ButtonType btnLuu = new ButtonType("Lưu");
+        ButtonType btnTypeCancel = new ButtonType("Hủy", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialogStage.getButtonTypes().setAll(btnLuu, btnTypeCancel);
+        Optional<ButtonType> result = dialogStage.showAndWait();
+        if (result.get() == btnLuu) {
+            try {
+                String phienKhamHientai = "SELECT Ma_Phien_Kham FROM Phien_Kham WHERE Ma_Benh_Nhan = ? "
+                        + "ORDER BY Thoi_Gian_Kham DESC LIMIT 1";
+                ps = con.getPS(phienKhamHientai);
+                ps.setInt(1, benhNhanSelected.getMa());
+                rs = ps.executeQuery();
+                rs.next();
+                int maPK = rs.getInt(1);
+                ps.close();
+                
+                String capNhatPK = 
                     "UPDATE Phien_Kham SET Ten_Benh = ?, Trieu_Chung = ?, "
                     + "Huong_Dieu_Tri = ?, Ghi_Chu_BA = ? WHERE Ma_Benh_Nhan = ? AND "
-                    + "Ten_Benh IS NULL AND Trieu_Chung IS NULL AND Huong_Dieu_Tri IS NULL AND Ghi_Chu_BA IS NULL";
-            ps = con.getPS(query);
-            ps.setString(1, tfTenBenh.getText());
-            ps.setString(2, tfTrieuChung.getText());
-            ps.setString(3, taHuongDieuTri.getText());
-            ps.setString(4, taGhiChu.getText());
-            ps.setInt(5, tblBenhNhan.getSelectionModel().getSelectedItem().getMa());
-        } catch (SQLException ex) {
-            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+                        + "Ma_Phien_Kham = ?";
+                ps = con.getPS(capNhatPK);
+                ps.setString(1, tenBenh);
+                ps.setString(2, trieuChung);
+                ps.setString(3, huongDieuTri);
+                ps.setString(4, ghiChu);
+                ps.setInt(5, benhNhanSelected.getMa());
+                ps.setInt(6, maPK);
+                ps.executeUpdate();
+                ps.close();
+                
+                String capNhatDonThuoc = "INSERT INTO Don_Thuoc(Ma_Phien_Kham, Ma_Thuoc, "
+                        + "So_Luong_Ke, Chi_Phi_Thuoc, Ghi_Chu_Thuoc) VALUES (?, ?, ?, ?, ?)";
+                ps = con.getPS(capNhatDonThuoc);
+                ps.setInt(1, maPK);
+                for (KeDonThuoc kdt : keDonThuocData) {
+                    ps.setInt(2, kdt.getMaThuoc());
+                    ps.setInt(3, kdt.getSoLuong());
+                    ps.setFloat(4, kdt.getChiPhiThuoc());
+                    ps.setString(5, kdt.getGhiChuThuoc());
+                    ps.executeUpdate();
+                }
+                ps.close();
+                
+                String capNhatDichVu = "INSERT INTO Don_Dich_Vu VALUES (?, ?, ?, ?)";
+                ps = con.getPS(capNhatDichVu);
+                ps.setInt(1, maPK);
+                for (DonDichVu ddv: donDichVuData) {
+                    ps.setInt(2, ddv.getMaDichVu());
+                    ps.setString(3, ddv.getTenDangNhap());
+                    ps.setString(4, ddv.getKetQua());
+                    ps.executeUpdate();
+                }
+                ps.close();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
-        
-        
+    
     }
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
@@ -260,5 +360,4 @@ public class TiepNhanController implements Initializable, PaneInterface {
     public void setScreenParent(BacSiController mainPane) {
         parentPane = mainPane;
     }
-  
 }

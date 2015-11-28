@@ -16,14 +16,9 @@ import javafx.beans.property.SimpleStringProperty;
 public class DonDichVu {
 
     private SimpleStringProperty tenDichVu = new SimpleStringProperty();
-    private SimpleIntegerProperty maPhienKham = new SimpleIntegerProperty();
     private SimpleIntegerProperty maDichVu = new SimpleIntegerProperty();
     private SimpleStringProperty tenDangNhap = new SimpleStringProperty();
     private SimpleStringProperty ketQua = new SimpleStringProperty();
-
-    public void setMaPhienKham(int i) {
-        maPhienKham.set(i);
-    }
 
     public void setMaDichVu(int i) {
         maDichVu.set(i);
@@ -39,10 +34,6 @@ public class DonDichVu {
 
     public void setTenDichVu(String s) {
         tenDichVu.set(s);
-    }
-
-    public int getMaPhienKham() {
-        return maPhienKham.get();
     }
 
     public int getMaDichVu() {
