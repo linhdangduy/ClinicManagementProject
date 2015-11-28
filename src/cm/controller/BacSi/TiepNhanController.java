@@ -260,6 +260,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
         Optional<ButtonType> result = dialogStage.showAndWait();
         if (result.get() == btnLuu) {
             try {
+                //get Ma_Phien_Kham for patient
                 String phienKhamHientai = "SELECT Ma_Phien_Kham FROM Phien_Kham WHERE Ma_Benh_Nhan = ? "
                         + "ORDER BY Thoi_Gian_Kham DESC LIMIT 1";
                 ps = con.getPS(phienKhamHientai);
@@ -268,11 +269,11 @@ public class TiepNhanController implements Initializable, PaneInterface {
                 rs.next();
                 int maPK = rs.getInt(1);
                 ps.close();
-                
+                //update Phien_Kham
                 String capNhatPK = 
-                    "UPDATE Phien_Kham SET Ten_Benh = ?, Trieu_Chung = ?, "
-                    + "Huong_Dieu_Tri = ?, Ghi_Chu_BA = ? WHERE Ma_Benh_Nhan = ? AND "
-                        + "Ma_Phien_Kham = ?";
+                   "UPDATE Phien_Kham SET Ten_Benh = ?, Trieu_Chung = ?, "
+                        + "Huong_Dieu_Tri = ?, Ghi_Chu_BA = ? WHERE Ma_Benh_Nhan = ? AND "
+                            + "Ma_Phien_Kham = ?";
                 ps = con.getPS(capNhatPK);
                 ps.setString(1, tenBenh);
                 ps.setString(2, trieuChung);
@@ -282,34 +283,38 @@ public class TiepNhanController implements Initializable, PaneInterface {
                 ps.setInt(6, maPK);
                 ps.executeUpdate();
                 ps.close();
-                
-                String capNhatDonThuoc = "INSERT INTO Don_Thuoc(Ma_Phien_Kham, Ma_Thuoc, "
-                        + "So_Luong_Ke, Chi_Phi_Thuoc, Ghi_Chu_Thuoc) VALUES (?, ?, ?, ?, ?)";
-                ps = con.getPS(capNhatDonThuoc);
-                ps.setInt(1, maPK);
-                for (KeDonThuoc kdt : keDonThuocData) {
-                    ps.setInt(2, kdt.getMaThuoc());
-                    ps.setInt(3, kdt.getSoLuong());
-                    ps.setFloat(4, kdt.getChiPhiThuoc());
-                    ps.setString(5, kdt.getGhiChuThuoc());
-                    ps.executeUpdate();
+                //Insert Don_Thuoc
+                if (!keDonThuocData.isEmpty()) {
+                    String capNhatDonThuoc = "INSERT INTO Don_Thuoc(Ma_Phien_Kham, Ma_Thuoc, "
+                            + "So_Luong_Ke, Chi_Phi_Thuoc, Ghi_Chu_Thuoc) VALUES (?, ?, ?, ?, ?)";
+                    ps = con.getPS(capNhatDonThuoc);
+                    ps.setInt(1, maPK);
+                    for (KeDonThuoc kdt : keDonThuocData) {
+                        ps.setInt(2, kdt.getMaThuoc());
+                        ps.setInt(3, kdt.getSoLuong());
+                        ps.setFloat(4, kdt.getChiPhiThuoc());
+                        ps.setString(5, kdt.getGhiChuThuoc());
+                        ps.executeUpdate();
+                    }
+                    ps.close();
                 }
-                ps.close();
-                
-                String capNhatDichVu = "INSERT INTO Don_Dich_Vu VALUES (?, ?, ?, ?)";
-                ps = con.getPS(capNhatDichVu);
-                ps.setInt(1, maPK);
-                for (DonDichVu ddv: donDichVuData) {
-                    ps.setInt(2, ddv.getMaDichVu());
-                    ps.setString(3, ddv.getTenDangNhap());
-                    ps.setString(4, ddv.getKetQua());
-                    ps.executeUpdate();
+                //Insert Don_Dich_Vu
+                if (!donDichVuData.isEmpty()) {
+                    String capNhatDichVu = "INSERT INTO Don_Dich_Vu VALUES (?, ?, ?, ?)";
+                    ps = con.getPS(capNhatDichVu);
+                    ps.setInt(1, maPK);
+                    for (DonDichVu ddv: donDichVuData) {
+                        ps.setInt(2, ddv.getMaDichVu());
+                        ps.setString(3, ddv.getTenDangNhap());
+                        ps.setString(4, ddv.getKetQua());
+                        ps.executeUpdate();
+                    }
+                    ps.close();
                 }
-                ps.close();
                 
             } catch (SQLException ex) {
                 Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                }
             
         }
     
