@@ -39,9 +39,9 @@ public class DangNhapController implements Initializable {
     @FXML
     private Label lbThongBao;
     private ConnectToDatabase con;
-    private Statement st;
     private ResultSet rs;
     private PreparedStatement ps;
+    private static String employeeName;
     
     
     @Override
@@ -49,9 +49,14 @@ public class DangNhapController implements Initializable {
         con = new ConnectToDatabase();
         lbThongBao.setText("");
     }
+    
+    public static String getEmployeeName() {
+        return employeeName;
+    }
+    
     @FXML
     private void dangnhap(ActionEvent e) {
-        String sql = "SELECT * FROM Tai_Khoan WHERE Ten_Dang_Nhap = ? AND Mat_Khau = ?";
+        String sql = "SELECT Ten_Nhan_Vien, Phong FROM Tai_Khoan WHERE Ten_Dang_Nhap = ? AND Mat_Khau = ?";
         try {
             ps = con.getPS(sql);
             String name=tfName.getText();
@@ -60,6 +65,7 @@ public class DangNhapController implements Initializable {
             rs = ps.executeQuery();
             if(rs.isBeforeFirst()){
                 rs.next();
+                employeeName = rs.getString("Ten_Nhan_Vien");
                 String phong = rs.getString("Phong");
                 if (phong.equals("phòng khám")){
                     setView("/cm/view/BacSi/BacSi.fxml");
@@ -99,7 +105,6 @@ public class DangNhapController implements Initializable {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     
     @FXML
     private void thoat(ActionEvent e){

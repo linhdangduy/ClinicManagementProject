@@ -7,6 +7,7 @@ package cm.controller.LeTan;
 
 import cm.ClinicManager;
 import cm.controller.BacSi.BacSiController;
+import cm.controller.DangNhap.DangNhapController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -32,6 +33,8 @@ public class LeTanController implements Initializable {
     private StackPane StackPane;
     @FXML
     private Label lblDangXuat;
+    @FXML
+    private Label lblTenLetan;
     
     private HashMap<String, HBox> screens = new HashMap<>();
     
@@ -89,5 +92,6 @@ public class LeTanController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadPane();
         setPane("tiepnhan");
+        lblTenLetan.setText(DangNhapController.getEmployeeName());
     }
 }

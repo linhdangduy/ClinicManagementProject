@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.DuocSiController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.DuocSiController">
    <children>
       <TilePane prefHeight="50.0" prefWidth="1100.0">
          <children>
@@ -34,7 +34,7 @@
                <children>
                   <Label prefHeight="40.0" text="Xin chào," />
                   <Label prefHeight="40.0" text="Dược sĩ" />
-                  <Label prefHeight="40.0" text="tên dược sĩ" />
+                  <Label fx:id="lblTenDuocsi" prefHeight="40.0" text="tên dược sĩ" />
                   <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
                </children>
                <padding>

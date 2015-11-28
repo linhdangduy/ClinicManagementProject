@@ -35,7 +35,7 @@
                <children>
                   <Label prefHeight="40.0" text="Xin chào," />
                   <Label prefHeight="40.0" text="Admin" />
-                  <Label prefHeight="40.0" text="tên admin" />
+                  <Label fx:id="lblTenAdmin" prefHeight="40.0" text="tên admin" />
                   <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
                </children>
                <padding>

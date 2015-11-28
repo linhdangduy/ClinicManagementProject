@@ -35,7 +35,7 @@
                <children>
                   <Label prefHeight="40.0" text="Xin chào," />
                   <Label prefHeight="40.0" text="Lễ Tân" />
-                  <Label prefHeight="40.0" text="tên lễ tân" />
+                  <Label fx:id="lblTenLetan" prefHeight="40.0" text="tên lễ tân" />
                   <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" onMouseEntered="#mouseEnteredLblDangXuat" onMouseExited="#mouseExitedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
                </children>
                <TilePane.margin>

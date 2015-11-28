@@ -6,6 +6,7 @@
 package cm.controller.BacSi;
 
 import cm.ClinicManager;
+import cm.controller.DangNhap.DangNhapController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -33,6 +34,8 @@ public class BacSiController implements Initializable {
     private StackPane StackPane;
     @FXML
     private Label lblDangXuat;
+    @FXML
+    private Label lblTenBacsi;
     
     private HashMap<String, HBox> screens = new HashMap<>();
     
@@ -98,6 +101,7 @@ public class BacSiController implements Initializable {
         loadPane("thuoc", "/cm/view/BacSi/Thuoc.fxml");
         loadPane("dichvu", "/cm/view/BacSi/DichVu.fxml");
         setPane("tiepnhan");
+        lblTenBacsi.setText(DangNhapController.getEmployeeName());
     }
 
     

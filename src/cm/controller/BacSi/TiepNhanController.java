@@ -10,12 +10,11 @@ import cm.controller.DangNhap.DangNhapController;
 import cm.model.BenhNhan;
 import cm.model.DonDichVu;
 import cm.model.KeDonThuoc;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -25,15 +24,14 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,7 +39,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 /**
  *
  * @author linhsan
@@ -81,6 +78,11 @@ public class TiepNhanController implements Initializable, PaneInterface {
     @FXML
     private TextArea taGhiChu, taHuongDieuTri, taKeDonThuoc, taSuDungDichVu;
     @FXML
+    private TextArea taHisTrieuChung, taHisTenBenh, taHisHuongDieuTri, taHisGhiChu,
+            taHisDonThuoc, taHisDonDichVu;
+    @FXML
+    private ListView<String> lvPhienKham;
+    @FXML
     private TableView<BenhNhan> tblBenhNhan;
     @FXML
     private TableColumn colMa, colHoten, colNgaysinh, colGioitinh, 
@@ -91,6 +93,9 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private DichVuController dichVuCtrl = ControllerMediator.getInstance().getDichVuCtrl();
     private ObservableList<DonDichVu> donDichVuData;
     
+    private ObservableList<String> time;
+    private HashMap<String, Integer> inforPK = new HashMap<>();
+    
     
     //override tu Initializable interface
     @Override
@@ -98,6 +103,8 @@ public class TiepNhanController implements Initializable, PaneInterface {
         createConnection();
         initTable();
         initCbLoc();
+        lvPhienKham.getSelectionModel().selectedItemProperty().
+                addListener(observable -> showDetailPK(lvPhienKham.getSelectionModel().getSelectedItem()));
         ControllerMediator.getInstance().setTiepNhanCtrl(this);
     }
     
@@ -205,6 +212,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
             tabDieuTri.setVisible(true);
             boxDanhSachBN.setVisible(false);
             lblCanhBao.setText(null);
+            showListView(tblBenhNhan.getSelectionModel().getSelectedItem());
         }
         else {
             lblCanhBao.setText("Chưa chọn bệnh nhân nào!");
@@ -335,6 +343,49 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private void handleBtnSuDung(ActionEvent event) {
         parentPane.setPane("dichvu");
         ControllerMediator.getInstance().getDichVuCtrl().setPaneThemDichVu(true);
+    }
+    //show all time of Phien_Kham in history tab
+    private void showListView(BenhNhan benhnhan) {
+        try {
+            inforPK.clear();
+            String query = "SELECT Ma_Phien_Kham, Thoi_Gian_Kham FROM Phien_Kham "
+                    + "WHERE Ma_Benh_Nhan = ? ORDER BY Thoi_Gian_Kham DESC";
+            ps = con.getPS(query);
+            ps.setInt(1, benhnhan.getMa());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                inforPK.put(rs.getString("Thoi_Gian_Kham"), rs.getInt("Ma_Phien_Kham"));
+            }
+            time = FXCollections.observableArrayList(inforPK.keySet());
+            lvPhienKham.setItems(time);
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    //show all information about Phien_Kham in history tab
+    private void showDetailPK(String timePK) {
+        try {
+            String query;
+            int maPK = inforPK.get(timePK);
+            query = "SELECT Ten_Benh, Trieu_Chung, Huong_Dieu_Tri, Ghi_Chu_BA FROM Phien_Kham "
+                    + "WHERE Ma_Phien_Kham = ?";
+            ps = con.getPS(query);
+            ps.setInt(1, maPK);
+            rs = ps.executeQuery();
+            rs.next();
+            taHisTrieuChung.setText(rs.getString("Trieu_Chung"));
+            taHisTenBenh.setText(rs.getString("Ten_Benh"));
+            taHisHuongDieuTri.setText(rs.getString("Huong_Dieu_Tri"));
+            taHisGhiChu.setText(rs.getString("Ghi_Chu_BA"));
+            
+            ps.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     private void createConnection() {

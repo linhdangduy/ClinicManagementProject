@@ -7,6 +7,7 @@ package cm.controller.DuocSi;
 
 import cm.ClinicManager;
 import cm.controller.BacSi.BacSiController;
+import cm.controller.DangNhap.DangNhapController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -30,6 +32,8 @@ public class DuocSiController implements Initializable {
 
     @FXML
     private StackPane StackPane;
+    @FXML
+    private Label lblTenDuocsi;
     private HashMap<String, HBox> screens = new HashMap<>();
     
     private void loadPane() {
@@ -78,6 +82,7 @@ public class DuocSiController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadPane();
         setPane("tiepnhan");
+        lblTenDuocsi.setText(DangNhapController.getEmployeeName());
     }
     
 }
