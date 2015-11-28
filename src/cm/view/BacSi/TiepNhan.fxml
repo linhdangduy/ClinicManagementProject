@@ -77,7 +77,7 @@
       </VBox>
       <StackPane prefHeight="450.0" prefWidth="750.0">
          <children>
-            <VBox fx:id="boxDanhSachBN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" visible="false">
+            <VBox fx:id="boxDanhSachBN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0">
                <children>
                   <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
                      <children>
@@ -107,7 +107,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" />
                </padding>
             </VBox>
-            <TabPane fx:id="tabDieuTri" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabDieuTri" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" tabClosingPolicy="UNAVAILABLE" visible="false">
                <tabs>
                   <Tab text="Điều trị">
                      <content>
