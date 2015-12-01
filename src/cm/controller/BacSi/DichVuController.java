@@ -135,15 +135,7 @@ public class DichVuController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
         initTable(DichvuData);
-        Them = "";
-        S = "";
-        for (i = 0; i <= n; i++) {
-            arrayInt[i] = 0;
-        }
-        lblTenDichVu.setText("");
-        lblGia.setText("");
-        taChucNang.setText("");
-        taThem.setText("");
+        taThem.setText(Them);
         parentPane.setPane("tiepnhan");
     }
 
@@ -259,7 +251,14 @@ public class DichVuController implements Initializable, PaneInterface {
     public ObservableList<DonDichVu> getDonDichVuData() {
         return DonDichVuData;
     }
-
+    //xoa observable list
+    public void deleteMemoryDV()
+    {
+        Them="";
+        S="";
+        taThem.setText(Them);
+        DonDichVuData.clear();
+    }
     //override tu PaneInterface interface
     @Override
     public void setScreenParent(BacSiController mainPane) {
