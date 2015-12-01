@@ -19,12 +19,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -106,6 +110,8 @@ public class TiepNhanController implements Initializable{
     private ComboBox<String> cbSearch;
     @FXML
     private TextField tfFilter;
+    @FXML
+    private ComboBox<String> cbSearchTime;
     
     private String gioitinh1;
     private String gioitinh2;
@@ -152,6 +158,8 @@ public class TiepNhanController implements Initializable{
         rs.close();
     }
     private void cbSearchInit() {
+        cbSearchTime.getItems().addAll("Hôm Nay" , "Tất Cả");
+        cbSearchTime.setValue("Tất Cả");
         cbSearch.getItems().addAll("Mã","Họ Tên","Trạng Thái");
         cbSearch.setValue("Họ Tên");
     }
@@ -166,9 +174,23 @@ public class TiepNhanController implements Initializable{
         
         
         FilteredList<BenhNhan> filteredData = new FilteredList<>(BenhNhanData, p -> true);
-        BenhNhanTable.setItems(filteredData);
+        
+       cbSearchTime.valueProperty().addListener((observable, oldValue , newValue) -> {
+           filteredData.setPredicate(benhnhan -> {
+               switch(newValue){
+                   case "Hôm Nay":
+                       if (benhnhan.getThoiGian().contains(LocalDate.now().toString()))
+                           return true;
+                       break;
+                   case "Tất Cả":
+                       return true;
+               }
+               return false;
+           });
+       });
+       FilteredList<BenhNhan> filteredData2 = new FilteredList<>(filteredData , p->true);
         tfFilter.textProperty().addListener((observable, oldValue , newValue) -> {
-            filteredData.setPredicate( benhnhan -> {
+            filteredData2.setPredicate( benhnhan -> {
                 if (newValue == null || newValue.isEmpty()){
                     return true;
                 }
@@ -191,10 +213,12 @@ public class TiepNhanController implements Initializable{
                         }
                         break;
                 }
+                       
+                
                 return false;
             });
         });
-        
+        BenhNhanTable.setItems(filteredData2);
         BenhNhanTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showDetails(newValue));
         
