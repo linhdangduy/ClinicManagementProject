@@ -95,6 +95,7 @@ public class ThuocController implements Initializable, PaneInterface {
     private ObservableList<KeDonThuoc> KeDonThuocData = FXCollections.observableArrayList();
 
     private KeDonThuocController KeDonThuocCtrl = ControllerMediator.getInstance().getKeDonThuocCtrl();
+    private TiepNhanController TiepNhanCtrl = ControllerMediator.getInstance().getTiepNhanCtrl();
     Stage dStage = new Stage();
     float Giaf;
     int flag = 0;
@@ -130,18 +131,10 @@ public class ThuocController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnTroLai(ActionEvent event) throws SQLException {
         //  initTable(ThuocData);
-        Them = "";
-        S = "";
-        for (int i = 0; i <= n; i++) {
-            arrayInt[i] = 0;
-        }
-        taCongdung.setText("");
-        lblTenThuoc.setText("");
-        lblDonVi.setText("");
-        lblGiaThuoc.setText("");
-        lblSoLuong.setText("");
-        taThem.setText("");
+
+        taThem.setText(Them);
         parentPane.setPane("tiepnhan");
+
     }
 
     @FXML
@@ -151,6 +144,7 @@ public class ThuocController implements Initializable, PaneInterface {
         thuoc.setSoLuong(0);
         thuoc.setGhiChuThuoc("");
         thuoc.setChiPhiThuoc(0);
+
         flag = 0;
         for (int i = 0; i <= n; i++) {
             if (arrayInt[i] == Ma) {
@@ -279,7 +273,7 @@ public class ThuocController implements Initializable, PaneInterface {
             lblGiaThuoc.setText(Gia);
             lblDonVi.setText(thuoc.getDonVi());
             String soluong;
-            soluong=Integer.toString(thuoc.getSoLuong());
+            soluong = Integer.toString(thuoc.getSoLuong());
             lblSoLuong.setText(soluong);
         } else {
             lblTenThuoc.setText("");
@@ -291,6 +285,15 @@ public class ThuocController implements Initializable, PaneInterface {
 
     public ObservableList<KeDonThuoc> getKeDonThuocData() {
         return KeDonThuocData;
+    }
+
+    //xoa observable list
+
+    public void deleteMemoryT() {
+        Them = "";
+        S = "";
+        taThem.setText(Them);
+        KeDonThuocData.clear();
     }
 
     @Override
