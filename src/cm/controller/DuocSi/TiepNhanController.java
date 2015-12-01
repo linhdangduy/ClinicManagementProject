@@ -12,6 +12,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +49,8 @@ public class TiepNhanController implements Initializable {
     @FXML
     private TextField tfFilter;
     @FXML
+    private ComboBox<String> cbSearchTime;
+    @FXML
     private TableView<BenhNhan> BenhNhanTable;
     @FXML
     private TableColumn MaColumn;
@@ -83,6 +86,8 @@ public class TiepNhanController implements Initializable {
         
     }
     private void cbSearchInit() {
+        cbSearchTime.getItems().addAll("Hôm Nay" , "Tất Cả");
+        cbSearchTime.setValue("Tất Cả");
         cbSearch.getItems().addAll("Mã","Họ Tên");
         cbSearch.setValue("Họ Tên");
     }
@@ -116,9 +121,22 @@ public class TiepNhanController implements Initializable {
         
         
         FilteredList<BenhNhan> filteredData = new FilteredList<>(BenhNhanData, p -> true);
-        BenhNhanTable.setItems(filteredData);
+        cbSearchTime.valueProperty().addListener((observable, oldValue , newValue) -> {
+           filteredData.setPredicate(benhnhan -> {
+               switch(newValue){
+                   case "Hôm Nay":
+                       if (benhnhan.getThoiGian().contains(LocalDate.now().toString()))
+                           return true;
+                       break;
+                   case "Tất Cả":
+                       return true;
+               }
+               return false;
+           });
+       });
+       FilteredList<BenhNhan> filteredData2 = new FilteredList<>(filteredData , p->true);
         tfFilter.textProperty().addListener((observable, oldValue , newValue) -> {
-            filteredData.setPredicate( benhnhan -> {
+            filteredData2.setPredicate( benhnhan -> {
                 if (newValue == null || newValue.isEmpty()){
                     return true;
                 }
@@ -135,11 +153,18 @@ public class TiepNhanController implements Initializable {
                             return true;
                         }
                         break;
+                    case "Trạng Thái":
+                        if (benhnhan.getTrangThai().toLowerCase().contains(lowerCaseFilter)){
+                            return true;
+                        }
+                        break;
                 }
+                       
+                
                 return false;
             });
         });
-        //BenhNhanTable.setItems(BenhNhanData);
+        BenhNhanTable.setItems(filteredData2);
         BenhNhanTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showDonThuoc(newValue));
         

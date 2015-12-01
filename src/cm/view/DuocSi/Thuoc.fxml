@@ -220,7 +220,6 @@
             <HBox prefHeight="50.0" prefWidth="750.0" spacing="10.0">
                <children>
                   <Label prefHeight="30.0" text="Danh sách thuốc" />
-                  <ComboBox prefHeight="30.0" promptText="Hôm nay" />
                   <Label prefHeight="30.0" text="Lọc theo" />
                   <ComboBox fx:id="cbSearch" prefHeight="30.0" promptText="Lọc theo" />
                   <TextField fx:id="tfFilter" prefHeight="30.0" />
