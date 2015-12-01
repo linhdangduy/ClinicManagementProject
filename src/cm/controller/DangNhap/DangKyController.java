@@ -12,7 +12,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +21,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -36,8 +34,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
 /**
@@ -49,8 +46,9 @@ public class DangKyController implements Initializable {
     ConnectToDatabase con;
     private ResultSet rs;
     private PreparedStatement ps;
+    
     @FXML
-    private GridPane pane;
+    private Pane pane;
     @FXML
     private TextField tfTenDangNhap;
     @FXML
@@ -84,6 +82,10 @@ public class DangKyController implements Initializable {
     String gioitinh = "Nam";
     int statusTDN = 1, statusDT = 1, statusMK = 1, statusDC = 1, statusNganh = 1, statusHT = 1, statusNS = 1;
     
+    
+    String setBorder = "-fx-border-width: 0 0 2 0;";
+    String setBlueColor = "-fx-border-color: #2196F3;";
+    String setRedColor = "-fx-border-color: #ff0000;";
     /**
      * Initializes the controller class.
      */
@@ -125,13 +127,13 @@ public class DangKyController implements Initializable {
                     if(newValue.length()>20)
                     {
                         lblTrangThai.setText("* Tên đăng nhập tối đa 20 ký tự");
-                        tfTenDangNhap.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfTenDangNhap.setStyle(setRedColor+setBorder);
                         statusTDN = 1;
                     }
                     else if(newValue.length()<5)
                     {
                         lblTrangThai.setText("* Tên đăng nhập tối thiểu 5 ký tự");
-                        tfTenDangNhap.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfTenDangNhap.setStyle(setRedColor+setBorder);
                         statusTDN = 1;
                     }
                     else
@@ -143,7 +145,7 @@ public class DangKyController implements Initializable {
                         if(rs.isBeforeFirst())
                         {
                             lblTrangThai.setText("* Tên đăng nhập đã tồn tại");
-                            tfTenDangNhap.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                            tfTenDangNhap.setStyle(setRedColor+setBorder);
                             statusTDN = 1;
                         }
                         else{
@@ -170,7 +172,7 @@ public class DangKyController implements Initializable {
                 if(newValue.length()>12)
                     {
                         lblTrangThai.setText("* Số điện thoại tối đa 12 ký tự");
-                        tfTenDangNhap.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfTenDangNhap.setStyle(setRedColor+setBorder);
                         statusDT = 1;
                     }
                 else
@@ -187,7 +189,7 @@ public class DangKyController implements Initializable {
                     }
                     else {
                         statusDT = 1;
-                        tfPhone.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfPhone.setStyle(setRedColor+setBorder);
                         lblTrangThai.setText("* Số điện thoại chỉ gồm chữ số và dấu '+'");
                         break;
                     }
@@ -202,7 +204,7 @@ public class DangKyController implements Initializable {
             if(newValue.length()>30)
                     {
                         lblTrangThai.setText("* Họ tên tối đa 30 ký tự");
-                        tfHoTen.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfHoTen.setStyle(setRedColor+setBorder);
                         statusHT = 1;
                     }
             else if(newValue.isEmpty())
@@ -221,7 +223,7 @@ public class DangKyController implements Initializable {
             if(newValue.length()>15)
                     {
                         lblTrangThai.setText("* Mật khẩu tối đa 15 ký tự");
-                        tfMatKhau.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfMatKhau.setStyle(setRedColor+setBorder);
                         statusMK = 1;
                     }
             else if(newValue.isEmpty())
@@ -239,7 +241,7 @@ public class DangKyController implements Initializable {
             if(newValue.length()>15)
                     {
                         lblTrangThai.setText("* Mật khẩu tối đa 15 ký tự");
-                        textField.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        textField.setStyle(setRedColor+setBorder);
                         statusDT = 1;
                     }
             else if(newValue.isEmpty())
@@ -269,7 +271,7 @@ public class DangKyController implements Initializable {
             if(newValue.length()>15)
                     {
                         lblTrangThai.setText("* Chuyên ngành tối đa 20 ký tự");
-                        tfNganh.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+                        tfNganh.setStyle(setRedColor+setBorder);
                         statusNganh = 1;
                     }
             else if(newValue.isEmpty())
@@ -289,33 +291,33 @@ public class DangKyController implements Initializable {
     private int checkStatus(){
         int status = 0;
         if(statusTDN == 1)
-            tfTenDangNhap.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-        else tfTenDangNhap.setStyle(null);
+            tfTenDangNhap.setStyle(setRedColor+setBorder);
+        else tfTenDangNhap.setStyle(setBlueColor);
         if(statusHT == 1)
-            tfHoTen.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-        else tfHoTen.setStyle(null);
+            tfHoTen.setStyle(setRedColor+setBorder);
+        else tfHoTen.setStyle(setBlueColor);
         if(statusMK == 1)
         {
-            tfMatKhau.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-            textField.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
+            tfMatKhau.setStyle(setRedColor+setBorder);
+            textField.setStyle(setRedColor+setBorder);
         }
         else
         {
-            tfMatKhau.setStyle(null);
-            textField.setStyle(null);
+            tfMatKhau.setStyle(setBlueColor);
+            textField.setStyle(setBlueColor);
         }
         if(statusNS == 1)
-            ngaysinh.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-        else ngaysinh.setStyle(null);
+            ngaysinh.setStyle(setRedColor);
+        else ngaysinh.setStyle(setBlueColor + "-fx-border-width: 0 0 2 0;");
         if(statusDC == 1)
-            tfDiaChi.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-        else tfDiaChi.setStyle(null);
+            tfDiaChi.setStyle(setRedColor+setBorder);
+        else tfDiaChi.setStyle(setBlueColor);
         if(statusNganh == 1)
-            tfNganh.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-        else tfNganh.setStyle(null);
+            tfNganh.setStyle(setRedColor+setBorder);
+        else tfNganh.setStyle(setBlueColor);
         if(statusDT == 1)
-            tfPhone.setStyle("-fx-border-color: #ff0000;"+"-fx-border-width: 2");
-        else tfPhone.setStyle(null);
+            tfPhone.setStyle(setRedColor+setBorder);
+        else tfPhone.setStyle(setBlueColor);
         status = statusDT + statusDC + statusHT + statusMK + statusNS + statusNganh + statusTDN;
         if(status == 0)
             lblTrangThai.setText(null);
@@ -325,16 +327,10 @@ public class DangKyController implements Initializable {
     }
     
     private void CheckBoxAct(){
-        textField.setPrefSize(275, 35);
-        
+        textField.setPrefSize(321, 35);
         textField.setFont(new Font(13));
-       // textField.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-       // textField.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        textField.setLayoutX(275);
-        textField.setLayoutY(35);
         textField.setManaged(false);
         textField.setVisible(false);
-        GridPane.setConstraints(textField, 1, 2);
         pane.getChildren().add(textField);
         textField.managedProperty().bind(ChBox.selectedProperty());
         textField.visibleProperty().bind(ChBox.selectedProperty());

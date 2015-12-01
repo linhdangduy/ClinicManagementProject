@@ -1,0 +1,47 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 30, 2015, 4:55:17 PM
+    Author     : linhsan
+*/
+
+/*
+    text-field
+*/
+.text-field {
+	-fx-background-color: transparent;
+	-fx-background-radius: 2.0;
+	-fx-padding: 0.5em 0.5em 0.5em 0.1em;
+	-fx-border-width: 0 0 2 0;
+	-fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+        -fx-prompt-text-fill: derive(black,50%);
+}
+
+.textDangNhap:focused {
+	-fx-border-color: #2196F3;
+}
+
+.datepick {
+        -fx-border-width: 0 0 2 0;
+}
+
+    /*
+        button
+    */
+.button {
+/*    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0,
+		1);
+    -fx-background-color: rgb(250, 250, 250);
+*/
+//    -fx-text-fill: -fx-text-button-normal;
+    -fx-font-family: 'Roboto';
+    -fx-font-weight: bold;
+ //   -fx-background-insets: 0.0;
+    -fx-background-radius: 4.0;
+    -fx-padding: 0.7em;
+    -fx-alignment: CENTER;
+}
+

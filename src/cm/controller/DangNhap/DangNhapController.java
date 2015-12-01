@@ -93,6 +93,7 @@ public class DangNhapController implements Initializable {
     
     @FXML
     private void handleBtnDangKy(ActionEvent e) {
+        System.out.println("linh");
         setView("/cm/view/DangNhap/DangKy.fxml");
     }
     
