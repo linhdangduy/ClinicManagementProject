@@ -5,6 +5,7 @@
  */
 package cm.controller.QuanLy;
 
+import cm.controller.DangNhap.DangNhapController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -32,6 +33,8 @@ public class QuanLyController implements Initializable {
     private ToggleGroup GroupBtn;
     @FXML
     private Label lblDangXuat;
+    @FXML
+    private Label lblTenAdmin;
     @FXML
     private Pane mainPane;
     
@@ -74,6 +77,7 @@ public class QuanLyController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         loadPane();
         setPane("tiepnhan");
+        lblTenAdmin.setText(DangNhapController.getEmployeeName());
     }    
 
     @FXML

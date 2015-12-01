@@ -140,6 +140,8 @@ public class DichVuController implements Initializable, PaneInterface {
         for (i = 0; i <= n; i++) {
             arrayInt[i] = 0;
         }
+        lblTenDichVu.setText("");
+        lblGia.setText("");
         taChucNang.setText("");
         taThem.setText("");
         parentPane.setPane("tiepnhan");

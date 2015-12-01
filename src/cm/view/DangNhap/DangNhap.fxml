@@ -8,37 +8,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="306.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DangNhap.DangNhapController">
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="350.0" spacing="10.0" stylesheets="@cssDangNhap.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DangNhap.DangNhapController">
    <children>
-      <FlowPane prefHeight="60.0" prefWidth="350.0" />
-      <GridPane hgap="10.0" layoutX="10.0" layoutY="90.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="343.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="20.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="109.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="231.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <FlowPane prefHeight="50.0" prefWidth="200.0" />
+      <TextField fx:id="tfName" prefHeight="35.0" promptText="tên đăng nhập" styleClass="textDangNhap">
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
+      </TextField>
+      <PasswordField fx:id="tfPass" prefHeight="35.0" promptText="mật khẩu" styleClass="textDangNhap">
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
+      </PasswordField>
+      <Label fx:id="lbThongBao" alignment="CENTER" prefHeight="25.0" prefWidth="234.0" textFill="RED" />
+      <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="350.0" spacing="10.0">
          <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="105.0" text="Người dùng" />
-            <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="105.0" text="Mật khẩu" GridPane.rowIndex="1" />
-            <TextField fx:id="tfName" prefHeight="35.0" promptText="tên đăng nhập" GridPane.columnIndex="1" />
-            <PasswordField fx:id="tfPass" prefHeight="35.0" promptText="mật khẩu" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#dangnhap" prefHeight="35.0" prefWidth="100.0" text="Đăng nhập" />
-                  <Button mnemonicParsing="false" onAction="#thoat" prefHeight="35.0" prefWidth="100.0" text="Thoát" />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </padding>
-            </HBox>
-            <Label fx:id="lbThongBao" alignment="CENTER" prefHeight="25.0" prefWidth="234.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#dangnhap" prefHeight="35.0" prefWidth="100.0" text="Đăng nhập" />
+            <Button mnemonicParsing="false" onAction="#thoat" prefHeight="35.0" prefWidth="100.0" text="Thoát" />
          </children>
-      </GridPane>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </padding>
+      </HBox>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
          <children>
             <Label prefHeight="35.0" text="Chưa có tài khoản?" />
@@ -46,7 +38,4 @@
          </children>
       </HBox>
    </children>
-   <padding>
-      <Insets left="10.0" right="20.0" />
-   </padding>
 </VBox>

@@ -136,6 +136,10 @@ public class ThuocController implements Initializable, PaneInterface {
             arrayInt[i] = 0;
         }
         taCongdung.setText("");
+        lblTenThuoc.setText("");
+        lblDonVi.setText("");
+        lblGiaThuoc.setText("");
+        lblSoLuong.setText("");
         taThem.setText("");
         parentPane.setPane("tiepnhan");
     }
@@ -143,7 +147,6 @@ public class ThuocController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnThem(ActionEvent event) {
         KeDonThuoc thuoc = new KeDonThuoc();
-        thuoc.setMa(ThuocTable.getSelectionModel().getSelectedItem().getMa());
         thuoc.setTenThuoc(lblTenThuoc.getText());
         thuoc.setSoLuong(0);
         thuoc.setGhiChuThuoc("");

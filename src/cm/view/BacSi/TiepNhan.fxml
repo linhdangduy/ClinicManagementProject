@@ -157,7 +157,50 @@
                         </VBox>
                      </content>
                   </Tab>
-                  <Tab text="Lịch sử khám bệnh" />
+                  <Tab text="Lịch sử khám bệnh">
+                     <content>
+                        <HBox spacing="5.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="175.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="40.0" prefWidth="200.0" text="Các phiên khám" />
+                                    <ListView fx:id="lvPhienKham" prefHeight="377.0" prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                              <GridPane hgap="20.0" prefHeight="407.0" prefWidth="565.0">
+                                 <children>
+                                    <Label prefHeight="35.0" text="Triệu chứng" />
+                                    <Label prefHeight="35.0" text="Tên Bệnh" GridPane.columnIndex="1" />
+                                    <Label prefHeight="35.0" text="Hướng điều trị" GridPane.rowIndex="2" />
+                                    <Label prefHeight="35.0" text="Ghi chú" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label prefHeight="35.0" text="Đơn dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label layoutX="303.0" layoutY="244.0" prefHeight="35.0" text="Đơn thuốc" GridPane.rowIndex="4" />
+                                    <TextArea fx:id="taHisHuongDieuTri" editable="false" prefHeight="90.0" prefWidth="200.0" wrapText="true" GridPane.rowIndex="3" />
+                                    <TextArea fx:id="taHisGhiChu" editable="false" layoutX="15.0" layoutY="143.0" prefHeight="90.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextArea fx:id="taHisDonThuoc" editable="false" layoutX="15.0" layoutY="143.0" prefHeight="90.0" prefWidth="200.0" wrapText="true" GridPane.rowIndex="5" />
+                                    <TextArea fx:id="taHisDonDichVu" editable="false" layoutX="15.0" layoutY="282.0" prefHeight="90.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextArea fx:id="taHisTrieuChung" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.rowIndex="1" />
+                                    <TextArea fx:id="taHisTenBenh" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="338.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="10.0" prefWidth="322.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="138.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                        </HBox>
+                     </content></Tab>
                </tabs>
             </TabPane>
          </children>
