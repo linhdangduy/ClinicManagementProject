@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.LeTan.TiepNhanController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.LeTan.TiepNhanController">
    <children>
       <TabPane prefHeight="450.0" prefWidth="350.0">
          <padding>
@@ -103,9 +103,7 @@
                               </TextField>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <ComboBox fx:id="cbNgay1" prefHeight="35.0" promptText="dd" />
-                                    <ComboBox fx:id="cbThang1" prefHeight="35.0" promptText="mm" />
-                                    <ComboBox fx:id="cbNam1" prefHeight="35.0" promptText="yyyy" />
+                                    <DatePicker fx:id="date1" prefHeight="31.0" prefWidth="201.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -174,9 +172,7 @@
                               </TextField>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <ComboBox fx:id="cbNgay2" prefHeight="35.0" promptText="dd" />
-                                    <ComboBox fx:id="cbThang2" prefHeight="35.0" promptText="mm" />
-                                    <ComboBox fx:id="cbNam2" prefHeight="35.0" promptText="yyyy" />
+                                    <DatePicker fx:id="date2" prefHeight="32.0" prefWidth="207.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">

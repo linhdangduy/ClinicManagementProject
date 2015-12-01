@@ -104,9 +104,15 @@
                                     <ComboBox fx:id="cbDonVi" prefHeight="35.0" prefWidth="150.0" promptText="Đơn vị" />
                                  </children>
                               </HBox>
-                              <TextArea fx:id="tfCongDung" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextArea fx:id="tfCongDung" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin></TextArea>
                               <Label alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="113.0" text="Ghi Chú" GridPane.rowIndex="5" />
-                              <TextArea fx:id="tfGhiChu" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextArea fx:id="tfGhiChu" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin></TextArea>
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
@@ -168,9 +174,15 @@
                                     <ComboBox fx:id="cbDonVi1" prefHeight="35.0" prefWidth="150.0" promptText="Đơn vị" />
                                  </children>
                               </HBox>
-                              <TextArea fx:id="tfCongDung1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextArea fx:id="tfCongDung1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin></TextArea>
                               <Label alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="113.0" text="Ghi Chú" GridPane.rowIndex="5" />
-                              <TextArea fx:id="tfGhiChu1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextArea fx:id="tfGhiChu1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin></TextArea>
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="98.0" />
