@@ -142,7 +142,7 @@ public class ThuocController implements Initializable, PaneInterface {
         KeDonThuoc thuoc = new KeDonThuoc();
         thuoc.setTenThuoc(lblTenThuoc.getText());
         thuoc.setSoLuong(0);
-        thuoc.setGhiChuThuoc("");
+        thuoc.setCachDungThuoc("");
         thuoc.setChiPhiThuoc(0);
 
         flag = 0;
