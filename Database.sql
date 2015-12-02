@@ -72,12 +72,12 @@ DROP TABLE IF EXISTS `Benh_Nhan`;
 CREATE TABLE `Benh_Nhan`(
 	`Ma_Benh_Nhan` INT UNSIGNED NOT NULL AUTO_INCREMENT,	
 	PRIMARY KEY(`Ma_Benh_Nhan`),	
-	`Ho_Ten` VARCHAR(30) NOT NULL,
-	`Ngay_Sinh` DATE,
-	`Dia_chi` VARCHAR(100),
-	`Gioi_Tinh` ENUM('Nam', 'Nữ'), 
+	`Ho_Ten_BN` VARCHAR(30) NOT NULL,
+	`Ngay_Sinh_BN` DATE,
+	`Dia_chi_BN` VARCHAR(100),
+	`Gioi_Tinh_BN` ENUM('Nam', 'Nữ'), 
 	`SDT_BN` CHAR(12),
-	`Trang_Thai` ENUM('phòng khám','thanh toán','phòng thuốc','kết thúc')
+	`Trang_Thai_BN` ENUM('phòng khám','thanh toán','phòng thuốc','kết thúc')
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -200,7 +200,7 @@ CREATE TABLE `Don_Thuoc` (
 	`Ten_Dang_Nhap` VARCHAR(20),
 	`So_Luong_Ke` INT UNSIGNED,
 	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
-	`Ghi_Chu_Thuoc` VARCHAR(100),
+	`Cach_Dung_Thuoc` VARCHAR(100),
 	CONSTRAINT fk_DonThuoc_MaPhienKham 
 		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
 		ON DELETE CASCADE
@@ -298,8 +298,8 @@ CREATE TABLE `Thanh_Toan`(
 	`Ma_Phien_Kham` INT UNSIGNED NOT NULL,
 	PRIMARY KEY(`Ma_Phien_Kham`),
 	`Ten_Dang_Nhap` VARCHAR(20),
-	`Chi_Phi_Thuoc` FLOAT UNSIGNED,
-	`Chi_Phi_Dich_Vu` FLOAT UNSIGNED,
+	`Tong_Phi_Thuoc` FLOAT UNSIGNED,
+	`Tong_Phi_Dich_Vu` FLOAT UNSIGNED,
 	`Chi_Phi` FLOAT UNSIGNED,
 	CONSTRAINT fk_ThanhToan_MaPhienKham 
 		FOREIGN KEY(`Ma_Phien_Kham`) REFERENCES `Phien_Kham`(`Ma_Phien_Kham`) 
