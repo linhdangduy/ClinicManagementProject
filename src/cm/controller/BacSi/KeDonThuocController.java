@@ -73,7 +73,7 @@ public class KeDonThuocController implements Initializable {
     private void initable() {
         ColKedonTenthuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
         ColKedonSoluong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
-        ColKedonGhichu.setCellValueFactory(new PropertyValueFactory<>("ghiChuThuoc"));
+        ColKedonGhichu.setCellValueFactory(new PropertyValueFactory<>("cachDungThuoc"));
         KeDonThuocTable.setItems(Data);
 
     }
@@ -98,7 +98,7 @@ public class KeDonThuocController implements Initializable {
             public void handle(TableColumn.CellEditEvent<KeDonThuoc, String> t) {
                 KeDonThuoc thuoc = ((KeDonThuoc) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
-                thuoc.setGhiChuThuoc(t.getNewValue());
+                thuoc.setCachDungThuoc(t.getNewValue());
 
             }
         });
