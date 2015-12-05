@@ -301,7 +301,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
                         ps.setInt(2, kdt.getMaThuoc());
                         ps.setInt(3, kdt.getSoLuong());
                         ps.setFloat(4, kdt.getChiPhiThuoc());
-                        ps.setString(5, kdt.getGhiChuThuoc());
+                        ps.setString(5, kdt.getCachDungThuoc());
                         ps.executeUpdate();
                     }
                     ps.close();
