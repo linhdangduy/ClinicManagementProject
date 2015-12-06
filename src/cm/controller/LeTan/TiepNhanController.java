@@ -13,22 +13,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -146,13 +140,13 @@ public class TiepNhanController implements Initializable{
         while(rs.next()){
             BenhNhan benhnhan = new BenhNhan();
             benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-            benhnhan.setHoTen(rs.getString("Ho_Ten"));
-            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh"));
-            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh"));
+            benhnhan.setHoTen(rs.getString("Ho_Ten_BN"));
+            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh_BN"));
+            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh_BN"));
             benhnhan.setPhone(rs.getString("SDT_BN"));
             benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
-            benhnhan.setTrangThai(rs.getString("Trang_Thai"));
-            benhnhan.setDiaChi(rs.getString("Dia_chi"));
+            benhnhan.setTrangThai(rs.getString("Trang_Thai_BN"));
+            benhnhan.setDiaChi(rs.getString("Dia_chi_BN"));
             BenhNhanData.add(benhnhan);
         }
         rs.close();
@@ -274,7 +268,7 @@ public class TiepNhanController implements Initializable{
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES){
                 try {
-                    String sql = "Update Benh_Nhan set Trang_Thai = ? where Ma_Benh_Nhan = ? ";
+                    String sql = "Update Benh_Nhan set Trang_Thai_BN = ? where Ma_Benh_Nhan = ? ";
                     ps =con.getPS(sql);
                     ps.setString(1, "phòng khám");
                     ps.setInt(2, bnSelected.getMa());
@@ -345,7 +339,7 @@ public class TiepNhanController implements Initializable{
                     ps.executeUpdate();
                     ps.close();
                     // lay ma benhn nhan da nhap
-                    sql = "select * from `Benh_Nhan` where Ho_Ten = ? and SDT_BN = ?;";
+                    sql = "select * from `Benh_Nhan` where Ho_Ten_BN = ? and SDT_BN = ?;";
                     ps = con.getPS(sql);
                     ps.setString(1, benhnhan.getHoTen());
                     ps.setString(2, benhnhan.getPhone());
@@ -408,7 +402,7 @@ public class TiepNhanController implements Initializable{
                         && !tfPhone2.getText().isEmpty()
                         ) {
                     //cap nhat vao du lieu
-                    String sql = "Update Benh_Nhan set Ho_Ten = ?, Ngay_Sinh = ? , Dia_Chi = ? , Gioi_Tinh = ?, SDT_BN = ? where Ma_Benh_Nhan = ?";
+                    String sql = "Update Benh_Nhan set Ho_Ten_BN = ?, Ngay_Sinh_BN = ? , Dia_Chi_BN = ? , Gioi_Tinh_BN = ?, SDT_BN = ? where Ma_Benh_Nhan = ?";
                     ps = con.getPS(sql);
                     //ngaysinh = "" + cbNam2.getValue() + "-" + cbThang2.getValue() + "-" +cbNgay2.getValue();
                     ps.setString(1, tfTen2.getText());

@@ -18,6 +18,7 @@ public class KeDonThuoc {
     private SimpleStringProperty tenThuoc = new SimpleStringProperty();
     private SimpleStringProperty tenDangNhap = new SimpleStringProperty();
     private SimpleIntegerProperty soLuong = new SimpleIntegerProperty();
+    private SimpleIntegerProperty soLuongKe = new SimpleIntegerProperty();
     private SimpleFloatProperty chiPhiThuoc = new SimpleFloatProperty();
     private SimpleStringProperty cachDungThuoc = new SimpleStringProperty();
     
@@ -31,6 +32,9 @@ public class KeDonThuoc {
         tenDangNhap.set(s);
     }
     public void setSoLuong(int s) {
+        soLuong.setValue(s);
+    }
+    public void setSoLuongKe(int s) {
         soLuong.setValue(s);
     }
     public void setChiPhiThuoc(float s) {
@@ -50,6 +54,9 @@ public class KeDonThuoc {
         return tenDangNhap.get();
     }
     public int getSoLuong() {
+        return soLuong.get();
+    }
+    public int getSoLuongKe() {
         return soLuong.get();
     }
     public float getChiPhiThuoc() {

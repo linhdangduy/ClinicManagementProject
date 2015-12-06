@@ -94,7 +94,7 @@ public class TiepNhanController implements Initializable {
     public void addBenhNhanData() throws SQLException{
         //hien thi benh nhan theo thu tu co thoi gian kham gan nhat
         String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk "
-                        + "where Trang_Thai = 'phòng thuốc' "
+                        + "where Trang_Thai_BN = 'phòng thuốc' "
                         + "group by Ma_Benh_Nhan "
                         + "order by Thoi_Gian_Kham desc;";
         rs = con.getRS(sql);
@@ -102,9 +102,9 @@ public class TiepNhanController implements Initializable {
         while(rs.next()){
             BenhNhan benhnhan = new BenhNhan();
             benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-            benhnhan.setHoTen(rs.getString("Ho_Ten"));
-            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh"));
-            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh"));
+            benhnhan.setHoTen(rs.getString("Ho_Ten_BN"));
+            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh_BN"));
+            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh_BN"));
             benhnhan.setPhone(rs.getString("SDT_BN"));
             benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
             BenhNhanData.add(benhnhan);
@@ -206,15 +206,17 @@ public class TiepNhanController implements Initializable {
     }
     private void addDonThuoc(int maPhienKham){
         try {
-            String sql = "select Ten_Thuoc, So_Luong_Ke , (So_Luong_Ke*Gia_Thuoc) as Chi_Phi_Thuoc from Don_Thuoc ,Thuoc where Ma_Phien_Kham = ? and Don_Thuoc.Ma_Thuoc = Thuoc.Ma_Thuoc";
+            String sql = "select Thuoc.Ma_Thuoc as Ma_Thuoc, So_Luong , Ten_Thuoc, So_Luong_Ke , (So_Luong_Ke*Gia_Thuoc) as Chi_Phi_Thuoc from Don_Thuoc ,Thuoc where Ma_Phien_Kham = ? and Don_Thuoc.Ma_Thuoc = Thuoc.Ma_Thuoc";
             DonThuocData.clear();
             ps = con.getPS(sql);
             ps.setInt(1, maPhienKham);
             rs = ps.executeQuery();
             while (rs.next()){
                 KeDonThuoc thuoc = new KeDonThuoc();
+                thuoc.setMa(rs.getInt("Ma_Thuoc"));
                 thuoc.setTenThuoc(rs.getString("Ten_Thuoc"));
-                thuoc.setSoLuong(rs.getInt("So_Luong_Ke"));
+                thuoc.setSoLuongKe(rs.getInt("So_Luong_Ke"));
+                thuoc.setSoLuong(rs.getInt("So_Luong"));
                 thuoc.setChiPhiThuoc(rs.getInt("Chi_Phi_Thuoc"));
                 DonThuocData.add(thuoc);
                 
@@ -228,7 +230,7 @@ public class TiepNhanController implements Initializable {
     @FXML
     private void GiaoThuoc(ActionEvent event) {
         try {
-            String sql = "update Benh_Nhan set Trang_Thai = 'thanh toán' where Ma_Benh_Nhan = ?";
+            String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = ?";
             ps = con.getPS(sql);
             ps.setInt(1, bnselected.getMa());
             ps.executeUpdate();
@@ -237,15 +239,22 @@ public class TiepNhanController implements Initializable {
             sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
             ps = con.getPS(sql);
             ps.setInt(2, bnselected.getMa());
+            String sql2 = "update Thuoc set So_Luong = ? where Ma_Thuoc = ?";
+            PreparedStatement ps2;
+            ps2 = con.getPS(sql2);
             DonThuocData.forEach((thuoc) -> {
                 try {
                     ps.setFloat(1, thuoc.getChiPhiThuoc());
                     ps.executeUpdate();
+                    ps2.setInt(1, thuoc.getSoLuong() - thuoc.getSoLuongKe());
+                    ps2.setInt(2, thuoc.getMaThuoc());
+                    ps2.executeUpdate();
                 } catch (SQLException ex) {
                     Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
             ps.close();
+            ps2.close();
             BenhNhanData.remove(BenhNhanData.indexOf(bnselected));
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,7 +265,7 @@ public class TiepNhanController implements Initializable {
     @FXML
     private void Huy(ActionEvent event) {
         try {
-            String sql = "update Benh_Nhan set Trang_Thai = 'thanh toán' where Ma_Benh_Nhan = ?";
+            String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = ?";
             ps = con.getPS(sql);
             ps.setInt(1, bnselected.getMa());
             ps.executeUpdate();
