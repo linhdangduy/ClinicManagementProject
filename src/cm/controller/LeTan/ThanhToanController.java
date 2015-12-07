@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,7 +118,7 @@ public class ThanhToanController implements Initializable {
         }
     }    
     private void cbSearchC() {
-        cbSearch.getItems().addAll("Mã","Họ Tên","Trạng Thái");
+        cbSearch.getItems().addAll("Mã","Họ Tên");
         cbSearch.setValue("Họ Tên");
     }
     private void cbSearchD() {
@@ -129,14 +130,28 @@ public class ThanhToanController implements Initializable {
         TenColumn.setCellValueFactory(new PropertyValueFactory<>("HoTen"));
         NgaySinhColumn.setCellValueFactory(new PropertyValueFactory<>("NgaySinh"));
         GioiTinhColumn.setCellValueFactory(new PropertyValueFactory<>("GioiTinh"));
-        PhoneColumn.setCellValueFactory(new PropertyValueFactory<>("Thone"));
+        PhoneColumn.setCellValueFactory(new PropertyValueFactory<>("Phone"));
         ThoiGianColumn.setCellValueFactory(new PropertyValueFactory<>("ThoiGian"));
         TrangThaiColumn.setCellValueFactory(new PropertyValueFactory<>("TrangThai"));
         
-        FilteredList<BenhNhan> filteredData = new FilteredList<>(BenhNhanData, p -> true);
-        BenhNhanTable.setItems(filteredData);
+         FilteredList<BenhNhan> filteredData = new FilteredList<>(BenhNhanData, p -> true);
+        
+       cbSearchDay.valueProperty().addListener((observable, oldValue , newValue) -> {
+           filteredData.setPredicate(benhnhan -> {
+               switch(newValue){
+                   case "Hôm Nay":
+                       if (benhnhan.getThoiGian().contains(LocalDate.now().toString()))
+                           return true;
+                       break;
+                   case "Tất Cả":
+                       return true;
+               }
+               return false;
+           });
+       });
+       FilteredList<BenhNhan> filteredData2 = new FilteredList<>(filteredData , p->true);
         SearchText.textProperty().addListener((observable, oldValue , newValue) -> {
-            filteredData.setPredicate( benhnhan -> {
+            filteredData2.setPredicate( benhnhan -> {
                 if (newValue == null || newValue.isEmpty()){
                     return true;
                 }
@@ -153,16 +168,13 @@ public class ThanhToanController implements Initializable {
                             return true;
                         }
                         break;
-                    case "Trạng Thái":
-                        if (benhnhan.getTrangThai().toLowerCase().contains(lowerCaseFilter)){
-                            return true;
-                        }
-                        break;
                 }
+                       
+                
                 return false;
             });
         });
-        
+        BenhNhanTable.setItems(filteredData2);
         BenhNhanTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
             try {
@@ -171,14 +183,14 @@ public class ThanhToanController implements Initializable {
                 Logger.getLogger(ThanhToanController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-
+        
+        
     }
     private void showDetails(BenhNhan benhnhan) throws SQLException {
             
             String sql1 = "select sum(Gia_Dich_Vu) as tien from Dich_Vu natural join Don_Dich_Vu natural join Phien_Kham"
                     +" where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tien>0;";
-            String sql2 = "select sum(Chi_Phi_Thuoc) as tient from Don_Thuoc natural join Phien_Kham"
-                    +"where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tient> 0;";
+            String sql2 = "select sum(Chi_Phi_Thuoc) as abcd from Don_Thuoc natural join Phien_Kham where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having abcd > 0;";
             ps = con.getPS(sql1);
             ps.setInt(1,benhnhan.getMa());
             rs = ps.executeQuery();
@@ -189,20 +201,24 @@ public class ThanhToanController implements Initializable {
             }
             else TienDV = 0;
             lblTienDV.setText(Float.toString(TienDV));
-  
+            ps.close();
+            rs.close();
+            
             ps = con.getPS(sql2);
             ps.setInt(1,benhnhan.getMa());
             rs = ps.executeQuery();
-            if(rs.wasNull() == false)
+            if(rs.isBeforeFirst())
             {
                 rs.next();
-                TienThuoc = rs.getFloat("tient");
+                TienThuoc = rs.getFloat("abcd");
             }
             else TienThuoc = 0;
             
             lblTienThuoc.setText(Float.toString(TienThuoc));            
             TongTien = TienThuoc + TienDV;
             lblTongTien.setText(Float.toString(TongTien));
+            ps.close();
+            rs.close();
             
             lblTen.setText(benhnhan.getHoTen());
             lblNgaySinh.setText(benhnhan.getNgaySinh());
@@ -212,27 +228,27 @@ public class ThanhToanController implements Initializable {
             MaBN = benhnhan.getMa();
             }
     public void addBenhNhanData() throws SQLException{
-        String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk "
+        String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk where Trang_Thai_BN = 'thanh toán' "
                         + "group by Ma_Benh_Nhan "
                         + "order by Thoi_Gian_Kham desc;";
         rs = con.getRS(sql);
         while(rs.next()){
             BenhNhan benhnhan = new BenhNhan();
             benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-            benhnhan.setHoTen(rs.getString("Ho_Ten"));
-            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh"));
-            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh"));
+            benhnhan.setHoTen(rs.getString("Ho_Ten_BN"));
+            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh_BN"));
+            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh_BN"));
             benhnhan.setPhone(rs.getString("SDT_BN"));
             benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
-            benhnhan.setTrangThai(rs.getString("Trang_Thai"));
-            benhnhan.setDiaChi(rs.getString("Dia_chi"));
+            benhnhan.setTrangThai(rs.getString("Trang_Thai_BN"));
+            benhnhan.setDiaChi(rs.getString("Dia_chi_BN"));
             BenhNhanData.add(benhnhan);
         }
         rs.close();
     }
     @FXML
     private void ThanhToan(ActionEvent e) throws SQLException {
-        if(lblTen.getText() == "" || lblTen.getText() == null)
+        if("".equals(lblTen.getText()) || lblTen.getText() == null)
             return;
         String sql = "insert into Thanh_Toan values (?,?,?,?,?)";
         ps.setInt(1,getMaPK(MaBN));
