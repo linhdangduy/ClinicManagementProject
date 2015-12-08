@@ -24,7 +24,9 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -89,22 +91,15 @@ public class TiepNhanController implements Initializable {
         try {
             con = new ConnectToDatabase();
             
-            btnDelete.setDisable(true);
             btnAccept.setDisable(true);
             lblTrangThai.textProperty().addListener(new ChangeListener<String>(){
 
                 @Override
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     if("Đăng Ký".equals(lblTrangThai.getText()))
-                    {
-                        btnDelete.setDisable(false);
                         btnAccept.setDisable(false);
-                    }
                     else
-                    {
-                        btnDelete.setDisable(true);
                         btnAccept.setDisable(true);
-                    }
                 }
                 
             });
@@ -212,14 +207,22 @@ public class TiepNhanController implements Initializable {
     private void Delete(ActionEvent event) throws SQLException {
         
         String sql = "DELETE FROM Tai_Khoan WHERE Ten_Dang_Nhap = ?";
-        ps=con.getPS(sql);
-        ps.setString(1,lblTenDangNhap.getText());
-        ps.executeUpdate();
-        ps.close();
-        int index =  NhanVienData.indexOf(nhanviensel);
-        NhanVienData.remove(index);
-        nhanviensel = new NhanVien();
-        showDetails(nhanviensel);
+        String notice = "Xác nhận xoá tài khoản "+ lblTenDangNhap.getText()+"?";
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION , notice, ButtonType.YES, ButtonType.NO  );
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+        alert.showAndWait();
+        
+        if(alert.getResult() == ButtonType.YES){
+            ps=con.getPS(sql);
+            ps.setString(1,lblTenDangNhap.getText());
+            ps.executeUpdate();
+            ps.close();
+            int index =  NhanVienData.indexOf(nhanviensel);
+            NhanVienData.remove(index);
+            //nhanviensel = new NhanVien();
+            //showDetails(nhanviensel);
+        }
                 }
     
 }
