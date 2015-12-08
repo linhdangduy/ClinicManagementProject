@@ -329,79 +329,91 @@ public class TiepNhanController implements Initializable {
     }
     @FXML
     private void GiaoThuoc(ActionEvent event) throws SQLException {
-        Alert alert = new Alert(AlertType.CONFIRMATION , "Xác Nhận Giao Thuốc?" ,ButtonType.YES ,ButtonType.NO);
-        alert.setTitle("Xác Nhận");
-        alert.showAndWait();
-        if (alert.getResult() == ButtonType.YES){
-            con =new ConnectToServer();
-            String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = '"+bnselected.getMa()+"'";
-            /*ps = con.getPS(sql);
-            ps.setInt(1, bnselected.getMa());
-            ps.executeUpdate();
-            ps.close();*/
-            con.sendToServer(sql);
-            
+        if (bnselected != null){
+            Alert alert = new Alert(AlertType.CONFIRMATION , "Xác Nhận Giao Thuốc?" ,ButtonType.YES ,ButtonType.NO);
+            alert.setTitle("Xác Nhận");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES){
+                con =new ConnectToServer();
+                String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = '"+bnselected.getMa()+"'";
+                /*ps = con.getPS(sql);
+                ps.setInt(1, bnselected.getMa());
+                ps.executeUpdate();
+                ps.close();*/
+                con.sendToServer(sql);
 
-            /*sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
-            ps = con.getPS(sql);
-            ps.setInt(2, bnselected.getMa());
-            String sql2 = "update Thuoc set So_Luong = ? where Ma_Thuoc = ?";
-            PreparedStatement ps2;
-            ps2 = con.getPS(sql2);
-            DonThuocData.forEach((thuoc) -> {
-            try {
-            ps.setFloat(1, thuoc.getChiPhiThuoc());
-            ps.executeUpdate();
-            ps2.setInt(1, thuoc.getSoLuong() - thuoc.getSoLuongKe());
-            ps2.setInt(2, thuoc.getMaThuoc());
-            ps2.executeUpdate();
-            } catch (SQLException ex) {
-            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            });
-            ps.close();
-            ps2.close();*/
-            
-            DonThuocData.forEach(thuoc -> {
-                String sql2 = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = '"
-                        +thuoc.getChiPhiThuoc()
-                        +"' where Ma_Benh_Nhan = '"
-                        + bnselected.getMa()
-                        +"'";
-                con.sendToServer(sql2);
-                int soLuong= thuoc.getSoLuong() - thuoc.getSoLuongKe();
-                String sql3 = "update Thuoc set So_Luong = '"+ soLuong
-                        +"'where Ma_Thuoc = '"
-                        + thuoc.getMaThuoc()+"'";
-                con.sendToServer(sql3);
-            });
-            con.sendToServer("done");
-            addBenhNhanData();
+
+                /*sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
+                ps = con.getPS(sql);
+                ps.setInt(2, bnselected.getMa());
+                String sql2 = "update Thuoc set So_Luong = ? where Ma_Thuoc = ?";
+                PreparedStatement ps2;
+                ps2 = con.getPS(sql2);
+                DonThuocData.forEach((thuoc) -> {
+                try {
+                ps.setFloat(1, thuoc.getChiPhiThuoc());
+                ps.executeUpdate();
+                ps2.setInt(1, thuoc.getSoLuong() - thuoc.getSoLuongKe());
+                ps2.setInt(2, thuoc.getMaThuoc());
+                ps2.executeUpdate();
+                } catch (SQLException ex) {
+                Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                });
+                ps.close();
+                ps2.close();*/
+
+                DonThuocData.forEach(thuoc -> {
+                    String sql2 = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = '"
+                            +thuoc.getChiPhiThuoc()
+                            +"' where Ma_Benh_Nhan = '"
+                            + bnselected.getMa()
+                            +"'";
+                    con.sendToServer(sql2);
+                    int soLuong= thuoc.getSoLuong() - thuoc.getSoLuongKe();
+                    String sql3 = "update Thuoc set So_Luong = '"+ soLuong
+                            +"'where Ma_Thuoc = '"
+                            + thuoc.getMaThuoc()+"'";
+                    con.sendToServer(sql3);
+                });
+                con.sendToServer("done");
+                addBenhNhanData();
+            }   
+        }
+        else{
+            Alert alert2 = new Alert(AlertType.ERROR ,"Chưa Chọn Bệnh Nhân" , ButtonType.OK);
+            alert2.showAndWait();
         }
         
     }
 
     @FXML
     private void Huy(ActionEvent event) {
-        try {
-            Alert alert = new Alert(AlertType.CONFIRMATION , "Xác Nhận Hủy Đơn Thuốc?" , ButtonType.YES , ButtonType.NO);
-            alert.setTitle("Xác Nhận");
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.YES){
-                con = new ConnectToServer();
-                String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = '"+bnselected.getMa() +"'";
-                /*ps = con.getPS(sql);
-                ps.setInt(1, bnselected.getMa());
-                ps.executeUpdate();
-                ps.close();
-                BenhNhanData.remove(BenhNhanData.indexOf(bnselected));*/
-                con.sendToServer(sql);
-                con.sendToServer("done");
-                addBenhNhanData();
+        if (bnselected != null){
+            try {
+                Alert alert = new Alert(AlertType.CONFIRMATION , "Xác Nhận Hủy Đơn Thuốc?" , ButtonType.YES , ButtonType.NO);
+                alert.setTitle("Xác Nhận");
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES){
+                    con = new ConnectToServer();
+                    String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = '"+bnselected.getMa() +"'";
+                    /*ps = con.getPS(sql);
+                    ps.setInt(1, bnselected.getMa());
+                    ps.executeUpdate();
+                    ps.close();
+                    BenhNhanData.remove(BenhNhanData.indexOf(bnselected));*/
+                    con.sendToServer(sql);
+                    con.sendToServer("done");
+                    addBenhNhanData();
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        else{
+            Alert alert2 = new Alert(AlertType.ERROR ,"Chưa Chọn Bệnh Nhân" , ButtonType.OK);
+            alert2.showAndWait();
         }
     }
     
