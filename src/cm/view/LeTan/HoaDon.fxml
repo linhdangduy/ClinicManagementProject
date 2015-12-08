@@ -10,7 +10,7 @@
 
 <ScrollPane prefHeight="479.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.LeTan.HoaDonController">
    <content>
-      <VBox prefHeight="800.0" prefWidth="746.0">
+      <VBox prefHeight="700.0" prefWidth="746.0">
          <children>
             <FlowPane prefHeight="34.0" prefWidth="746.0">
                <children>
