@@ -6,13 +6,12 @@
 package cm.controller.DangNhap;
 
 import cm.ClinicManager;
-import cm.ConnectToDatabase;
+import cm.ConnectToServer;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javax.sql.rowset.CachedRowSet;
 
 /**
  *
@@ -38,15 +38,14 @@ public class DangNhapController implements Initializable {
     private PasswordField tfPass;
     @FXML
     private Label lbThongBao;
-    private ConnectToDatabase con;
     private ResultSet rs;
     private PreparedStatement ps;
     private static String employeeName;
-    
+    private ConnectToServer con;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {        
-        con = new ConnectToDatabase();
+        con = new ConnectToServer();
         lbThongBao.setText("");
     }
     
@@ -55,40 +54,49 @@ public class DangNhapController implements Initializable {
     }
     
     @FXML
-    private void dangnhap(ActionEvent e) {
-        String sql = "SELECT Ten_Nhan_Vien, Phong FROM Tai_Khoan WHERE Ten_Dang_Nhap = ? AND Mat_Khau = ?";
-        try {
-            ps = con.getPS(sql);
-            String name=tfName.getText();
-            ps.setString(1, name);
-            ps.setString(2, tfPass.getText());
-            rs = ps.executeQuery();
-            if(rs.isBeforeFirst()){
-                rs.next();
-                employeeName = rs.getString("Ten_Nhan_Vien");
-                String phong = rs.getString("Phong");
-                if (phong.equals("phòng khám")){
-                    setView("/cm/view/BacSi/BacSi.fxml");
+    private void dangnhap(ActionEvent e) throws SQLException {
+        String name = tfName.getText();
+        String pass = tfPass.getText();
+        if (!name.equals("") && !pass.equals("")) {
+            //construct query
+            String query = "SELECT Ten_Nhan_Vien, Phong FROM Tai_Khoan "
+                + "WHERE Ten_Dang_Nhap = '" + name 
+                + "' AND Mat_Khau = '" + pass +"'";
+            con.sendToServer(query);
+            while (true) {
+                Object ob = con.receiveFromServer();
+                /*
+                 * if returned object is not CacheRowSet, inform and end the loop
+                 * else use CacheRowSet and end the loop
+                */
+                if (ob.getClass().toString().equals("class java.lang.String")) {
+                    lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
+                    break;
                 }
-                else if (phong.equals("lễ tân")){
-                    setView("/cm/view/LeTan/LeTan.fxml");
+                else {
+                    CachedRowSet crs = (CachedRowSet)ob;
+                    crs.next();
+                    employeeName = crs.getString("Ten_Nhan_Vien");
+                    String phong = crs.getString("Phong");
+                    if (phong.equals("phòng khám")){
+                        setView("/cm/view/BacSi/BacSi.fxml");
+                    }
+                    else if (phong.equals("lễ tân")){
+                        setView("/cm/view/LeTan/LeTan.fxml");
+                    }
+                    else if (phong.equals("phòng thuốc")) {
+                        setView("/cm/view/DuocSi/DuocSi.fxml");
+                    }
+                    else if (phong.equals("admin")) {
+                        setView("/cm/view/QuanLy/QuanLy.fxml");
+                    }
+                    break;
                 }
-                else if (phong.equals("phòng thuốc")) {
-                    setView("/cm/view/DuocSi/DuocSi.fxml");
-                }
-                else if (phong.equals("admin")) {
-                    setView("/cm/view/QuanLy/QuanLy.fxml");
-                }
-                con.conClose();
             }
-            else{
-                lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        else {
+            lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
+        }
     }
     
     @FXML
@@ -102,6 +110,9 @@ public class DangNhapController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource(url));
             Scene scene = new Scene(root);
             ClinicManager.getStage().setScene(scene);
+            
+            //inform server done thread
+            con.sendToServer("done");
         } catch (IOException ex) {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,12 +120,7 @@ public class DangNhapController implements Initializable {
     
     @FXML
     private void thoat(ActionEvent e){
-        try {
-            con.conClose();
-            Platform.exit();
-        } catch (SQLException ex) {
-            Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Platform.exit();
     }
     
     
