@@ -23,25 +23,25 @@ public class KeDonThuoc {
     private SimpleStringProperty cachDungThuoc = new SimpleStringProperty();
     
     public void setMa(int s) {
-        maThuoc.set(s);
+        this.maThuoc.set(s);
     }
     public void setTenThuoc(String s) {
-        tenThuoc.set(s);
+        this.tenThuoc.set(s);
     }
     public void setTenDangNhap(String s) {
-        tenDangNhap.set(s);
+        this.tenDangNhap.set(s);
     }
     public void setSoLuong(int s) {
-        soLuong.setValue(s);
+        this.soLuong.setValue(s);
     }
     public void setSoLuongKe(int s) {
-        soLuong.setValue(s);
+        this.soLuongKe.setValue(s);
     }
     public void setChiPhiThuoc(float s) {
-        chiPhiThuoc.set(s);
+        this.chiPhiThuoc.set(s);
     }
     public void setCachDungThuoc(String s) {
-        cachDungThuoc.set(s);
+        this.cachDungThuoc.set(s);
     }
     
     public int getMaThuoc() {
@@ -57,7 +57,7 @@ public class KeDonThuoc {
         return soLuong.get();
     }
     public int getSoLuongKe() {
-        return soLuong.get();
+        return soLuongKe.get();
     }
     public float getChiPhiThuoc() {
         return chiPhiThuoc.get();
