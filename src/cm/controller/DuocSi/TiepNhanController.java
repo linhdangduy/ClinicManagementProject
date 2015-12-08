@@ -22,6 +22,9 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -230,32 +233,38 @@ public class TiepNhanController implements Initializable {
     @FXML
     private void GiaoThuoc(ActionEvent event) {
         try {
-            String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = ?";
-            ps = con.getPS(sql);
-            ps.setInt(1, bnselected.getMa());
-            ps.executeUpdate();
-            ps.close();
+            Alert alert = new Alert(AlertType.CONFIRMATION , "Xác Nhận Giao Thuốc?" ,ButtonType.YES ,ButtonType.NO);
+            alert.setTitle("Xác Nhận");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES){
+                String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = ?";
+                ps = con.getPS(sql);
+                ps.setInt(1, bnselected.getMa());
+                ps.executeUpdate();
+                ps.close();
+
+                sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
+                ps = con.getPS(sql);
+                ps.setInt(2, bnselected.getMa());
+                String sql2 = "update Thuoc set So_Luong = ? where Ma_Thuoc = ?";
+                PreparedStatement ps2;
+                ps2 = con.getPS(sql2);
+                DonThuocData.forEach((thuoc) -> {
+                    try {
+                        ps.setFloat(1, thuoc.getChiPhiThuoc());
+                        ps.executeUpdate();
+                        ps2.setInt(1, thuoc.getSoLuong() - thuoc.getSoLuongKe());
+                        ps2.setInt(2, thuoc.getMaThuoc());
+                        ps2.executeUpdate();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+                ps.close();
+                ps2.close();
+                BenhNhanData.remove(BenhNhanData.indexOf(bnselected));    
+            }
             
-            sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
-            ps = con.getPS(sql);
-            ps.setInt(2, bnselected.getMa());
-            String sql2 = "update Thuoc set So_Luong = ? where Ma_Thuoc = ?";
-            PreparedStatement ps2;
-            ps2 = con.getPS(sql2);
-            DonThuocData.forEach((thuoc) -> {
-                try {
-                    ps.setFloat(1, thuoc.getChiPhiThuoc());
-                    ps.executeUpdate();
-                    ps2.setInt(1, thuoc.getSoLuong() - thuoc.getSoLuongKe());
-                    ps2.setInt(2, thuoc.getMaThuoc());
-                    ps2.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            ps.close();
-            ps2.close();
-            BenhNhanData.remove(BenhNhanData.indexOf(bnselected));
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -265,12 +274,18 @@ public class TiepNhanController implements Initializable {
     @FXML
     private void Huy(ActionEvent event) {
         try {
-            String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = ?";
-            ps = con.getPS(sql);
-            ps.setInt(1, bnselected.getMa());
-            ps.executeUpdate();
-            ps.close();
-            BenhNhanData.remove(BenhNhanData.indexOf(bnselected));
+            Alert alert = new Alert(AlertType.CONFIRMATION , "Xác Nhận Hủy Đơn Thuốc?" , ButtonType.YES , ButtonType.NO);
+            alert.setTitle("Xác Nhận");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES){
+                String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = ?";
+                ps = con.getPS(sql);
+                ps.setInt(1, bnselected.getMa());
+                ps.executeUpdate();
+                ps.close();
+                BenhNhanData.remove(BenhNhanData.indexOf(bnselected));
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }

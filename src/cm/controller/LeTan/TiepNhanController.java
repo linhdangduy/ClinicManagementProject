@@ -282,15 +282,8 @@ public class TiepNhanController implements Initializable{
                     Timestamp ts = new java.sql.Timestamp(timeNow);
                     ps2.setTimestamp(2, ts);
                     ps2.executeUpdate();
-                    
-                    //cập nhật bảng
-                    
-                    int index = BenhNhanData.indexOf(bnSelected);
-                    BenhNhan benhnhan = bnSelected;
-                    benhnhan.setThoiGian(ts.toString());
-                    benhnhan.setTrangThai("phòng khám");
-                    BenhNhanData.remove(index);
-                    BenhNhanData.add(0, benhnhan);
+                    //cap nhat lai bang
+                    addBenhNhanData();
                     
                     
                 } catch (SQLException ex) {
@@ -356,9 +349,8 @@ public class TiepNhanController implements Initializable{
                     ps2.setTimestamp(2, ts);
                     ps2.executeUpdate();
                     benhnhan.setThoiGian(ts.toString());
-                    //them benh nhan moi nhat vao dau bang
-                    //Can xem lai
-                    BenhNhanData.add(0, benhnhan);
+                    //cap nhat lai bang
+                    addBenhNhanData();
                     refreshTabThemMoi();    
                 }
                 else{
