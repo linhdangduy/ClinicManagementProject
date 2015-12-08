@@ -7,6 +7,7 @@ package cm.controller.LeTan;
 
 import cm.ConnectToDatabase;
 import cm.model.BenhNhan;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,8 +22,10 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -52,8 +55,7 @@ public class ThanhToanController implements Initializable {
     private Statement st;
     private PreparedStatement ps;
     private ResultSet rs;
-    private float TienThuoc = 0,TienDV = 0,TongTien = 0;
-    private  int MaBN;
+    private static float TienThuoc = 0,TienDV = 0,TongTien = 0;
     
     @FXML
     private ComboBox<String> cbSearchDay;
@@ -95,7 +97,7 @@ public class ThanhToanController implements Initializable {
     private Label lblTienDV;
     @FXML
     private Label lblTongTien;
-        
+    private static String tenbn;
     
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
 
@@ -122,7 +124,7 @@ public class ThanhToanController implements Initializable {
         cbSearch.setValue("Họ Tên");
     }
     private void cbSearchD() {
-        cbSearchDay.getItems().addAll("Hôm nay","Tất cả");
+        cbSearchDay.getItems().addAll("Hôm Nay","Tất Cả");
         cbSearchDay.setValue("Tất cả");
     }
     public void initTable(){
@@ -154,8 +156,7 @@ public class ThanhToanController implements Initializable {
             filteredData2.setPredicate( benhnhan -> {
                 if (newValue == null || newValue.isEmpty()){
                     return true;
-                }
-                
+                }                
                 String lowerCaseFilter = newValue.toLowerCase();
                 switch(cbSearch.getValue()) {
                     case "Mã":
@@ -221,11 +222,11 @@ public class ThanhToanController implements Initializable {
             rs.close();
             
             lblTen.setText(benhnhan.getHoTen());
+            tenbn = benhnhan.getHoTen();
             lblNgaySinh.setText(benhnhan.getNgaySinh());
             lblGioiTinh.setText(benhnhan.getGioiTinh());
             lblPhone.setText(benhnhan.getPhone());
             lblDiaChi.setText(benhnhan.getDiaChi());
-            MaBN = benhnhan.getMa();
             }
     public void addBenhNhanData() throws SQLException{
         String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk where Trang_Thai_BN = 'thanh toán' "
@@ -247,118 +248,27 @@ public class ThanhToanController implements Initializable {
         rs.close();
     }
     @FXML
-    private void ThanhToan(ActionEvent e) throws SQLException {
-        if("".equals(lblTen.getText()) || lblTen.getText() == null)
-            return;
-        String sql = "insert into Thanh_Toan values (?,?,?,?,?)";
-        ps.setInt(1,getMaPK(MaBN));
-        //ps.setString(); insert Ten_Dang_Nhap
-        ps.setFloat(3,TienThuoc);
-        ps.setFloat(4,TienDV);
-        ps.setFloat(5,TongTien);
-        ps.executeQuery();
-
-        Notice.display(lblTen.getText(), lblNgaySinh.getText(), lblGioiTinh.getText(),
-                lblDiaChi.getText(), lblPhone.getText(), lblTienThuoc.getText(),
-                lblTienDV.getText(), lblTongTien.getText());
+    private void ThanhToan(ActionEvent e) throws IOException {
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Thanh Toán");
+        Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
+        Scene scene = new Scene(root);
+        window.setScene(scene);
+        window.showAndWait();        
     }
-    public int getMaPK(int Ma_Benh_Nhan) throws SQLException{
-        String sql = "select Ma_Phien_Kham from Phien_Kham where Ma_Benh_Nhan = ?";
-        ps = con.getPS(sql);
-        ps.setInt(1, Ma_Benh_Nhan);
-        rs = ps.executeQuery();
-        if(rs.wasNull())
-            return 0;
-        else return rs.getInt("Ma_Phien_Kham");
+    
         
-    }
-        
+    public static String getbn(){
+        return tenbn;
 }
-class Notice{
-        public static void display(String ht, String ns, String gt, String dc, String sdt,
-                                String tienthuoc, String tiendv, String tongt){
-            Stage window =  new Stage();
-            window.initModality(Modality.APPLICATION_MODAL);
-            window.setTitle("Thông Báo");
-            window.setWidth(450);
-            window.setHeight(270);
-            window.setResizable(false);
-            
-            
-            VBox layout1 = new VBox();
-            layout1.setPrefWidth(200);
-            layout1.setPrefHeight(50);
-            layout1.setAlignment(Pos.CENTER);
-            Text textlayout = new Text();
-            textlayout.setText("Thanh Toán");
-            textlayout.setFont(new Font("Arial",20));
-
-            
-            GridPane pane = new GridPane();
-            Label lblten = new Label("Họ Tên : ");
-            lblten.setFont(new Font("Arial",16));
-            GridPane.setConstraints(lblten, 0, 0);
-            Label lblngays = new Label("Ngày Sinh : ");
-            lblngays.setFont(new Font("Arial",16));
-            GridPane.setConstraints(lblngays, 0, 1);            
-            Label lblgt = new Label("Giới Tính : ");
-            GridPane.setConstraints(lblgt, 0, 2);
-            lblgt.setFont(new Font("Arial",16));
-            Label lbldc = new Label("Địa Chỉ : ");
-            GridPane.setConstraints(lbldc, 0, 3);
-            lbldc.setFont(new Font("Arial",16));
-            Label lblsdt = new Label("Số Điện Thoại : ");
-            GridPane.setConstraints(lblsdt, 0, 4);
-            lblsdt.setFont(new Font("Arial",16));
-            Label lbltienthuoc = new Label("Tiền Thuốc : ");
-            GridPane.setConstraints(lbltienthuoc, 0, 5);
-            lbltienthuoc.setFont(new Font("Arial",16));
-            Label lbltiendv = new Label("Tiền Dịch Vụ : ");
-            GridPane.setConstraints(lbltiendv, 0, 6);
-            lbltiendv.setFont(new Font("Arial",16));
-            Label lbltongtien = new Label("Tổng Tiền : ");
-            GridPane.setConstraints(lbltongtien, 0, 7);
-            lbltongtien.setFont(new Font("Arial",16));
-            Label lbl1 = new Label(ht);
-            GridPane.setConstraints(lbl1, 1, 0);
-            lbl1.setFont(new Font("Arial",16));
-            Label lbl2 = new Label(ns);
-            GridPane.setConstraints(lbl2, 1, 1);
-            lbl2.setFont(new Font("Arial",16));
-            Label lbl3 = new Label(gt);
-            GridPane.setConstraints(lbl3, 1, 2);
-            lbl3.setFont(new Font("Arial",16));
-            Label lbl4 = new Label(dc);
-            GridPane.setConstraints(lbl4, 1, 3);
-            lbl4.setFont(new Font("Arial",16));
-            Label lbl5 = new Label(sdt);
-            GridPane.setConstraints(lbl5, 1, 4);
-            lbl5.setFont(new Font("Arial",16));
-            Label lbl6 = new Label(tienthuoc);
-            GridPane.setConstraints(lbl6, 1, 5);
-            lbl6.setFont(new Font("Arial",16));
-            Label lbl7 = new Label(tiendv);
-            GridPane.setConstraints(lbl7, 1, 6);
-            lbl7.setFont(new Font("Arial",16));
-            Label lbl8 = new Label(tongt);
-            GridPane.setConstraints(lbl8, 1, 7);
-            lbl8.setFont(new Font("Arial",16));
-            pane.getChildren().addAll(lblten,lbl1,lblngays,lbl2,lblgt,lbl3,lbldc,lbl4,lblsdt,lbl5,lbltienthuoc,lbl6,lbltiendv,lbl7,lbltongtien,lbl8);
-            pane.setAlignment(Pos.CENTER);
-            
-            Text notice = new Text("Đã thanh toán!");
-            notice.setFont(new Font("Arial",14));
-            notice.setFill(Color.RED);
-            
-            Button button =new Button("OK");
-            button.setOnAction(e -> window.close());
-            button.setAlignment(Pos.CENTER);
-            
-            layout1.getChildren().addAll(textlayout,pane,notice,button);
-          
-            Scene scene = new Scene(layout1,900,700);
-            window.setScene(scene);
-            window.showAndWait();
-            
-        }
+    public static float getTienDV(){
+        return TienDV;
+    }
+    public static float getTienThuoc(){
+        return TienThuoc;
+    }
+    public static float getTongTien(){
+        return TongTien;
+    }
 }
