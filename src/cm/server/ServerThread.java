@@ -50,14 +50,14 @@ public class ServerThread implements Runnable {
                     if (in.hasNextLine()) {
                         String query = in.nextLine();
                         //receive "done", this thread will be close
-                        if (query.equals("done")) {
+                        if (query.toLowerCase().equals("done")) {
                             con.conClose();
                             done = true;
                         }
-                        else if (query.contains("INSERT") || query.contains("UPDATE")) { 
+                        else if (query.toLowerCase().contains("insert") || query.toLowerCase().contains("update") || query.toLowerCase().contains("delete")) { 
                             con.update(query);
                         }
-                        else if (query.contains("SELECT")) {
+                        else if (query.toLowerCase().contains("select")) {
                             CachedRowSet crs = con.getCRS(query);
                             if (crs.isBeforeFirst()) {
                                 //send the result
