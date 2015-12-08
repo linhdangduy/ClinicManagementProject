@@ -56,7 +56,7 @@ public class ThanhToanController implements Initializable {
     private PreparedStatement ps;
     private ResultSet rs;
     private static float TienThuoc = 0,TienDV = 0,TongTien = 0;
-    
+    private BenhNhan bnsel;
     @FXML
     private ComboBox<String> cbSearchDay;
     @FXML
@@ -97,7 +97,7 @@ public class ThanhToanController implements Initializable {
     private Label lblTienDV;
     @FXML
     private Label lblTongTien;
-    private static String tenbn;
+    private static int mabn;
     
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
 
@@ -220,13 +220,13 @@ public class ThanhToanController implements Initializable {
             lblTongTien.setText(Float.toString(TongTien));
             ps.close();
             rs.close();
-            
+            mabn =  benhnhan.getMa();
             lblTen.setText(benhnhan.getHoTen());
-            tenbn = benhnhan.getHoTen();
             lblNgaySinh.setText(benhnhan.getNgaySinh());
             lblGioiTinh.setText(benhnhan.getGioiTinh());
             lblPhone.setText(benhnhan.getPhone());
             lblDiaChi.setText(benhnhan.getDiaChi());
+            bnsel = benhnhan;
             }
     public void addBenhNhanData() throws SQLException{
         String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk where Trang_Thai_BN = 'thanh toán' "
@@ -248,19 +248,28 @@ public class ThanhToanController implements Initializable {
         rs.close();
     }
     @FXML
-    private void ThanhToan(ActionEvent e) throws IOException {
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Thanh Toán");
-        Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
-        Scene scene = new Scene(root);
-        window.setScene(scene);
-        window.showAndWait();        
+    private void ThanhToan(ActionEvent e) throws IOException, SQLException {
+        if(lblTen.getText() == null || "".equals(lblTen.getText())) {
+        } else{
+            Stage window = new Stage();
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setTitle("Thanh Toán");
+            Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
+            Scene scene = new Scene(root);
+            window.setScene(scene);
+            window.showAndWait();
+            if(HoaDonController.getChange() == 1)
+            {
+                int index = BenhNhanData.indexOf(bnsel);
+                BenhNhanData.remove(index);
+                HoaDonController.setChange(0);
+            }
+        }
     }
     
         
-    public static String getbn(){
-        return tenbn;
+    public static int getmabn(){
+        return mabn;
 }
     public static float getTienDV(){
         return TienDV;
@@ -270,5 +279,19 @@ public class ThanhToanController implements Initializable {
     }
     public static float getTongTien(){
         return TongTien;
+    }
+
+    private void clearDetail() {
+        lblTen.setText(null);
+        lblNgaySinh.setText(null);
+        lblGioiTinh.setText(null);
+        lblPhone.setText(null);
+        lblDiaChi.setText(null);
+        TongTien = 0;
+        TienDV = 0;
+        TienThuoc = 0;
+        lblTienDV.setText(null);
+        lblTienThuoc.setText(null);
+        lblTongTien.setText(null);
     }
 }
