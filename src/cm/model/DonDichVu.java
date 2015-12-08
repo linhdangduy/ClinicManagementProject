@@ -19,7 +19,11 @@ public class DonDichVu {
     private SimpleIntegerProperty maDichVu = new SimpleIntegerProperty();
     private SimpleStringProperty tenDangNhap = new SimpleStringProperty();
     private SimpleStringProperty ketQua = new SimpleStringProperty();
-
+    private SimpleFloatProperty GiaDichVu = new SimpleFloatProperty();
+    
+    public void setGiaDichVu(float f){
+        GiaDichVu.set(f);
+    }
     public void setMaDichVu(int i) {
         maDichVu.set(i);
     }
@@ -50,5 +54,8 @@ public class DonDichVu {
 
     public String getTenDichVu() {
         return tenDichVu.get();
+    }
+    public float getGiaDichVu() {
+        return GiaDichVu.get();
     }
 }
