@@ -42,6 +42,7 @@ public class DangNhapController implements Initializable {
     private ResultSet rs;
     private PreparedStatement ps;
     private static String employeeName;
+    private static String username;
     
     
     @Override
@@ -52,6 +53,9 @@ public class DangNhapController implements Initializable {
     
     public static String getEmployeeName() {
         return employeeName;
+    }
+    public static String getUserName(){
+        return username;
     }
     
     @FXML
@@ -65,6 +69,7 @@ public class DangNhapController implements Initializable {
             rs = ps.executeQuery();
             if(rs.isBeforeFirst()){
                 rs.next();
+                username = tfName.getText();
                 employeeName = rs.getString("Ten_Nhan_Vien");
                 String phong = rs.getString("Phong");
                 if (phong.equals("phòng khám")){
