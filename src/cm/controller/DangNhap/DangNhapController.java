@@ -41,12 +41,16 @@ public class DangNhapController implements Initializable {
     private ResultSet rs;
     private PreparedStatement ps;
     private static String employeeName;
+    private static String tenDangNhap;
     private ConnectToServer con;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {        
-        con = new ConnectToServer();
         lbThongBao.setText("");
+    }
+    
+    public static String getTenDangNhap() {
+        return tenDangNhap;
     }
     
     public static String getEmployeeName() {
@@ -59,9 +63,10 @@ public class DangNhapController implements Initializable {
         String pass = tfPass.getText();
         if (!name.equals("") && !pass.equals("")) {
             //construct query
-            String query = "SELECT Ten_Nhan_Vien, Phong FROM Tai_Khoan "
+            String query = "SELECT Ten_Nhan_Vien, Phong, Trang_Thai FROM Tai_Khoan "
                 + "WHERE Ten_Dang_Nhap = '" + name 
                 + "' AND Mat_Khau = '" + pass +"'";
+            con = new ConnectToServer();
             con.sendToServer(query);
             Object ob = con.receiveFromServer();
                 /*
@@ -72,22 +77,35 @@ public class DangNhapController implements Initializable {
                 lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
             }
             else {
+                tenDangNhap = name;
                 CachedRowSet crs = (CachedRowSet)ob;
                 crs.next();
-                employeeName = crs.getString("Ten_Nhan_Vien");
-                String phong = crs.getString("Phong");
-                if (phong.equals("phòng khám")){
-                    setView("/cm/view/BacSi/BacSi.fxml");
+                String trangThai = crs.getString("Trang_Thai");
+                if (trangThai.equals("Nghỉ")) {
+                    employeeName = crs.getString("Ten_Nhan_Vien");
+                    String phong = crs.getString("Phong");
+
+                    if (phong.equals("phòng khám")){
+                        setView("/cm/view/BacSi/BacSi.fxml");
+                    }
+                    else if (phong.equals("lễ tân")){
+                        setView("/cm/view/LeTan/LeTan.fxml");
+                    }
+                    else if (phong.equals("phòng thuốc")) {
+                        setView("/cm/view/DuocSi/DuocSi.fxml");
+                    }
+                    else if (phong.equals("admin")) {
+                        setView("/cm/view/QuanLy/QuanLy.fxml");
+                    }
+                    query = "UPDATE Tai_Khoan SET Trang_Thai = 'Hoạt động' WHERE Ten_Dang_Nhap =  '"
+                                + tenDangNhap +"'";
+                    con.sendToServer(query);
+                    con.sendToServer("done");
                 }
-                else if (phong.equals("lễ tân")){
-                    setView("/cm/view/LeTan/LeTan.fxml");
-                }
-                else if (phong.equals("phòng thuốc")) {
-                    setView("/cm/view/DuocSi/DuocSi.fxml");
-                }
-                else if (phong.equals("admin")) {
-                    setView("/cm/view/QuanLy/QuanLy.fxml");
-                }
+                else if (trangThai.equals("Hoạt động"))
+                    lbThongBao.setText("tài khoản đang hoạt động");
+                else if (trangThai.equals("Đăng ký"))
+                    lbThongBao.setText("tài khoản đang chờ được chấp nhân");
             }
         }
         else {
@@ -106,9 +124,6 @@ public class DangNhapController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource(url));
             Scene scene = new Scene(root);
             ClinicManager.getStage().setScene(scene);
-            
-            //inform server done thread
-            con.sendToServer("done");
         } catch (IOException ex) {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }

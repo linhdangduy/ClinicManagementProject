@@ -6,6 +6,7 @@
 package cm.controller.BacSi;
 
 import cm.ConnectToServer;
+import cm.controller.DangNhap.DangNhapController;
 import cm.model.Dichvu;
 import cm.model.DonDichVu;
 import java.io.IOException;
@@ -106,6 +107,8 @@ public class DichVuController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnThem(ActionEvent event) {
         DonDichVu dichvu = new DonDichVu();
+        dichvu.setTenDangNhap(DangNhapController.getTenDangNhap());
+        dichvu.setMaDichVu(DichvuTable.getSelectionModel().getSelectedItem().getMa());
         dichvu.setTenDichVu(lblTenDichVu.getText());
         // dichvu.setChucNang(taChucNang.getText());
         //dichvu.setGia(Giaf);

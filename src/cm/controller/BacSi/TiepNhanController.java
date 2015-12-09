@@ -284,6 +284,8 @@ public class TiepNhanController implements Initializable, PaneInterface {
                             + "('"+maPK+"','");
                     StringBuilder queryBuild = new StringBuilder();
                     for (KeDonThuoc kdt : keDonThuocData) {
+                        System.out.println(maPK+" 1 "+kdt.getMaThuoc()+" 2 "+kdt.getSoLuong()+" 3 "+
+                                kdt.getChiPhiThuoc()+" 4 "+kdt.getCachDungThuoc());
                         queryBuild.delete(0, queryBuild.length());
                         queryBuild.append(kdt.getMaThuoc())
                                 .append("','").append(kdt.getSoLuong()).append("','")
@@ -298,6 +300,8 @@ public class TiepNhanController implements Initializable, PaneInterface {
                             "INSERT INTO Don_Dich_Vu VALUES ('"+maPK+"','");
                     StringBuilder queryBuild = new StringBuilder();
                     for (DonDichVu ddv: donDichVuData) {
+                        System.out.println(maPK+" 1 "+ddv.getMaDichVu()+" 2 "+ddv.getTenDangNhap()+" 3 "
+                        +ddv.getKetQua());
                         queryBuild.delete(0, queryBuild.length());
                         queryBuild.append(ddv.getMaDichVu()).append("','")
                                 .append(ddv.getTenDangNhap()).append("','")
