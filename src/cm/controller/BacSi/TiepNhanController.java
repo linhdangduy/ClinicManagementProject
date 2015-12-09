@@ -15,6 +15,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -70,7 +71,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
     @FXML
     private Label lblCanhBao;
     @FXML
-    private ComboBox<String> cbLoctheo;
+    private ComboBox<String> cbSearch, cbSearchTime;
     @FXML
     private TextField tfLoc;
     @FXML
@@ -102,15 +103,17 @@ public class TiepNhanController implements Initializable, PaneInterface {
     public void initialize(URL location, ResourceBundle resources) {
         createConnection();
         initTable();
-        initCbLoc();
+        cbSearchInit();
         lvPhienKham.getSelectionModel().selectedItemProperty().
                 addListener(observable -> showDetailPK(lvPhienKham.getSelectionModel().getSelectedItem()));
         ControllerMediator.getInstance().setTiepNhanCtrl(this);
     }
     
-    private void initCbLoc() {
-        cbLoctheo.getItems().addAll("Mã", "Họ tên", "Số điện thoại");
-        cbLoctheo.setValue("Họ tên");
+    private void cbSearchInit() {
+        cbSearchTime.getItems().addAll("Hôm Nay" , "Tất Cả");
+        cbSearchTime.setValue("Tất Cả");
+        cbSearch.getItems().addAll("Mã", "Họ tên", "Số điện thoại");
+        cbSearch.setValue("Họ Tên");
     }
     private void initTable() {
         colMa.setCellValueFactory(new PropertyValueFactory<>("Ma"));
@@ -121,17 +124,32 @@ public class TiepNhanController implements Initializable, PaneInterface {
         colThoigiankham.setCellValueFactory(new PropertyValueFactory<>("ThoiGian"));
         colTrangthai.setCellValueFactory(new PropertyValueFactory<>("TrangThai"));
         
+        FilteredList<BenhNhan> filteredData1 = new FilteredList<>(benhnhanData, p -> true);
         
-        FilteredList<BenhNhan> filteredData = new FilteredList<>(benhnhanData, p -> true);
-        tblBenhNhan.setItems(filteredData);
+       cbSearchTime.valueProperty().addListener((observable, oldValue , newValue) -> {
+           filteredData1.setPredicate(benhnhan -> {
+               switch(newValue){
+                   case "Hôm Nay":
+                       if (benhnhan.getThoiGian().contains(LocalDate.now().toString()))
+                           return true;
+                       break;
+                   case "Tất Cả":
+                       return true;
+               }
+               return false;
+           });
+       });
+        
+        FilteredList<BenhNhan> filteredData2 = new FilteredList<>(benhnhanData, p -> true);
+        tblBenhNhan.setItems(filteredData2);
         tfLoc.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(bn -> {
+            filteredData2.setPredicate(bn -> {
                 // If filter text is empty, display all
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                switch (cbLoctheo.getValue()) {
+                switch (cbSearch.getValue()) {
                     case "Mã":
                         if (bn.getMa() == Integer.parseInt(newValue)) {
                             return true; 
@@ -277,22 +295,9 @@ public class TiepNhanController implements Initializable, PaneInterface {
                         + "' ORDER BY Thoi_Gian_Kham DESC LIMIT 1";
                 con.sendToServer(phienKhamHientai);
                 int maPK = 0;
-                while (true) {
-                    Object ob = con.receiveFromServer();
-                    /*
-                     * if returned object is not CacheRowSet, inform and end the loop
-                     * else use CacheRowSet and end the loop
-                    */
-                    if (ob.getClass().toString().equals("class java.lang.String")) {
-                        break;
-                    }
-                    else {
-                        CachedRowSet cacheResult = (CachedRowSet)ob;                       
-                        cacheResult.next();
-                        maPK = cacheResult.getInt(1);
-                        break;
-                    }
-                }
+                CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();                       
+                cacheResult.next();
+                maPK = cacheResult.getInt(1);
                 //update Phien_Kham
                 String capNhatPK = 
                         "UPDATE Phien_Kham SET Ten_Benh = '"+tenBenh
@@ -362,25 +367,11 @@ public class TiepNhanController implements Initializable, PaneInterface {
                     + "WHERE Ma_Benh_Nhan = '"+benhnhan.getMa()+"' ORDER BY Thoi_Gian_Kham DESC";
             con = new ConnectToServer();
             con.sendToServer(query);
-            while (true) {
-                Object ob = con.receiveFromServer();
-                /*
-                 * if returned object is not CacheRowSet, inform and end the loop
-                 * else use CacheRowSet and end the loop
-                */
-                if (ob.getClass().toString().equals("class java.lang.String")) {
-                    con.sendToServer("done");
-                    break;
-                }
-                else {
-                    CachedRowSet cacheResult = (CachedRowSet)ob;
-                    while (cacheResult.next()) {
-                        inforPK.put(cacheResult.getString("Thoi_Gian_Kham"), cacheResult.getInt("Ma_Phien_Kham"));
-                    }
-                    con.sendToServer("done");
-                    break;
-                }
+            CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();
+            while (cacheResult.next()) {
+                inforPK.put(cacheResult.getString("Thoi_Gian_Kham"), cacheResult.getInt("Ma_Phien_Kham"));
             }
+            con.sendToServer("done");
             time = FXCollections.observableArrayList(inforPK.keySet());
             lvPhienKham.setItems(time);
         } catch (SQLException ex) {
@@ -396,28 +387,13 @@ public class TiepNhanController implements Initializable, PaneInterface {
                     + "WHERE Ma_Phien_Kham = '" + maPK +"'";
             con = new ConnectToServer();
             con.sendToServer(query);
-            while (true) {
-                Object ob = con.receiveFromServer();
-                /*
-                 * if returned object is not CacheRowSet, inform and end the loop
-                 * else use CacheRowSet and end the loop
-                */
-                if (ob.getClass().toString().equals("class java.lang.String")) {
-                    con.sendToServer("done");
-                    break;
-                }
-                else {
-                    CachedRowSet cacheResult = (CachedRowSet)ob;
-                    cacheResult.next();
-                    taHisTrieuChung.setText(cacheResult.getString("Trieu_Chung"));
-                    taHisTenBenh.setText(cacheResult.getString("Ten_Benh"));
-                    taHisHuongDieuTri.setText(cacheResult.getString("Huong_Dieu_Tri"));
-                    taHisGhiChu.setText(cacheResult.getString("Ghi_Chu_BA"));
-                    con.sendToServer("done");
-                    break;
-                }
-            }
-            
+            CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();
+            cacheResult.next();
+            taHisTrieuChung.setText(cacheResult.getString("Trieu_Chung"));
+            taHisTenBenh.setText(cacheResult.getString("Ten_Benh"));
+            taHisHuongDieuTri.setText(cacheResult.getString("Huong_Dieu_Tri"));
+            taHisGhiChu.setText(cacheResult.getString("Ghi_Chu_BA"));
+            con.sendToServer("done");
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -431,36 +407,22 @@ public class TiepNhanController implements Initializable, PaneInterface {
                         + "GROUP BY Ma_Benh_Nhan "
                         + "ORDER BY Thoi_Gian_Kham asc;";
             con.sendToServer(sql);
-            while (true) {
-                Object ob = con.receiveFromServer();
-                /*
-                 * if returned object is not CacheRowSet, inform and end the loop
-                 * else use CacheRowSet and end the loop
-                */
-                if (ob.getClass().toString().equals("class java.lang.String")) {
-                    con.sendToServer("done");
-                    break;
-                }
-                else {
-                    CachedRowSet cacheResult = (CachedRowSet)ob;
-                    while (cacheResult.next()) {
-                        if (cacheResult.getString(7).equals("phòng khám")) {
-                            BenhNhan benhnhan = new BenhNhan();
-                            benhnhan.setMa(cacheResult.getInt("Ma_Benh_Nhan"));
-                            benhnhan.setHoTen(cacheResult.getString("Ho_Ten_BN"));
-                            benhnhan.setNgaySinh(cacheResult.getString("Ngay_Sinh_BN"));
-                            benhnhan.setGioiTinh(cacheResult.getString("Gioi_Tinh_BN"));
-                            benhnhan.setPhone(cacheResult.getString("SDT_BN"));
-                            benhnhan.setThoiGian(cacheResult.getString("Thoi_Gian_Kham"));
-                            benhnhan.setTrangThai(cacheResult.getString("Trang_Thai_BN"));
-                            benhnhan.setDiaChi(cacheResult.getString("Dia_chi_BN"));
-                            benhnhanData.add(benhnhan);
-                        }
+            CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();
+            while (cacheResult.next()) {
+                if (cacheResult.getString("Trang_Thai_BN").equals("phòng khám")) {
+                    BenhNhan benhnhan = new BenhNhan();
+                        benhnhan.setMa(cacheResult.getInt("Ma_Benh_Nhan"));
+                        benhnhan.setHoTen(cacheResult.getString("Ho_Ten_BN"));
+                        benhnhan.setNgaySinh(cacheResult.getString("Ngay_Sinh_BN"));
+                        benhnhan.setGioiTinh(cacheResult.getString("Gioi_Tinh_BN"));
+                        benhnhan.setPhone(cacheResult.getString("SDT_BN"));
+                        benhnhan.setThoiGian(cacheResult.getString("Thoi_Gian_Kham"));
+                        benhnhan.setTrangThai(cacheResult.getString("Trang_Thai_BN"));
+                        benhnhan.setDiaChi(cacheResult.getString("Dia_chi_BN"));
+                        benhnhanData.add(benhnhan);
                     }
-                    con.sendToServer("done");
-                    break;
                 }
-            }
+            con.sendToServer("done");
             
         } catch (SQLException ex) {
             Logger.getLogger(DangNhapController.class.getName()).log(Level.SEVERE, null, ex);

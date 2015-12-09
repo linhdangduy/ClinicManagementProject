@@ -63,34 +63,30 @@ public class DangNhapController implements Initializable {
                 + "WHERE Ten_Dang_Nhap = '" + name 
                 + "' AND Mat_Khau = '" + pass +"'";
             con.sendToServer(query);
-            while (true) {
-                Object ob = con.receiveFromServer();
+            Object ob = con.receiveFromServer();
                 /*
                  * if returned object is not CacheRowSet, inform and end the loop
                  * else use CacheRowSet and end the loop
                 */
-                if (ob.getClass().toString().equals("class java.lang.String")) {
-                    lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
-                    break;
+            if (ob.getClass().toString().equals("class java.lang.String")) {
+                lbThongBao.setText("Tên tài khoản hoặc mật khẩu sai!");
+            }
+            else {
+                CachedRowSet crs = (CachedRowSet)ob;
+                crs.next();
+                employeeName = crs.getString("Ten_Nhan_Vien");
+                String phong = crs.getString("Phong");
+                if (phong.equals("phòng khám")){
+                    setView("/cm/view/BacSi/BacSi.fxml");
                 }
-                else {
-                    CachedRowSet crs = (CachedRowSet)ob;
-                    crs.next();
-                    employeeName = crs.getString("Ten_Nhan_Vien");
-                    String phong = crs.getString("Phong");
-                    if (phong.equals("phòng khám")){
-                        setView("/cm/view/BacSi/BacSi.fxml");
-                    }
-                    else if (phong.equals("lễ tân")){
-                        setView("/cm/view/LeTan/LeTan.fxml");
-                    }
-                    else if (phong.equals("phòng thuốc")) {
-                        setView("/cm/view/DuocSi/DuocSi.fxml");
-                    }
-                    else if (phong.equals("admin")) {
-                        setView("/cm/view/QuanLy/QuanLy.fxml");
-                    }
-                    break;
+                else if (phong.equals("lễ tân")){
+                    setView("/cm/view/LeTan/LeTan.fxml");
+                }
+                else if (phong.equals("phòng thuốc")) {
+                    setView("/cm/view/DuocSi/DuocSi.fxml");
+                }
+                else if (phong.equals("admin")) {
+                    setView("/cm/view/QuanLy/QuanLy.fxml");
                 }
             }
         }
