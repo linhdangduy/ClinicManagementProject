@@ -234,13 +234,13 @@ public class ThanhToanController implements Initializable {
             bnsel = benhnhan;
             }
     public void addBenhNhanData() throws SQLException{
-        String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk where Trang_Thai_BN = 'thanh toán' "
-                        + "group by Ma_Benh_Nhan "
-                        + "order by Thoi_Gian_Kham desc;";
+        String sql = "SELECT * FROM Benh_Nhan natural join Phien_Kham as pk1 where Trang_Thai_BN = 'thanh toán' "
+                       + " AND Thoi_gian_kham >= ALL(SELECT Thoi_Gian_Kham from Phien_Kham as pk2 where pk1.Ma_Benh_Nhan = pk2.Ma_Benh_Nhan);" ;
         con = new ConnectToServer();
         con.sendToServer(sql);
         Object ob = con.receiveFromServer();
         if (ob.getClass().toString().equals("class java.lang.String")) {
+                 con.sendToServer("done");
             }
         else
         {
@@ -263,21 +263,25 @@ public class ThanhToanController implements Initializable {
     }
     @FXML
     private void ThanhToan(ActionEvent e) throws IOException {
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Thanh Toán");
-        Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
-        Scene scene = new Scene(root);
-        window.setScene(scene);
-        window.showAndWait();
-        if(HoaDonController.getChange() == 1)
-            {
-                int index = BenhNhanData.indexOf(bnsel);
-                BenhNhanData.remove(index);
-                HoaDonController.setChange(0);
-                clearDetail();
+        if(lblTen.getText() == null || "".equals(lblTen.getText())) {
+        } 
+        else{
+            Stage window = new Stage();
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setTitle("Thanh Toán");
+            Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
+            Scene scene = new Scene(root);
+            window.setScene(scene);
+            window.showAndWait();
+            if(HoaDonController.getChange() == 1)
+                {
+                    int index = BenhNhanData.indexOf(bnsel);
+                    BenhNhanData.remove(index);
+                    HoaDonController.setChange(0);
+                    clearDetail();
             }
         }
+    }
     
     
     

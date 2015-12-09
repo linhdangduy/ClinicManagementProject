@@ -5,19 +5,17 @@
  */
 package cm.controller.BacSi;
 
-import cm.ConnectToDatabase;
+import cm.ConnectToServer;
+import cm.controller.DangNhap.DangNhapController;
 import cm.model.Dichvu;
 import cm.model.DonDichVu;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.beans.binding.Bindings.size;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -38,10 +36,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.sql.rowset.CachedRowSet;
 
 /**
  *
@@ -50,9 +47,8 @@ import javafx.stage.Stage;
 public class DichVuController implements Initializable, PaneInterface {
 
     private BacSiController parentPane;
-    private ConnectToDatabase con;
-    private PreparedStatement ps;
-    private ResultSet rs;
+    ConnectToServer con;
+
     @FXML
     private TableView<Dichvu> DichvuTable;
     @FXML
@@ -79,6 +75,7 @@ public class DichVuController implements Initializable, PaneInterface {
     private VBox paneThemDichVu;
     private ObservableList<Dichvu> DichvuData = FXCollections.observableArrayList();
     private ObservableList<DonDichVu> DonDichVuData = FXCollections.observableArrayList();
+    private TiepNhanController tiepNhanCtrl = ControllerMediator.getInstance().getTiepNhanCtrl();
     private int Ma;
     private float Giaf;
     private String Gia;
@@ -110,6 +107,8 @@ public class DichVuController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnThem(ActionEvent event) {
         DonDichVu dichvu = new DonDichVu();
+        dichvu.setTenDangNhap(DangNhapController.getTenDangNhap());
+        dichvu.setMaDichVu(DichvuTable.getSelectionModel().getSelectedItem().getMa());
         dichvu.setTenDichVu(lblTenDichVu.getText());
         // dichvu.setChucNang(taChucNang.getText());
         //dichvu.setGia(Giaf);
@@ -127,6 +126,7 @@ public class DichVuController implements Initializable, PaneInterface {
             Them = S.concat(lblTenDichVu.getText());
             S = Them.concat(", ");
             taThem.setText(Them);
+            tiepNhanCtrl.themTaDichVu(Them);
         }
 
         // DichvuTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> addDichvu(newValue);
@@ -136,6 +136,7 @@ public class DichVuController implements Initializable, PaneInterface {
     private void handleBtnTroLai(ActionEvent event) {
         initTable(DichvuData);
         taThem.setText(Them);
+        tiepNhanCtrl.themTaDichVu(Them);
         parentPane.setPane("tiepnhan");
     }
 
@@ -168,6 +169,7 @@ public class DichVuController implements Initializable, PaneInterface {
             }
             taChucNang.setText("");
             taThem.setText("");
+            tiepNhanCtrl.themTaDichVu("");
             DonDichVuData.clear();
             initTable(DichvuData);
         }
@@ -175,19 +177,33 @@ public class DichVuController implements Initializable, PaneInterface {
 
     private void addDichVuData() {
         try {
-            con = new ConnectToDatabase();
+            con = new ConnectToServer();
             String sql = "SELECT* FROM Dich_Vu ORDER BY Ma_Dich_Vu ASC";
-            rs = con.getRS(sql);
-            while (rs.next()) {
-                Dichvu dichvu = new Dichvu();
-                dichvu.setMa(rs.getInt("Ma_Dich_Vu"));
-                dichvu.setTenDichVu(rs.getString("Ten_Dich_Vu"));
-                dichvu.setChucNang(rs.getString("Chuc_Nang"));
-                dichvu.setGia(rs.getFloat("Gia_Dich_Vu"));
-                DichvuData.add(dichvu);
-                System.out.println(DichvuData.size());
+            con.sendToServer(sql);
+            while (true) {
+                Object ob = con.receiveFromServer();
+                /*
+                 * if returned object is not CacheRowSet, inform and end the loop
+                 * else use CacheRowSet and end the loop
+                 */
+                if (ob.getClass().toString().equals("class java.lang.String")) {
+                    break;
+                } else {
+                    CachedRowSet crs = (CachedRowSet) ob;
+                    while (crs.next()) {
+                        Dichvu dichvu = new Dichvu();
+                        dichvu.setMa(crs.getInt("Ma_Dich_Vu"));
+                        dichvu.setTenDichVu(crs.getString("Ten_Dich_Vu"));
+                        dichvu.setChucNang(crs.getString("Chuc_Nang"));
+                        dichvu.setGia(crs.getFloat("Gia_Dich_Vu"));
+                        DichvuData.add(dichvu);
+                        System.out.println(DichvuData.size());
+
+                    }
+                    break;
+                }
             }
-            rs.close();
+            con.sendToServer("done");
         } catch (SQLException ex) {
             Logger.getLogger(DichVuController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -251,15 +267,19 @@ public class DichVuController implements Initializable, PaneInterface {
     public ObservableList<DonDichVu> getDonDichVuData() {
         return DonDichVuData;
     }
+
     //xoa observable list
-    public void deleteMemoryDV()
-    {
-        Them="";
-        S="";
+
+    public void deleteMemoryDV() {
+        Them = "";
+        S = "";
         taThem.setText(Them);
+        tiepNhanCtrl.themTaDichVu(Them);
         DonDichVuData.clear();
     }
+
     //override tu PaneInterface interface
+
     @Override
     public void setScreenParent(BacSiController mainPane) {
         parentPane = mainPane;
