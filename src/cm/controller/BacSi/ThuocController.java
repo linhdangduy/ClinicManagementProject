@@ -6,6 +6,7 @@
 package cm.controller.BacSi;
 
 import cm.ConnectToDatabase;
+import cm.ConnectToServer;
 import cm.model.KeDonThuoc;
 
 import cm.model.Thuoc;
@@ -53,6 +54,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static javax.management.remote.JMXConnectorFactory.connect;
+import javax.sql.rowset.CachedRowSet;
 import javax.swing.plaf.nimbus.State;
 
 /**
@@ -106,10 +108,7 @@ public class ThuocController implements Initializable, PaneInterface {
     private String S = "";
     private int[] arrayInt = new int[100];
     private String Gia;
-    ConnectToDatabase con;
-    private Statement st;
-    private ResultSet rs;
-    private PreparedStatement ps;
+    ConnectToServer con;
 
     @FXML
     private BacSiController parentPane;
@@ -199,19 +198,33 @@ public class ThuocController implements Initializable, PaneInterface {
 
     public void addThuocData() throws SQLException {
         String sql = "SELECT * FROM Thuoc ORDER BY Ma_Thuoc ASC";
-        rs = con.getRS(sql);
-        while (rs.next()) {
-            Thuoc thuoc = new Thuoc();
-            thuoc.setMa(rs.getInt("Ma_Thuoc"));
-            thuoc.setTenThuoc(rs.getString("Ten_Thuoc"));
-            thuoc.setCongDung(rs.getString("Cong_Dung"));
-            thuoc.setGiaThuoc(rs.getFloat("Gia_Thuoc"));
-            thuoc.setDonVi(rs.getString("Don_Vi"));
-            thuoc.setSoLuong(rs.getInt("So_Luong"));
-            ThuocData.add(thuoc);
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        while (true) {
+            Object ob = con.receiveFromServer();
+            /*
+             * if returned object is not CacheRowSet, inform and end the loop
+             * else use CacheRowSet and end the loop
+             */
+            if (ob.getClass().toString().equals("class java.lang.String")) {
+                break;
+            } else {
+                CachedRowSet crs = (CachedRowSet) ob;
+                while (crs.next()) {
+                    Thuoc thuoc = new Thuoc();
+                    thuoc.setMa(crs.getInt("Ma_Thuoc"));
+                    thuoc.setTenThuoc(crs.getString("Ten_Thuoc"));
+                    thuoc.setCongDung(crs.getString("Cong_Dung"));
+                    thuoc.setGiaThuoc(crs.getFloat("Gia_Thuoc"));
+                    thuoc.setDonVi(crs.getString("Don_Vi"));
+                    thuoc.setSoLuong(crs.getInt("So_Luong"));
+                    ThuocData.add(thuoc);
 
+                }
+                break;
+            }
         }
-        rs.close();
+        con.sendToServer("done");
     }
 
     public void initTable(ObservableList<Thuoc> Data) throws SQLException {
@@ -288,7 +301,6 @@ public class ThuocController implements Initializable, PaneInterface {
     }
 
     //xoa observable list
-
     public void deleteMemoryT() {
         Them = "";
         S = "";
@@ -300,7 +312,7 @@ public class ThuocController implements Initializable, PaneInterface {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             ControllerMediator.getInstance().setThuocCtrl(this);
-            con = new ConnectToDatabase();
+
             cbSearchInit();
             addThuocData();
             initTable(ThuocData);
