@@ -5,20 +5,16 @@
  */
 package cm.controller.BacSi;
 
-import cm.ConnectToDatabase;
 import cm.ConnectToServer;
 import cm.model.Dichvu;
 import cm.model.DonDichVu;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.beans.binding.Bindings.size;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -39,9 +35,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sql.rowset.CachedRowSet;
 
@@ -80,6 +74,7 @@ public class DichVuController implements Initializable, PaneInterface {
     private VBox paneThemDichVu;
     private ObservableList<Dichvu> DichvuData = FXCollections.observableArrayList();
     private ObservableList<DonDichVu> DonDichVuData = FXCollections.observableArrayList();
+    private TiepNhanController tiepNhanCtrl = ControllerMediator.getInstance().getTiepNhanCtrl();
     private int Ma;
     private float Giaf;
     private String Gia;
@@ -128,6 +123,7 @@ public class DichVuController implements Initializable, PaneInterface {
             Them = S.concat(lblTenDichVu.getText());
             S = Them.concat(", ");
             taThem.setText(Them);
+            tiepNhanCtrl.themTaDichVu(Them);
         }
 
         // DichvuTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> addDichvu(newValue);
@@ -137,6 +133,7 @@ public class DichVuController implements Initializable, PaneInterface {
     private void handleBtnTroLai(ActionEvent event) {
         initTable(DichvuData);
         taThem.setText(Them);
+        tiepNhanCtrl.themTaDichVu(Them);
         parentPane.setPane("tiepnhan");
     }
 
@@ -169,6 +166,7 @@ public class DichVuController implements Initializable, PaneInterface {
             }
             taChucNang.setText("");
             taThem.setText("");
+            tiepNhanCtrl.themTaDichVu("");
             DonDichVuData.clear();
             initTable(DichvuData);
         }
@@ -273,6 +271,7 @@ public class DichVuController implements Initializable, PaneInterface {
         Them = "";
         S = "";
         taThem.setText(Them);
+        tiepNhanCtrl.themTaDichVu(Them);
         DonDichVuData.clear();
     }
 

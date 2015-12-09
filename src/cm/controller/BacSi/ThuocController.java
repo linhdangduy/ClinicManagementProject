@@ -5,28 +5,17 @@
  */
 package cm.controller.BacSi;
 
-import cm.ConnectToDatabase;
 import cm.ConnectToServer;
 import cm.model.KeDonThuoc;
 
 import cm.model.Thuoc;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,9 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -51,11 +38,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import static javax.management.remote.JMXConnectorFactory.connect;
 import javax.sql.rowset.CachedRowSet;
-import javax.swing.plaf.nimbus.State;
 
 /**
  *
@@ -96,8 +80,7 @@ public class ThuocController implements Initializable, PaneInterface {
     private ObservableList<Thuoc> ThuocData = FXCollections.observableArrayList();
     private ObservableList<KeDonThuoc> KeDonThuocData = FXCollections.observableArrayList();
 
-    private KeDonThuocController KeDonThuocCtrl = ControllerMediator.getInstance().getKeDonThuocCtrl();
-    private TiepNhanController TiepNhanCtrl = ControllerMediator.getInstance().getTiepNhanCtrl();
+    private TiepNhanController tiepNhanCtrl = ControllerMediator.getInstance().getTiepNhanCtrl();
     Stage dStage = new Stage();
     float Giaf;
     int flag = 0;
@@ -130,8 +113,9 @@ public class ThuocController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnTroLai(ActionEvent event) throws SQLException {
         //  initTable(ThuocData);
-
+        
         taThem.setText(Them);
+        tiepNhanCtrl.themTaThuoc(Them);
         parentPane.setPane("tiepnhan");
 
     }
@@ -158,6 +142,7 @@ public class ThuocController implements Initializable, PaneInterface {
             Them = S.concat(lblTenThuoc.getText());
             S = Them.concat(", ");
             taThem.setText(Them);
+            tiepNhanCtrl.themTaThuoc(Them);
         }
     }
 
@@ -191,6 +176,7 @@ public class ThuocController implements Initializable, PaneInterface {
             }
             taCongdung.setText("");
             taThem.setText("");
+            tiepNhanCtrl.themTaThuoc("");
             KeDonThuocData.clear();
             initTable(ThuocData);
         }
@@ -305,6 +291,7 @@ public class ThuocController implements Initializable, PaneInterface {
         Them = "";
         S = "";
         taThem.setText(Them);
+        tiepNhanCtrl.themTaThuoc(Them);
         KeDonThuocData.clear();
     }
 

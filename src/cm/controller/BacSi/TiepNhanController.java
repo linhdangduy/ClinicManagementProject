@@ -5,15 +5,12 @@
  */
 package cm.controller.BacSi;
 
-import cm.ConnectToDatabase;
 import cm.ConnectToServer;
 import cm.controller.DangNhap.DangNhapController;
 import cm.model.BenhNhan;
 import cm.model.DonDichVu;
 import cm.model.KeDonThuoc;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -77,7 +74,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
     @FXML
     private TextField tfTrieuChung, tfTenBenh;
     @FXML
-    private TextArea taGhiChu, taHuongDieuTri, taKeDonThuoc, taSuDungDichVu;
+    private TextArea taGhiChu, taHuongDieuTri, taThemThuoc, taThemDichVu;
     @FXML
     private TextArea taHisTrieuChung, taHisTenBenh, taHisHuongDieuTri, taHisGhiChu,
             taHisDonThuoc, taHisDonDichVu;
@@ -181,34 +178,6 @@ public class TiepNhanController implements Initializable, PaneInterface {
             lblGioiTinh.setText(benhnhan.getGioiTinh());
             lblSoDienThoai.setText(benhnhan.getPhone());
             lblDiaChi.setText(benhnhan.getDiaChi());
-            
-            //Show thong tin o tab chinh sua
-        /*    bnSelected = benhnhan;
-            tfTen2.setText(benhnhan.getHoTen());
-            //Cat xau ngaysinh tra ket qua ngay, thang, nam
-            ngaysinh = benhnhan.getNgaySinh();
-            String result[] = ngaysinh.split("[-]");
-            int i = 1;
-            for (String tmp : result){
-                if (i==1) cbNam2.setValue(tmp);
-                else if (i==2) cbThang2.setValue(tmp);
-                else if (i==3) cbNgay2.setValue(tmp);
-                i++;
-            }
-            
-            switch (benhnhan.getGioiTinh()){
-                case "Nam":
-                    rbNam2.setSelected(true);
-                    gioitinh2 = "Nam";
-                    break;
-                case "Nữ":
-                    rbNu2.setSelected(true);
-                    gioitinh2 = "Nữ";
-                    break;
-            }
-            tfDiaChi2.setText(benhnhan.getDiaChi());
-            tfPhone2.setText(benhnhan.getPhone());
-        */    
         }
         else{
             lblHoTen.setText("");
@@ -275,7 +244,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
         if (donDichVuData.isEmpty())
             warning.append("Dịch vụ, ");
         if (warning.length() == 0) {
-            dialogStage.setContentText("Bạn có lưu phiên khám này không?"); 
+            dialogStage.setContentText("Bệnh nhân sẽ được chuyển sang phòng thuốc. Bạn có lưu phiên khám này không?"); 
         }
         else {
             warning.deleteCharAt(warning.lastIndexOf(", "));
@@ -304,14 +273,14 @@ public class TiepNhanController implements Initializable, PaneInterface {
                             + "', Trieu_Chung = '" + trieuChung
                             + "', Huong_Dieu_Tri = '"+ huongDieuTri
                             + "', Ghi_Chu_BA = '" + ghiChu
-                                + "', WHERE Ma_Benh_Nhan = '" + benhNhanSelected.getMa()
-                                + "', AND Ma_Phien_Kham = '"+maPK+"'";
+                                + "' WHERE Ma_Benh_Nhan = '" + benhNhanSelected.getMa()
+                                + "' AND Ma_Phien_Kham = '"+maPK+"'";
                 con.sendToServer(capNhatPK);
                 //Insert Don_Thuoc
                 if (!keDonThuocData.isEmpty()) {
                     StringBuilder capNhatDonThuoc = new StringBuilder(
                             "INSERT INTO Don_Thuoc(Ma_Phien_Kham, Ma_Thuoc, "
-                            + "So_Luong_Ke, Chi_Phi_Thuoc, Ghi_Chu_Thuoc) VALUES "
+                            + "So_Luong_Ke, Chi_Phi_Thuoc, Cach_Dung_Thuoc) VALUES "
                             + "('"+maPK+"','");
                     StringBuilder queryBuild = new StringBuilder();
                     for (KeDonThuoc kdt : keDonThuocData) {
@@ -336,6 +305,11 @@ public class TiepNhanController implements Initializable, PaneInterface {
                         con.sendToServer(capNhatDichVu.append(queryBuild).toString());
                     }
                 }
+                String capNhatTrangThai = "UPDATE Benh_Nhan SET Trang_Thai_BN = 'phòng thuốc' "
+                        + "WHERE Ma_Benh_Nhan = '"+benhNhanSelected.getMa()+"'";
+                benhnhanData.remove(benhNhanSelected);
+                con.sendToServer(capNhatTrangThai);
+                
                 con.sendToServer("done");
             } catch (SQLException ex) {
                 Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -358,6 +332,14 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private void handleBtnSuDung(ActionEvent event) {
         parentPane.setPane("dichvu");
         ControllerMediator.getInstance().getDichVuCtrl().setPaneThemDichVu(true);
+    }
+    
+    public void themTaThuoc(String s) {
+        taThemThuoc.setText(s);
+    }
+    
+    public void themTaDichVu(String s) {
+        taThemDichVu.setText(s);
     }
     //show all time of Phien_Kham in history tab
     private void showListView(BenhNhan benhnhan) {

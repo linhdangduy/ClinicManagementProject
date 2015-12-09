@@ -134,8 +134,8 @@
                                     <TextArea fx:id="taHuongDieuTri" prefHeight="200.0" prefWidth="200.0" promptText="Nhập hướng điều trị" GridPane.rowIndex="3" />
                                     <Button mnemonicParsing="false" onAction="#handleBtnKeDon" prefHeight="35.0" text="Kê đơn thuốc" GridPane.rowIndex="4" />
                                     <Button mnemonicParsing="false" onAction="#handleBtnSuDung" prefHeight="35.0" text="Sử dụng dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <TextArea fx:id="taKeDonThuoc" prefHeight="200.0" prefWidth="200.0" promptText="Kê đơn thuốc" GridPane.rowIndex="5" />
-                                    <TextArea fx:id="taSuDungDichVu" prefHeight="200.0" prefWidth="200.0" promptText="Sử dụng dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextArea fx:id="taThemThuoc" prefHeight="200.0" prefWidth="200.0" promptText="Kê đơn thuốc" GridPane.rowIndex="5" />
+                                    <TextArea fx:id="taThemDichVu" prefHeight="200.0" prefWidth="200.0" promptText="Sử dụng dịch vụ" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="338.0" />
