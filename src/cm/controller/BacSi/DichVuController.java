@@ -6,6 +6,7 @@
 package cm.controller.BacSi;
 
 import cm.ConnectToDatabase;
+import cm.ConnectToServer;
 import cm.model.Dichvu;
 import cm.model.DonDichVu;
 import java.io.IOException;
@@ -42,6 +43,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.sql.rowset.CachedRowSet;
 
 /**
  *
@@ -50,9 +52,8 @@ import javafx.stage.Stage;
 public class DichVuController implements Initializable, PaneInterface {
 
     private BacSiController parentPane;
-    private ConnectToDatabase con;
-    private PreparedStatement ps;
-    private ResultSet rs;
+    ConnectToServer con;
+
     @FXML
     private TableView<Dichvu> DichvuTable;
     @FXML
@@ -175,19 +176,33 @@ public class DichVuController implements Initializable, PaneInterface {
 
     private void addDichVuData() {
         try {
-            con = new ConnectToDatabase();
+            con = new ConnectToServer();
             String sql = "SELECT* FROM Dich_Vu ORDER BY Ma_Dich_Vu ASC";
-            rs = con.getRS(sql);
-            while (rs.next()) {
-                Dichvu dichvu = new Dichvu();
-                dichvu.setMa(rs.getInt("Ma_Dich_Vu"));
-                dichvu.setTenDichVu(rs.getString("Ten_Dich_Vu"));
-                dichvu.setChucNang(rs.getString("Chuc_Nang"));
-                dichvu.setGia(rs.getFloat("Gia_Dich_Vu"));
-                DichvuData.add(dichvu);
-                System.out.println(DichvuData.size());
+            con.sendToServer(sql);
+            while (true) {
+                Object ob = con.receiveFromServer();
+                /*
+                 * if returned object is not CacheRowSet, inform and end the loop
+                 * else use CacheRowSet and end the loop
+                 */
+                if (ob.getClass().toString().equals("class java.lang.String")) {
+                    break;
+                } else {
+                    CachedRowSet crs = (CachedRowSet) ob;
+                    while (crs.next()) {
+                        Dichvu dichvu = new Dichvu();
+                        dichvu.setMa(crs.getInt("Ma_Dich_Vu"));
+                        dichvu.setTenDichVu(crs.getString("Ten_Dich_Vu"));
+                        dichvu.setChucNang(crs.getString("Chuc_Nang"));
+                        dichvu.setGia(crs.getFloat("Gia_Dich_Vu"));
+                        DichvuData.add(dichvu);
+                        System.out.println(DichvuData.size());
+
+                    }
+                    break;
+                }
             }
-            rs.close();
+            con.sendToServer("done");
         } catch (SQLException ex) {
             Logger.getLogger(DichVuController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -251,15 +266,18 @@ public class DichVuController implements Initializable, PaneInterface {
     public ObservableList<DonDichVu> getDonDichVuData() {
         return DonDichVuData;
     }
+
     //xoa observable list
-    public void deleteMemoryDV()
-    {
-        Them="";
-        S="";
+
+    public void deleteMemoryDV() {
+        Them = "";
+        S = "";
         taThem.setText(Them);
         DonDichVuData.clear();
     }
+
     //override tu PaneInterface interface
+
     @Override
     public void setScreenParent(BacSiController mainPane) {
         parentPane = mainPane;
