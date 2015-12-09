@@ -263,6 +263,7 @@ public class ThanhToanController implements Initializable {
                 int index = BenhNhanData.indexOf(bnsel);
                 BenhNhanData.remove(index);
                 HoaDonController.setChange(0);
+                clearDetail();
             }
         }
     }
