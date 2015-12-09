@@ -5,7 +5,8 @@
  */
 package cm.controller.QuanLy;
 
-import cm.ConnectToDatabase;
+import cm.ConnectToServer;
+import cm.controller.DangNhap.DangNhapController;
 import cm.controller.QuanLy.QuanLyController;
 import cm.model.BenhNhan;
 import cm.model.NhanVien;
@@ -33,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javax.sql.rowset.CachedRowSet;
 
 /**
  * FXML Controller class
@@ -41,9 +43,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class TiepNhanController implements Initializable {
     
-    ConnectToDatabase con;
-    private ResultSet rs;
-    private PreparedStatement ps;
+    ConnectToServer con;
     
     @FXML
     private Label lblTenDangNhap;
@@ -85,31 +85,28 @@ public class TiepNhanController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            con = new ConnectToDatabase();
-            
+      
             btnAccept.setDisable(true);
-            lblTrangThai.textProperty().addListener(new ChangeListener<String>(){
-
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    if("Đăng Ký".equals(lblTrangThai.getText()))
-                        btnAccept.setDisable(false);
-                    else
-                        btnAccept.setDisable(true);
-                }
-                
+            lblTrangThai.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                if("Đăng Ký".equals(lblTrangThai.getText()))
+                    btnAccept.setDisable(false);
+                else
+                    btnAccept.setDisable(true);
             });
             
             cbSearchInit();
+        try {
             addNhanVienData();
-            Table();
         } catch (SQLException ex) {
-            Logger.getLogger(QuanLyController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
+            Table();
+
     }
     
     private void cbSearchInit() {
@@ -159,24 +156,33 @@ public class TiepNhanController implements Initializable {
         
     }        
     public void addNhanVienData () throws SQLException{
-        String sql = "SELECT * FROM Tai_Khoan;";
-        rs = con.getRS(sql);
-        while(rs.next())
+        String sql = "SELECT * FROM Tai_Khoan WHERE Ten_Dang_Nhap != '" + DangNhapController.getTenDangNhap() + "' ;";
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        Object ob = con.receiveFromServer();
+        if (ob.getClass().toString().equals("class java.lang.String")) {
+                 con.sendToServer("done");
+            }
+        else
         {
-            NhanVien nhanvien = new NhanVien();
-            nhanvien.setTendangnhap(rs.getString("Ten_Dang_Nhap"));
-            nhanvien.setHoTen(rs.getString("Ten_Nhan_Vien"));
-            nhanvien.setNgaySinh(rs.getString("Ngay_Sinh"));
-            nhanvien.setDiaChi(rs.getString("Dia_Chi"));
-            nhanvien.setGioiTinh(rs.getString("Gioi_Tinh"));
-            nhanvien.setPhone(rs.getString("SDT"));
-            nhanvien.setChuyennganh(rs.getString("Chuyen_Nganh"));
-            nhanvien.setBachoc(rs.getString("Bac_Hoc"));
-            nhanvien.setPhong(rs.getString("Phong"));
-            nhanvien.setTrangthai(rs.getString("Trang_Thai"));
-            NhanVienData.add(nhanvien);
+            CachedRowSet rs = (CachedRowSet)ob;
+            while(rs.next())
+            {
+                NhanVien nhanvien = new NhanVien();
+                nhanvien.setTendangnhap(rs.getString("Ten_Dang_Nhap"));
+                nhanvien.setHoTen(rs.getString("Ten_Nhan_Vien"));
+                nhanvien.setNgaySinh(rs.getString("Ngay_Sinh"));
+                nhanvien.setDiaChi(rs.getString("Dia_Chi"));
+                nhanvien.setGioiTinh(rs.getString("Gioi_Tinh"));
+                nhanvien.setPhone(rs.getString("SDT"));
+                nhanvien.setChuyennganh(rs.getString("Chuyen_Nganh"));
+                nhanvien.setBachoc(rs.getString("Bac_Hoc"));
+                nhanvien.setPhong(rs.getString("Phong"));
+                nhanvien.setTrangthai(rs.getString("Trang_Thai"));
+                NhanVienData.add(nhanvien);
+            }
+            con.sendToServer("done");
         }
-        rs.close();
     }
     
     private void showDetails(NhanVien nhanvien) {
@@ -192,11 +198,10 @@ public class TiepNhanController implements Initializable {
     @FXML
     private void Accept(ActionEvent event) throws SQLException {
         
-        String sql= "UPDATE Tai_Khoan SET Trang_Thai = 'Nghỉ' WHERE Ten_Dang_Nhap = ?";
-        ps = con.getPS(sql);
-        ps.setString(1,lblTenDangNhap.getText());
-        ps.executeUpdate();
-        ps.close(); 
+        String sql= "UPDATE Tai_Khoan SET Trang_Thai = 'Nghỉ' WHERE Ten_Dang_Nhap = '"+nhanviensel.getTendangnhap()+"';";
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        con.sendToServer("done");
         int index = NhanVienData.indexOf(nhanviensel);
         nhanviensel.setTrangthai("Nghỉ");
         NhanVienData.set(index, nhanviensel);
@@ -206,7 +211,7 @@ public class TiepNhanController implements Initializable {
     @FXML
     private void Delete(ActionEvent event) throws SQLException {
         
-        String sql = "DELETE FROM Tai_Khoan WHERE Ten_Dang_Nhap = ?";
+        String sql = "DELETE FROM Tai_Khoan WHERE Ten_Dang_Nhap = '"+ nhanviensel.getTendangnhap()+"';";
         String notice = "Xác nhận xoá tài khoản "+ lblTenDangNhap.getText()+"?";
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION , notice, ButtonType.YES, ButtonType.NO  );
         alert.setTitle("Thông báo");
@@ -214,10 +219,9 @@ public class TiepNhanController implements Initializable {
         alert.showAndWait();
         
         if(alert.getResult() == ButtonType.YES){
-            ps=con.getPS(sql);
-            ps.setString(1,lblTenDangNhap.getText());
-            ps.executeUpdate();
-            ps.close();
+            con = new ConnectToServer();
+            con.sendToServer(sql);
+            con.sendToServer("done");
             int index =  NhanVienData.indexOf(nhanviensel);
             NhanVienData.remove(index);
             //nhanviensel = new NhanVien();
