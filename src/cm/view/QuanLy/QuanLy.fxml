@@ -36,7 +36,11 @@
                   <Label prefHeight="40.0" text="Xin chào," />
                   <Label prefHeight="40.0" text="Admin" />
                   <Label fx:id="lblTenAdmin" prefHeight="40.0" text="tên admin" />
-                  <Label fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" prefHeight="40.0" text="Đăng xuất" />
+                  <Text fx:id="lblDangXuat" onMouseClicked="#mouseClickedLblDangXuat" onMouseEntered="#mouseDragLblDangXuat" onMouseExited="#mouseExitLblDangXuat" strokeType="OUTSIDE" strokeWidth="0.0" text="Đăng xuất" wrappingWidth="79.7294921875">
+                     <HBox.margin>
+                        <Insets top="13.0" />
+                     </HBox.margin>
+                  </Text>
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
