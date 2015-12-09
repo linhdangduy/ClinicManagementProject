@@ -6,11 +6,9 @@
 package cm.controller.DangNhap;
 
 import cm.ClinicManager;
-import cm.ConnectToDatabase;
+import cm.ConnectToServer;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -43,9 +41,9 @@ import javafx.scene.text.Font;
  * @author linhsan
  */
 public class DangKyController implements Initializable {
-    ConnectToDatabase con;
-    private ResultSet rs;
-    private PreparedStatement ps;
+    ConnectToServer con;
+    //private ResultSet rs;
+    //private PreparedStatement ps;
     
     @FXML
     private Pane pane;
@@ -91,7 +89,6 @@ public class DangKyController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        con = new ConnectToDatabase();
         setListen();
         cbBacHocinit();
         cbPhonginit();
@@ -118,49 +115,60 @@ public class DangKyController implements Initializable {
         
     }
     private void checkTenDN(){
-        String sql = "SELECT Ten_Dang_Nhap FROM Tai_Khoan WHERE Ten_Dang_Nhap = ?";
         tfTenDangNhap.textProperty().addListener(new ChangeListener<String>(){
 
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                try {
-                    if(newValue.length()>20)
+                if(newValue.length()>20)
+                {
+                    lblTrangThai.setText("* Tên đăng nhập tối đa 20 ký tự");
+                    tfTenDangNhap.setStyle(setRedColor+setBorder);
+                    statusTDN = 1;
+                }
+                else if(newValue.length()<5)
+                {
+                    lblTrangThai.setText("* Tên đăng nhập tối thiểu 5 ký tự");
+                    tfTenDangNhap.setStyle(setRedColor+setBorder);
+                    statusTDN = 1;
+                }
+                else if( checkSpace(newValue) == 1)
+                {
+                    lblTrangThai.setText("* Tên đăng nhập không chứa khoảng trống");
+                    tfTenDangNhap.setStyle(setRedColor+setBorder);
+                    statusTDN = 1;   
+                }
+                else
+                {
+                    checkStatus();
+                    String sql = "SELECT Ten_Dang_Nhap FROM Tai_Khoan WHERE Ten_Dang_Nhap = '" + newValue + "';";
+                    con = new ConnectToServer();
+                    con.sendToServer(sql);
+                    Object ob = con.receiveFromServer();
+                    if (ob.getClass().toString().equals("class java.lang.String"))
                     {
-                        lblTrangThai.setText("* Tên đăng nhập tối đa 20 ký tự");
-                        tfTenDangNhap.setStyle(setRedColor+setBorder);
-                        statusTDN = 1;
-                    }
-                    else if(newValue.length()<5)
-                    {
-                        lblTrangThai.setText("* Tên đăng nhập tối thiểu 5 ký tự");
-                        tfTenDangNhap.setStyle(setRedColor+setBorder);
-                        statusTDN = 1;
+                        statusTDN = 0;
+                        checkStatus();
                     }
                     else
                     {
-                        checkStatus();
-                        ps = con.getPS(sql);
-                        ps.setString(1, newValue);
-                        rs = ps.executeQuery();
-                        if(rs.isBeforeFirst())
-                        {
-                            lblTrangThai.setText("* Tên đăng nhập đã tồn tại");
-                            tfTenDangNhap.setStyle(setRedColor+setBorder);
-                            statusTDN = 1;
-                        }
-                        else{
-                            statusTDN = 0;
-                            checkStatus();
-                        }
-                        ps.close();
-                        rs.close();
+                        lblTrangThai.setText("* Tên đăng nhập đã tồn tại");
+                        tfTenDangNhap.setStyle(setRedColor+setBorder);
+                        statusTDN = 1;
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(DangKyController.class.getName()).log(Level.SEVERE, null, ex);
+                    con.sendToServer("done");
                 }
             }
             
         });
+    }
+    private int checkSpace(String s){
+        for(int i=0; i<s.length();i++){
+            if(s.charAt(i)==' ')
+                return 1;
+        }
+        return 0;
+        //=1 co space
+        //=0 ko co space
     }
     
     private void CheckSDT(){
@@ -349,37 +357,39 @@ public class DangKyController implements Initializable {
     }
     @FXML
     private void handleBtnDangKy(ActionEvent event) throws SQLException {
-        String sql = "INSERT INTO Tai_Khoan VALUES (?,?,?,?,?,?,?,?,?,?,'Đăng Ký');";
-        if(checkStatus()>0)
-            return;
-        else
-        {
-            ps = con.getPS(sql);
-            ps.setString(1,tfTenDangNhap.getText());
-            ps.setString(2,tfMatKhau.getText());
-            ps.setString(3,tfHoTen.getText());
-            ps.setString(4,ngaysinh.getValue().toString());
-            ps.setString(5,tfDiaChi.getText());
-            ps.setString(6,gioitinh);
-            ps.setString(7, tfPhone.getText());
-            ps.setString(8, tfNganh.getText());
-            ps.setString(9, cbBacHoc.getValue());
-            switch (cbPhong.getValue()) {
+        
+        String s = "INSERT INTO Tai_Khoan VALUES ('"
+                + tfTenDangNhap.getText() +"','"
+                + tfMatKhau.getText() +"','"
+                + tfHoTen.getText() +"','"
+                + ngaysinh.getValue().toString() +"','"
+                + tfDiaChi.getText() +"','"
+                + gioitinh +"','"
+                + tfPhone.getText() +"','"
+                + tfNganh.getText() +"','"
+                + cbBacHoc.getValue() +"','" ;
+
+        String sql = s;
+        switch (cbPhong.getValue()) {
                 case "Phòng Khám":
-                    ps.setString(10, "phòng khám");
+                    sql += "phòng khám','Đăng Ký');";
                     break;
                 case "Lễ Tân":
-                    ps.setString(10,"lễ tân");
+                    sql += "lễ tân','Đăng Ký');";
                     break;
                 case "Phòng Thuốc":
-                    ps.setString(10,"phòng thuốc");
+                    sql += "phòng thuốc','Đăng Ký');";
                     break;
                 case "Quản Lý":
-                    ps.setString(10, "admin");
+                    sql += "admin','Đăng Ký');";
                     break;
             }
-            ps.executeUpdate();
-            ps.close();
+        if(checkStatus()>0) {
+        } else
+        {
+            con= new ConnectToServer();
+            con.sendToServer(sql);
+            con.sendToServer("done");
             Alert alert =new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông Báo");
             alert.setHeaderText(null);
