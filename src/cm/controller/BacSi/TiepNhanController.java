@@ -209,10 +209,12 @@ public class TiepNhanController implements Initializable, PaneInterface {
     @FXML
     private void handleBtnChiTiet(ActionEvent event) {
         if (tblBenhNhan.getSelectionModel().getSelectedItem() != null) {
-            tabDieuTri.setVisible(true);
-            boxDanhSachBN.setVisible(false);
-            lblCanhBao.setText(null);
-            showListView(tblBenhNhan.getSelectionModel().getSelectedItem());
+            if (!tabDieuTri.isVisible()) {
+                tabDieuTri.setVisible(true);
+                boxDanhSachBN.setVisible(false);
+                lblCanhBao.setText(null);
+                showListView(tblBenhNhan.getSelectionModel().getSelectedItem());
+            }
         }
         else {
             lblCanhBao.setText("Chưa chọn bệnh nhân nào!");
@@ -445,13 +447,13 @@ public class TiepNhanController implements Initializable, PaneInterface {
                         if (cacheResult.getString(7).equals("phòng khám")) {
                             BenhNhan benhnhan = new BenhNhan();
                             benhnhan.setMa(cacheResult.getInt("Ma_Benh_Nhan"));
-                            benhnhan.setHoTen(cacheResult.getString("Ho_Ten"));
-                            benhnhan.setNgaySinh(cacheResult.getString("Ngay_Sinh"));
-                            benhnhan.setGioiTinh(cacheResult.getString("Gioi_Tinh"));
+                            benhnhan.setHoTen(cacheResult.getString("Ho_Ten_BN"));
+                            benhnhan.setNgaySinh(cacheResult.getString("Ngay_Sinh_BN"));
+                            benhnhan.setGioiTinh(cacheResult.getString("Gioi_Tinh_BN"));
                             benhnhan.setPhone(cacheResult.getString("SDT_BN"));
                             benhnhan.setThoiGian(cacheResult.getString("Thoi_Gian_Kham"));
-                            benhnhan.setTrangThai(cacheResult.getString("Trang_Thai"));
-                            benhnhan.setDiaChi(cacheResult.getString("Dia_chi"));
+                            benhnhan.setTrangThai(cacheResult.getString("Trang_Thai_BN"));
+                            benhnhan.setDiaChi(cacheResult.getString("Dia_chi_BN"));
                             benhnhanData.add(benhnhan);
                         }
                     }
