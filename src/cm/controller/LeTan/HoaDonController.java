@@ -5,7 +5,7 @@
  */
 package cm.controller.LeTan;
 
-import cm.ConnectToDatabase;
+import cm.ConnectToServer;
 import cm.controller.DangNhap.DangNhapController;
 import cm.controller.LeTan.ThanhToanController;
 import cm.model.*;
@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javax.sql.rowset.CachedRowSet;
 
 /**
  * FXML Controller class
@@ -35,10 +36,11 @@ import javafx.stage.Stage;
  */
 public class HoaDonController implements Initializable {
     
-    ConnectToDatabase con;
-    ResultSet rs;
-    PreparedStatement ps;
+    ConnectToServer con;
+    //ResultSet rs;
+    //PreparedStatement ps;
     private int maPK;
+    private static int change = 0;
     @FXML
     private Label lblTen;
     @FXML
@@ -89,7 +91,6 @@ public class HoaDonController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            con = new ConnectToDatabase();
             initLabel();
             getDVData();
             getThuocData();
@@ -98,16 +99,20 @@ public class HoaDonController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }    
     
     private void initLabel() throws SQLException{
         String sql = "select Ho_Ten_BN , Ngay_Sinh_BN , Gioi_Tinh_BN , Thoi_Gian_Kham , Trieu_Chung , Huong_Dieu_Tri , Ghi_Chu_BA,Ma_Phien_Kham "
-                +"from Benh_Nhan natural join Phien_Kham where Trang_Thai_BN ='thanh toán' and Ho_Ten_BN= ? group by Ma_Benh_Nhan  order by Thoi_Gian_Kham desc;";
-        ps = con.getPS(sql);
-        ps.setString(1, ThanhToanController.getbn());
-        rs = ps.executeQuery();
-        if(rs.isBeforeFirst())
-        {
+                +"from Benh_Nhan natural join Phien_Kham where Trang_Thai_BN ='thanh toán' and Ma_Benh_Nhan = "
+                + Integer.toString(ThanhToanController.getmabn()) +" group by Ma_Benh_Nhan  order by Thoi_Gian_Kham desc;";
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        Object ob = con.receiveFromServer();
+        if(ob.getClass().toString().equals("class java.lang.String"))
+            return;
+        else{
+            CachedRowSet rs = (CachedRowSet)ob;
             rs.next();
             lblTen.setText(rs.getString("Ho_Ten_BN"));
             lblNgaySinh.setText(rs.getString("Ngay_Sinh_BN"));
@@ -122,8 +127,7 @@ public class HoaDonController implements Initializable {
             lblTenNV.setText(DangNhapController.getEmployeeName());
             maPK = rs.getInt("Ma_Phien_Kham");
         }
-        rs.close();        
-        ps.close();
+        con.sendToServer("done");
     }
     private void initTableT(){
         ThuocColunm.setCellValueFactory(new PropertyValueFactory<>("TenThuoc"));
@@ -141,45 +145,72 @@ public class HoaDonController implements Initializable {
         TableDV.setItems(filteredData);
     }
     private void getThuocData() throws SQLException{
-        String sql= "select Ten_Thuoc,So_Luong_Ke,Chi_Phi_Thuoc,Cach_Dung_Thuoc from Thuoc natural join Don_Thuoc natural join Phien_Kham"
-                +" where Ma_Phien_Kham = ?;";
-        ps = con.getPS(sql);
-        ps.setInt(1, maPK);
-        rs = ps.executeQuery();
-        while(rs.next()){
-            KeDonThuoc thuoc = new KeDonThuoc();
-            thuoc.setTenThuoc(rs.getString("Ten_Thuoc"));
-            thuoc.setSoLuong(rs.getInt("So_Luong_Ke"));
-            thuoc.setCachDungThuoc(rs.getString("Cach_Dung_Thuoc"));
-            thuoc.setChiPhiThuoc(rs.getFloat("Chi_Phi_Thuoc"));
-            ThuocData.add(thuoc);
+        String sql= maPK+"select Ten_Thuoc,So_Luong_Ke,Chi_Phi_Thuoc,Cach_Dung_Thuoc from Thuoc natural join Don_Thuoc natural join Phien_Kham"
+                +" where Ma_Phien_Kham = "+Integer.toString(maPK)+";";
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        Object ob = con.receiveFromServer();
+        if(ob.getClass().toString().equals("class java.lang.String")){
+            con.sendToServer("done");
         }
-        rs.close();
-        ps.close();
+        else
+        {
+            CachedRowSet rs = (CachedRowSet)ob;
+            while(rs.next()){
+                KeDonThuoc thuoc = new KeDonThuoc();
+                thuoc.setTenThuoc(rs.getString("Ten_Thuoc"));
+                thuoc.setSoLuong(rs.getInt("So_Luong_Ke"));
+                thuoc.setCachDungThuoc(rs.getString("Cach_Dung_Thuoc"));
+                thuoc.setChiPhiThuoc(rs.getFloat("Chi_Phi_Thuoc"));
+                ThuocData.add(thuoc);
+            }
+            con.sendToServer("done");
+        }
     }
     private void getDVData() throws SQLException{
-        String sql= "select Ten_Dich_Vu,Gia_Dich_Vu,Ket_Qua from Dich_Vu natural join Don_Dich_Vu where Ma_Phien_Kham = ?;";
-        ps = con.getPS(sql);
-        ps.setInt(1, maPK);
-        rs = ps.executeQuery();
-        if(rs.isBeforeFirst())
+        String sql= "select Ten_Dich_Vu,Gia_Dich_Vu,Ket_Qua from Dich_Vu natural join Don_Dich_Vu where Ma_Phien_Kham =" +Integer.toBinaryString(maPK)+" ;";
+        
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        Object ob = con.receiveFromServer();
+        if(ob.getClass().toString().equals("class java.lang.String")){
+            con.sendToServer("done");
+        }
+        else
         {
-        while(rs.next()){
-            DonDichVu dv = new DonDichVu();
-            dv.setTenDichVu(rs.getString("Ten_Dich_Vu"));
-            dv.setGiaDichVu(rs.getFloat("Gia_Dich_Vu"));
-            dv.setKetQua(rs.getString("Ket_Qua"));
-            DVData.add(dv);
+            CachedRowSet rs = (CachedRowSet)ob;
+            while(rs.next()){
+                DonDichVu dv = new DonDichVu();
+                dv.setTenDichVu(rs.getString("Ten_Dich_Vu"));
+                dv.setGiaDichVu(rs.getFloat("Gia_Dich_Vu"));
+                dv.setKetQua(rs.getString("Ket_Qua"));
+                DVData.add(dv);
+            }
+            con.sendToServer("done");
         }
-        }
-        rs.close();
-        ps.close();
     }
     
     @FXML
-    private void BtnThanhToan(ActionEvent event) {
+    private void BtnThanhToan(ActionEvent event) throws SQLException {
+        String sql = "update Benh_Nhan set Trang_Thai_BN = 'kết thúc' where Ma_Benh_Nhan = "+Integer.toString(ThanhToanController.getmabn())+";";
+        String sql1 = "insert into Thanh_Toan values ('" +Integer.toString(maPK)+"','"+DangNhapController.getTenDangNhap()+"','"
+                + Float.toString(ThanhToanController.getTienThuoc()) + "','" + Float.toString(ThanhToanController.getTienDV()) + "','"
+                + Float.toString(ThanhToanController.getTongTien()) + "');";
+        
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        con.sendToServer(sql1);
+        con.sendToServer("done");
+        change = 1;
         Stage stage = (Stage) lblGhiChu.getScene().getWindow();
         stage.close();
+    }
+    
+    public static int getChange() {
+        return change;
+    }
+    public static void setChange(int x){
+        change =x;
     }
 
     @FXML
