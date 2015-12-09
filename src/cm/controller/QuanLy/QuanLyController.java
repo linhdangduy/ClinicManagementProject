@@ -5,6 +5,9 @@
  */
 package cm.controller.QuanLy;
 
+import cm.ClinicManager;
+import cm.ConnectToServer;
+import cm.controller.BacSi.BacSiController;
 import cm.controller.DangNhap.DangNhapController;
 import java.io.IOException;
 import java.net.URL;
@@ -16,11 +19,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -32,12 +40,12 @@ public class QuanLyController implements Initializable {
     @FXML
     private ToggleGroup GroupBtn;
     @FXML
-    private Label lblDangXuat;
+    private Text lblDangXuat;
     @FXML
     private Label lblTenAdmin;
     @FXML
     private Pane mainPane;
-    
+    ConnectToServer con;
     /*
     * dùng key là string để chiếu đến các value là view, lưu vào hash map
     */
@@ -78,6 +86,12 @@ public class QuanLyController implements Initializable {
         loadPane();
         setPane("tiepnhan");
         lblTenAdmin.setText(DangNhapController.getEmployeeName());
+        ClinicManager.getStage().setOnCloseRequest(e -> {
+        String sql = "UPDATE Tai_Khoan set Trang_Thai='Nghỉ' where Ten_Dang_Nhap = '" + DangNhapController.getTenDangNhap() + "';";
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        con.sendToServer("done");    
+        });
     }    
 
     @FXML
@@ -94,6 +108,26 @@ public class QuanLyController implements Initializable {
 
     @FXML
     private void mouseClickedLblDangXuat(MouseEvent event) {
+        String sql = "UPDATE Tai_Khoan set Trang_Thai='Nghỉ' where Ten_Dang_Nhap = '" + DangNhapController.getTenDangNhap() + "';";
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        con.sendToServer("done");
+         try {
+            Parent root = FXMLLoader.load(getClass().getResource("/cm/view/DangNhap/DangNhap.fxml"));
+            Scene scene = new Scene(root);
+            ClinicManager.getStage().setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+    @FXML
+    private void mouseDragLblDangXuat(MouseEvent e){
+        lblDangXuat.setFill(Color.BLUE);
+        lblDangXuat.setEffect(new Glow(1));
+    }
+    @FXML
+    private void mouseExitLblDangXuat(MouseEvent e){
+        lblDangXuat.setFill(Color.BLACK);
+        lblDangXuat.setEffect(null);
+    }
 }
