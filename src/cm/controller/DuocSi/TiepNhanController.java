@@ -7,6 +7,7 @@ package cm.controller.DuocSi;
 
 import cm.ConnectToDatabase;
 import cm.ConnectToServer;
+import cm.controller.DangNhap.DangNhapController;
 import cm.model.BenhNhan;
 import cm.model.KeDonThuoc;
 import java.net.URL;
@@ -78,6 +79,7 @@ public class TiepNhanController implements Initializable {
     //private ResultSet rs;
     private ConnectToServer con;
     private BenhNhan bnselected;
+    private int maPK;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -230,7 +232,7 @@ public class TiepNhanController implements Initializable {
                 rs.next();
                 maPhienKham = rs.getInt("Ma_Phien_Kham");
                 ps.close();*/
-                int maPhienKham = 0;
+                
                 String sql = "select Ma_Phien_Kham from Phien_Kham where Ma_Benh_Nhan = '"+ benhnhan.getMa()
                         +"' order by Thoi_Gian_Kham desc limit 1 ";
                 con.sendToServer(sql);
@@ -246,12 +248,12 @@ public class TiepNhanController implements Initializable {
                    else{
                        CachedRowSet crs = (CachedRowSet)ob;
                        crs.next();
-                       maPhienKham = crs.getInt("Ma_Phien_Kham");
+                       maPK = crs.getInt("Ma_Phien_Kham");
                        break;
                    }
                 }
                 con.sendToServer("done");
-                addDonThuoc(maPhienKham);
+                addDonThuoc(maPK);
                 initTableThuoc();
                 lblHoTen.setText(bnselected.getHoTen());
                 
@@ -341,7 +343,10 @@ public class TiepNhanController implements Initializable {
                 ps.executeUpdate();
                 ps.close();*/
                 con.sendToServer(sql);
-
+              
+                sql = "update Don_Thuoc set Ten_Dang_Nhap = '" +  DangNhapController.getTenDangNhap() + "' "
+                        + "where Ma_Phien_Kham = '" + maPK + "'" ;
+                con.sendToServer(sql);
 
                 /*sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
                 ps = con.getPS(sql);
@@ -402,6 +407,9 @@ public class TiepNhanController implements Initializable {
                     ps.executeUpdate();
                     ps.close();
                     BenhNhanData.remove(BenhNhanData.indexOf(bnselected));*/
+                    con.sendToServer(sql);
+                    sql = "update Don_Thuoc set Ten_Dang_Nhap = '" +  DangNhapController.getTenDangNhap() + "'"
+                            + "where Ma_Phien_Kham = '" + maPK + "'";
                     con.sendToServer(sql);
                     con.sendToServer("done");
                     addBenhNhanData();

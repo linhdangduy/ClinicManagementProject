@@ -5,13 +5,10 @@
  */
 package cm.controller.LeTan;
 
-import cm.ConnectToDatabase;
 import cm.ConnectToServer;
 import cm.model.BenhNhan;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -121,7 +118,6 @@ public class TiepNhanController implements Initializable{
         try {
             //con = new ConnectToDatabase();
             cbSearchInit();
-            //cbNgaySinhInit();
             rbNam1.setOnAction(e -> gioitinh1 = "Nam");
             rbNu1.setOnAction(e -> gioitinh1 = "Nữ");
             rbNam2.setOnAction(e -> gioitinh2 = "Nam");
