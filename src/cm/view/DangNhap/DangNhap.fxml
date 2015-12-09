@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="300.0" prefWidth="350.0" spacing="10.0" stylesheets="@cssDangNhap.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DangNhap.DangNhapController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="350.0" spacing="10.0" stylesheets="@cssDangNhap.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DangNhap.DangNhapController">
    <children>
       <FlowPane prefHeight="50.0" prefWidth="200.0" />
       <TextField fx:id="tfName" prefHeight="35.0" promptText="tên đăng nhập" styleClass="textDangNhap">
