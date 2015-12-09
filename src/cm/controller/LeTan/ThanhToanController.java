@@ -5,7 +5,7 @@
  */
 package cm.controller.LeTan;
 
-import cm.ConnectToDatabase;
+import cm.ConnectToServer;
 import cm.model.BenhNhan;
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +41,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.sql.rowset.CachedRowSet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -51,12 +52,11 @@ import javax.swing.JOptionPane;
  */
 public class ThanhToanController implements Initializable {
     
-    ConnectToDatabase con;
-    private Statement st;
-    private PreparedStatement ps;
-    private ResultSet rs;
+    ConnectToServer con;
+    //private PreparedStatement ps;
+   // private ResultSet rs;
     private static float TienThuoc = 0,TienDV = 0,TongTien = 0;
-    private BenhNhan bnsel;
+    
     @FXML
     private ComboBox<String> cbSearchDay;
     @FXML
@@ -98,6 +98,7 @@ public class ThanhToanController implements Initializable {
     @FXML
     private Label lblTongTien;
     private static int mabn;
+    private BenhNhan bnsel;
     
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
 
@@ -110,7 +111,6 @@ public class ThanhToanController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            con = new ConnectToDatabase();
             cbSearchC();
             cbSearchD();
             addBenhNhanData();
@@ -192,36 +192,41 @@ public class ThanhToanController implements Initializable {
             String sql1 = "select sum(Gia_Dich_Vu) as tien from Dich_Vu natural join Don_Dich_Vu natural join Phien_Kham"
                     +" where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tien>0;";
             String sql2 = "select sum(Chi_Phi_Thuoc) as abcd from Don_Thuoc natural join Phien_Kham where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having abcd > 0;";
-            ps = con.getPS(sql1);
-            ps.setInt(1,benhnhan.getMa());
-            rs = ps.executeQuery();
-            if(rs.isBeforeFirst())
+            con = new ConnectToServer();
+            con.sendToServer(sql1);
+            Object ob = con.receiveFromServer();
+            if (ob.getClass().toString().equals("class java.lang.String")) 
+                TienDV = 0;
+            else
             {
+                CachedRowSet rs = (CachedRowSet)ob;
                 rs.next();
                 TienDV = rs.getFloat("tien");
             }
-            else TienDV = 0;
+            
             lblTienDV.setText(Float.toString(TienDV));
-            ps.close();
-            rs.close();
+            con.sendToServer("done");
+         
             
-            ps = con.getPS(sql2);
-            ps.setInt(1,benhnhan.getMa());
-            rs = ps.executeQuery();
-            if(rs.isBeforeFirst())
+            con = new ConnectToServer();
+            con.sendToServer(sql2);
+            Object ob1 = con.receiveFromServer();
+           if (ob1.getClass().toString().equals("class java.lang.String")) 
+                TienThuoc = 0;
+            else
             {
+                CachedRowSet rs = (CachedRowSet)ob;
                 rs.next();
-                TienThuoc = rs.getFloat("abcd");
+                TienDV = rs.getFloat("abcd");
             }
-            else TienThuoc = 0;
+            con.sendToServer("done");
+            lblTienThuoc.setText(Float.toString(TienThuoc));
             
-            lblTienThuoc.setText(Float.toString(TienThuoc));            
             TongTien = TienThuoc + TienDV;
             lblTongTien.setText(Float.toString(TongTien));
-            ps.close();
-            rs.close();
-            mabn =  benhnhan.getMa();
+              
             lblTen.setText(benhnhan.getHoTen());
+            mabn = benhnhan.getMa();
             lblNgaySinh.setText(benhnhan.getNgaySinh());
             lblGioiTinh.setText(benhnhan.getGioiTinh());
             lblPhone.setText(benhnhan.getPhone());
@@ -232,33 +237,40 @@ public class ThanhToanController implements Initializable {
         String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk where Trang_Thai_BN = 'thanh toán' "
                         + "group by Ma_Benh_Nhan "
                         + "order by Thoi_Gian_Kham desc;";
-        rs = con.getRS(sql);
-        while(rs.next()){
-            BenhNhan benhnhan = new BenhNhan();
-            benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-            benhnhan.setHoTen(rs.getString("Ho_Ten_BN"));
-            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh_BN"));
-            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh_BN"));
-            benhnhan.setPhone(rs.getString("SDT_BN"));
-            benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
-            benhnhan.setTrangThai(rs.getString("Trang_Thai_BN"));
-            benhnhan.setDiaChi(rs.getString("Dia_chi_BN"));
-            BenhNhanData.add(benhnhan);
+        con = new ConnectToServer();
+        con.sendToServer(sql);
+        Object ob = con.receiveFromServer();
+        if (ob.getClass().toString().equals("class java.lang.String")) {
+            }
+        else
+        {
+            CachedRowSet rs = (CachedRowSet)ob;
+            while(rs.next()){
+                BenhNhan benhnhan = new BenhNhan();
+                benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
+                benhnhan.setHoTen(rs.getString("Ho_Ten_BN"));
+                benhnhan.setNgaySinh(rs.getString("Ngay_Sinh_BN"));
+                benhnhan.setGioiTinh(rs.getString("Gioi_Tinh_BN"));
+                benhnhan.setPhone(rs.getString("SDT_BN"));
+                benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
+                benhnhan.setTrangThai(rs.getString("Trang_Thai_BN"));
+                benhnhan.setDiaChi(rs.getString("Dia_chi_BN"));
+                BenhNhanData.add(benhnhan);
+            }   
+      
         }
-        rs.close();
+         con.sendToServer("done");
     }
     @FXML
-    private void ThanhToan(ActionEvent e) throws IOException, SQLException {
-        if(lblTen.getText() == null || "".equals(lblTen.getText())) {
-        } else{
-            Stage window = new Stage();
-            window.initModality(Modality.APPLICATION_MODAL);
-            window.setTitle("Thanh Toán");
-            Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
-            Scene scene = new Scene(root);
-            window.setScene(scene);
-            window.showAndWait();
-            if(HoaDonController.getChange() == 1)
+    private void ThanhToan(ActionEvent e) throws IOException {
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Thanh Toán");
+        Parent root = FXMLLoader.load(getClass().getResource("/cm/view/LeTan/HoaDon.fxml"));
+        Scene scene = new Scene(root);
+        window.setScene(scene);
+        window.showAndWait();
+        if(HoaDonController.getChange() == 1)
             {
                 int index = BenhNhanData.indexOf(bnsel);
                 BenhNhanData.remove(index);
@@ -266,7 +278,8 @@ public class ThanhToanController implements Initializable {
                 clearDetail();
             }
         }
-    }
+    
+    
     
         
     public static int getmabn(){
@@ -281,7 +294,7 @@ public class ThanhToanController implements Initializable {
     public static float getTongTien(){
         return TongTien;
     }
-
+    
     private void clearDetail() {
         lblTen.setText(null);
         lblNgaySinh.setText(null);
