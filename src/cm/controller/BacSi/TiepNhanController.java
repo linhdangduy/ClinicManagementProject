@@ -190,10 +190,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
         }
     }
     
-    @FXML
-    private void handleBtnBenhNhanTiep(ActionEvent event) {
-        
-    }
+    
     
     @FXML
     private void handleBtnChiTiet(ActionEvent event) {
