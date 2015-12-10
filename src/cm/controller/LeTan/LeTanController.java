@@ -107,6 +107,12 @@ public class LeTanController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadPane();
         setPane("tiepnhan");
+          ClinicManager.getStage().setOnCloseRequest(e -> {
+            String sql = "UPDATE Tai_Khoan set Trang_Thai='Nghỉ' where Ten_Dang_Nhap = '" + DangNhapController.getTenDangNhap() + "';";
+            ConnectToServer con = new ConnectToServer();
+            con.sendToServer(sql);
+            con.sendToServer("done");
+        });
         lblTenLetan.setText(DangNhapController.getEmployeeName());
     }
 }
