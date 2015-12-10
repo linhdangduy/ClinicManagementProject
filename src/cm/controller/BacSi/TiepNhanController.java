@@ -91,18 +91,20 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private DichVuController dichVuCtrl = ControllerMediator.getInstance().getDichVuCtrl();
     private ObservableList<DonDichVu> donDichVuData;
     
-    private ObservableList<String> time;
+    private ObservableList<String> time = FXCollections.observableArrayList();
     private HashMap<String, Integer> inforPK = new HashMap<>();
     private BenhNhan benhnhan = null;
-    
+    private Integer maPKShow;
     //override tu Initializable interface
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         createConnection();
         initTable();
         cbSearchInit();
+        lvPhienKham.setItems(time);
+    
         lvPhienKham.getSelectionModel().selectedItemProperty().
-                addListener(observable -> showDetailPK(lvPhienKham.getSelectionModel().getSelectedItem()));
+               addListener((observable, oldValue, newValue) -> showDetailPK(newValue));
         ControllerMediator.getInstance().setTiepNhanCtrl(this);
     }
     
@@ -200,13 +202,13 @@ public class TiepNhanController implements Initializable, PaneInterface {
                 BenhNhan bn = tblBenhNhan.getSelectionModel().getSelectedItem();
                 if (benhnhan != bn) {
                     clearAll();
+                    clearAllHis();
                 }               
                 benhnhan = bn;
                 tabDieuTri.setVisible(true);
                 boxDanhSachBN.setVisible(false);
-                lblCanhBao.setText(null);
+                lblCanhBao.setText("");
                 showListView(benhnhan);
-                
             }
         }
         else {
@@ -321,6 +323,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
                 con.sendToServer(capNhatTrangThai);
                 con.sendToServer("done");
                 clearAll();
+                clearAllHis();
                 tabDieuTri.setVisible(false);
                 boxDanhSachBN.setVisible(true);
             } catch (SQLException ex) {
@@ -339,6 +342,16 @@ public class TiepNhanController implements Initializable, PaneInterface {
         ControllerMediator.getInstance().getThuocCtrl().deleteMemoryT();
         ControllerMediator.getInstance().getDichVuCtrl().deleteMemoryDV();        
     }
+    
+    public void clearAllHis() {
+        taHisTenBenh.setText("");
+        taHisTrieuChung.setText("");
+        taHisDonThuoc.setText("");
+        taHisDonDichVu.setText("");
+        taHisGhiChu.setText("");
+        taHisHuongDieuTri.setText("");
+    }
+    
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
         tabDieuTri.setVisible(false);
@@ -372,32 +385,87 @@ public class TiepNhanController implements Initializable, PaneInterface {
                     + "WHERE Ma_Benh_Nhan = '"+benhnhan.getMa()+"' ORDER BY Thoi_Gian_Kham DESC";
             con = new ConnectToServer();
             con.sendToServer(query);
-            CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();
-            while (cacheResult.next()) {
-                inforPK.put(cacheResult.getString("Thoi_Gian_Kham"), cacheResult.getInt("Ma_Phien_Kham"));
+            Object ob = con.receiveFromServer();
+            if (ob.getClass().toString().equals("class java.lang.String")) {
+                
+            }
+            else {
+                CachedRowSet cacheResult = (CachedRowSet)ob;
+                while (cacheResult.next()) {
+                    inforPK.put(cacheResult.getString("Thoi_Gian_Kham"), cacheResult.getInt("Ma_Phien_Kham"));
+                }
             }
             con.sendToServer("done");
-            time = FXCollections.observableArrayList(inforPK.keySet());
-            lvPhienKham.setItems(time);
+            time.clear();
+            time.addAll(inforPK.keySet());
+        //    time = FXCollections.observableArrayList(inforPK.keySet());
+        //    lvPhienKham.setItems(time);
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //show all information about Phien_Kham in history tab
-    private void showDetailPK(String timePK) {
+    private void showDetailPK(String s) {
         try {
             String query;
-            int maPK = inforPK.get(timePK);
+            maPKShow = inforPK.get(s);
             query = "SELECT Ten_Benh, Trieu_Chung, Huong_Dieu_Tri, Ghi_Chu_BA FROM Phien_Kham "
-                    + "WHERE Ma_Phien_Kham = '" + maPK +"'";
+                    + "WHERE Ma_Phien_Kham = '" + maPKShow +"'";
             con = new ConnectToServer();
+            
             con.sendToServer(query);
-            CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();
-            cacheResult.next();
-            taHisTrieuChung.setText(cacheResult.getString("Trieu_Chung"));
-            taHisTenBenh.setText(cacheResult.getString("Ten_Benh"));
-            taHisHuongDieuTri.setText(cacheResult.getString("Huong_Dieu_Tri"));
-            taHisGhiChu.setText(cacheResult.getString("Ghi_Chu_BA"));
+            Object ob = con.receiveFromServer();
+            if (ob.getClass().toString().equals("class java.lang.String")) {
+                
+            }
+            else {
+                CachedRowSet cacheResult = (CachedRowSet)ob;
+                cacheResult.next();
+                taHisTrieuChung.setText(cacheResult.getString("Trieu_Chung"));
+                taHisTenBenh.setText(cacheResult.getString("Ten_Benh"));
+                taHisHuongDieuTri.setText(cacheResult.getString("Huong_Dieu_Tri"));
+                taHisGhiChu.setText(cacheResult.getString("Ghi_Chu_BA"));
+            }
+            con.sendToServer("done");
+            con = new ConnectToServer();
+            query = "SELECT Ten_Thuoc, So_Luong_Ke, Cach_Dung_Thuoc FROM Thuoc NATURAL JOIN "
+                    + "Don_Thuoc WHERE Ma_Phien_Kham = '"+maPKShow+"'";
+            
+            con.sendToServer(query);
+            Object ob1 = con.receiveFromServer();
+                
+            if (ob1.getClass().toString().equals("class java.lang.String")) {
+                
+            }
+            else {
+                CachedRowSet cacheResult = (CachedRowSet)ob1;
+                StringBuilder textBuilder = new StringBuilder();
+                while (cacheResult.next()) {
+                    textBuilder.append(cacheResult.getString("Ten_Thuoc")).append("- ")
+                            .append(cacheResult.getInt("So_Luong_Ke")).append("- ")
+                            .append(cacheResult.getString("Cach_Dung_Thuoc")).append("\n");
+                }
+                System.out.println(textBuilder.toString());
+                taHisDonThuoc.setText(textBuilder.toString());
+            }
+            con.sendToServer("done");
+            con = new ConnectToServer();
+            query = "SELECT Ten_Dich_Vu, Ket_Qua FROM Dich_Vu NATURAL JOIN Don_Dich_Vu WHERE "
+                    + "Ma_Phien_Kham = '"+maPKShow+"'";
+            con.sendToServer(query);
+            Object ob2 = con.receiveFromServer();
+            if (ob2.getClass().toString().equals("class java.lang.String")) {
+                
+            }
+            else {
+                CachedRowSet cacheResult = (CachedRowSet)ob2;
+                StringBuilder textBuilder = new StringBuilder();
+                while (cacheResult.next()) {                
+                    textBuilder.append(cacheResult.getString("Ten_Dich_Vu")).append("- ")
+                            .append(cacheResult.getString("Ket_Qua")).append("\n");
+                }
+                taHisDonDichVu.setText(textBuilder.toString());
+            }
             con.sendToServer("done");
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -415,16 +483,16 @@ public class TiepNhanController implements Initializable, PaneInterface {
             CachedRowSet cacheResult = (CachedRowSet)con.receiveFromServer();
             while (cacheResult.next()) {
                 if (cacheResult.getString("Trang_Thai_BN").equals("phòng khám")) {
-                    BenhNhan benhnhan = new BenhNhan();
-                        benhnhan.setMa(cacheResult.getInt("Ma_Benh_Nhan"));
-                        benhnhan.setHoTen(cacheResult.getString("Ho_Ten_BN"));
-                        benhnhan.setNgaySinh(cacheResult.getString("Ngay_Sinh_BN"));
-                        benhnhan.setGioiTinh(cacheResult.getString("Gioi_Tinh_BN"));
-                        benhnhan.setPhone(cacheResult.getString("SDT_BN"));
-                        benhnhan.setThoiGian(cacheResult.getString("Thoi_Gian_Kham"));
-                        benhnhan.setTrangThai(cacheResult.getString("Trang_Thai_BN"));
-                        benhnhan.setDiaChi(cacheResult.getString("Dia_chi_BN"));
-                        benhnhanData.add(benhnhan);
+                    BenhNhan bn = new BenhNhan();
+                        bn.setMa(cacheResult.getInt("Ma_Benh_Nhan"));
+                        bn.setHoTen(cacheResult.getString("Ho_Ten_BN"));
+                        bn.setNgaySinh(cacheResult.getString("Ngay_Sinh_BN"));
+                        bn.setGioiTinh(cacheResult.getString("Gioi_Tinh_BN"));
+                        bn.setPhone(cacheResult.getString("SDT_BN"));
+                        bn.setThoiGian(cacheResult.getString("Thoi_Gian_Kham"));
+                        bn.setTrangThai(cacheResult.getString("Trang_Thai_BN"));
+                        bn.setDiaChi(cacheResult.getString("Dia_chi_BN"));
+                        benhnhanData.add(bn);
                     }
                 }
             con.sendToServer("done");
