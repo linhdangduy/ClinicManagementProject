@@ -88,17 +88,17 @@ CREATE TABLE `Benh_Nhan`(
 
 
 INSERT INTO `Benh_Nhan` VALUES
-(NULL,'Mai Phương Thảo','1995-1-1','Hà Nội','Nữ','094912364','phòng khám'),
-(NULL,'Trần Việt Dũng','1996-2-1','Thanh Hóa','Nam','0918716482','phòng khám'),
-(NULL,'Đinh Huy Hoàng','2000-4-3','Nghệ An','Nam','0984618237','thanh toán'),
+(NULL,'Mai Phương Thảo','1995-1-1','Hà Nội','Nữ','094912364','phòng thuốc'),
+(NULL,'Trần Việt Dũng','1996-2-1','Thanh Hóa','Nam','0918716482','phòng thuốc'),
+(NULL,'Đinh Huy Hoàng','2000-4-3','Nghệ An','Nam','0984618237','phòng thuốc'),
 (NULL,'Vũ Phương Thảo','1989-2-2','Hà Tĩnh','Nữ','0914618613','phòng thuốc'),
 (NULL,'Mai Phương Lan','1968-12-8','Ninh Bình','Nữ','0947145612','phòng thuốc'),
 (NULL,'Trần Văn Chỉnh','1967-11-23','Hải Phòng','Nam','0946526485','phòng khám'),
 (NULL,'Lê Hoàng Anh','1999-11-17','Hồ Chí Minh','Nữ','0917846274','phòng khám'),
-(NULL,'Trần Văn Việt','1996-10-12','Huế','Nam','0947164526','thanh toán'),
-(NULL,'Phan Huy Tuấn','1990-9-24','Cà Mau','Nam','0918465712','phòng thuốc'),
-(NULL,'Mã Văn Kỳ','1991-3-2','Đà Lạt','Nam','0918273645','phòng khám'),
-(NULL,'Chu Hoàng Kiên','1987-5-4','Đà Nẵng','Nam','0918273641','phòng khám');
+(NULL,'Trần Văn Việt','1996-10-12','Huế','Nam','0947164526','phòng khám'),
+(NULL,'Phan Huy Tuấn','1990-9-24','Cà Mau','Nam','0918465712','phòng khám'),
+(NULL,'Mã Văn Kỳ','1991-3-2','Đà Lạt','Nam','0918273645','kết thúc'),
+(NULL,'Chu Hoàng Kiên','1987-5-4','Đà Nẵng','Nam','0918273641','kết thúc');
 
 
 
@@ -223,18 +223,12 @@ CREATE TABLE `Don_Thuoc` (
 
 
 
-INSERT INTO `Don_Thuoc`(`Ma_Phien_Kham`,`Ma_Thuoc`) VALUES
-(1,1),
-(2,2),
-(3,3),
-(4,4),
-(5,5),
-(6,6),
-(7,7),
-(8,7),
-(9,10),
-(10,2),
-(11,9);
+INSERT INTO `Don_Thuoc` (`Ma_Phien_Kham`,`Ma_Thuoc`,`So_Luong_Ke`,`Chi_Phi_Thuoc`) VALUES
+(1,1,5,0),
+(2,2,2,0),
+(3,3,3,0),
+(4,4,1,0),
+(5,5,5,0);
 
 
 
