@@ -38,6 +38,10 @@ public class LeTanController implements Initializable {
     private Label lblDangXuat;
     @FXML
     private Label lblTenLetan;
+    @FXML
+    private HBox hbox;
+    @FXML
+    private HBox hbox1;
     ConnectToServer con;
     
     private HashMap<String, HBox> screens = new HashMap<>();
@@ -80,12 +84,12 @@ public class LeTanController implements Initializable {
     
     @FXML
     private void mouseEnteredLblDangXuat(MouseEvent event) {
-        lblDangXuat.setTextFill(Color.BLUE);
+        lblDangXuat.setTextFill(Color.RED);
         lblDangXuat.setEffect(new Glow(1));
     }
     @FXML
     private void mouseExitedLblDangXuat(MouseEvent event) {
-        lblDangXuat.setTextFill(Color.BLACK);
+        lblDangXuat.setTextFill(Color.WHITE);
         lblDangXuat.setEffect(null);
     }
     @FXML
@@ -106,6 +110,10 @@ public class LeTanController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadPane();
+        hbox.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox.setStyle("-fx-background-color: #9ca9f1;");
+        hbox1.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox1.setStyle("-fx-background-color: #9ca9f1;");
         setPane("tiepnhan");
           ClinicManager.getStage().setOnCloseRequest(e -> {
             String sql = "UPDATE Tai_Khoan set Trang_Thai='Nghỉ' where Ten_Dang_Nhap = '" + DangNhapController.getTenDangNhap() + "';";

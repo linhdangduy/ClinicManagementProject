@@ -30,7 +30,10 @@ import javafx.scene.layout.StackPane;
  * @author linhsan
  */
 public class DuocSiController implements Initializable {
-
+    @FXML
+    private HBox hbox;
+    @FXML
+    private HBox hbox1;
     @FXML
     private StackPane StackPane;
     @FXML
@@ -88,12 +91,17 @@ public class DuocSiController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadPane();
+        hbox.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox.setStyle("-fx-background-color: #9ca9f1;");
+        hbox1.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox1.setStyle("-fx-background-color: #9ca9f1;");
         setPane("tiepnhan");
           ClinicManager.getStage().setOnCloseRequest(e -> {
             String sql = "UPDATE Tai_Khoan set Trang_Thai='Nghỉ' where Ten_Dang_Nhap = '" + DangNhapController.getTenDangNhap() + "';";
             ConnectToServer con = new ConnectToServer();
             con.sendToServer(sql);
             con.sendToServer("done");
+            
         });
         lblTenDuocsi.setText(DangNhapController.getEmployeeName());
     }

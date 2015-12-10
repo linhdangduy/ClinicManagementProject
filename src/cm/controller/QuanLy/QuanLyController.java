@@ -28,6 +28,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
@@ -45,6 +47,10 @@ public class QuanLyController implements Initializable {
     private Label lblTenAdmin;
     @FXML
     private Pane mainPane;
+    @FXML
+    private HBox hbox;
+    @FXML
+    private HBox hbox1;
     ConnectToServer con;
     /*
     * dùng key là string để chiếu đến các value là view, lưu vào hash map
@@ -90,8 +96,13 @@ public class QuanLyController implements Initializable {
         String sql = "UPDATE Tai_Khoan set Trang_Thai='Nghỉ' where Ten_Dang_Nhap = '" + DangNhapController.getTenDangNhap() + "';";
         con = new ConnectToServer();
         con.sendToServer(sql);
-        con.sendToServer("done");    
+        con.sendToServer("done");
         });
+        hbox.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox.setStyle("-fx-background-color: #9ca9f1;");
+        hbox1.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox1.setStyle("-fx-background-color: #9ca9f1;");
+        lblDangXuat.setFill(Color.WHITE);
     }    
 
     @FXML
@@ -122,12 +133,13 @@ public class QuanLyController implements Initializable {
     }
     @FXML
     private void mouseDragLblDangXuat(MouseEvent e){
-        lblDangXuat.setFill(Color.BLUE);
+        lblDangXuat.setFill(Color.RED);
+        lblDangXuat.setFont(Font.font(null, FontWeight.BOLD, 13));
         lblDangXuat.setEffect(new Glow(1));
     }
     @FXML
     private void mouseExitLblDangXuat(MouseEvent e){
-        lblDangXuat.setFill(Color.BLACK);
+        lblDangXuat.setFill(Color.WHITE);
         lblDangXuat.setEffect(null);
     }
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -10,13 +12,29 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="350.0" spacing="10.0" stylesheets="@cssDangNhap.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DangNhap.DangNhapController">
    <children>
-      <FlowPane prefHeight="50.0" prefWidth="200.0" />
-      <TextField fx:id="tfName" prefHeight="35.0" promptText="tên đăng nhập" styleClass="textDangNhap">
+      <FlowPane prefHeight="46.0" prefWidth="350.0">
+         <children>
+            <AnchorPane prefHeight="44.0" prefWidth="346.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="100.0" layoutX="21.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@red-plus-th.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="head" layoutX="69.0" prefHeight="44.0" prefWidth="277.0" text="Clinic Management" textAlignment="RIGHT" textFill="#ff4059">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children></FlowPane>
+      <TextField fx:id="tfName" prefHeight="35.0" promptText="Tên đăng nhập" styleClass="textDangNhap">
          <VBox.margin>
             <Insets left="20.0" right="20.0" />
          </VBox.margin>
       </TextField>
-      <PasswordField fx:id="tfPass" prefHeight="35.0" promptText="mật khẩu" styleClass="textDangNhap">
+      <PasswordField fx:id="tfPass" prefHeight="35.0" promptText="Mật khẩu" styleClass="textDangNhap">
          <VBox.margin>
             <Insets left="20.0" right="20.0" />
          </VBox.margin>

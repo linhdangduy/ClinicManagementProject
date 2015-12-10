@@ -30,7 +30,11 @@ import javafx.scene.layout.StackPane;
  * @author linhsan
  */
 public class BacSiController implements Initializable {
-
+    
+    @FXML
+    private HBox hbox;
+    @FXML
+    private HBox hbox1;
     @FXML
     private StackPane StackPane;
     @FXML
@@ -111,6 +115,10 @@ public class BacSiController implements Initializable {
             con.sendToServer(sql);
             con.sendToServer("done");
         });
+        hbox.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox.setStyle("-fx-background-color: #9ca9f1;");
+        hbox1.getStylesheets().add("/cm/view/QuanLy/text.css");
+        hbox1.setStyle("-fx-background-color: #9ca9f1;");
         loadPane("tiepnhan", "/cm/view/BacSi/TiepNhan.fxml");
         loadPane("thuoc", "/cm/view/BacSi/Thuoc.fxml");
         loadPane("dichvu", "/cm/view/BacSi/DichVu.fxml");

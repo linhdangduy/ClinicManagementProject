@@ -7,11 +7,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.DuocSiController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cm.controller.DuocSi.DuocSiController">
    <children>
       <TilePane prefHeight="50.0" prefWidth="1100.0">
          <children>
-            <HBox prefHeight="50.0" prefWidth="550.0" spacing="10.0">
+            <HBox fx:id="hbox" prefHeight="50.0" prefWidth="550.0" spacing="10.0">
                <children>
                   <Label prefHeight="40.0" text="Phòng khám" />
                   <Label prefHeight="40.0" text="Tên phòng khám">
@@ -30,7 +30,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </HBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="550.0" spacing="10.0">
+            <HBox fx:id="hbox1" alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="550.0" spacing="10.0">
                <children>
                   <Label prefHeight="40.0" text="Xin chào," />
                   <Label prefHeight="40.0" text="Dược sĩ" />
@@ -46,20 +46,6 @@
             </HBox>
          </children>
       </TilePane>
-      <HBox prefHeight="50.0" prefWidth="1100.0" spacing="10.0">
-         <children>
-            <Label prefHeight="40.0" text="Chức năng">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </Label>
-            <Label prefHeight="40.0" text="Label" />
-            <Label prefHeight="40.0" text="Label" />
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
       <StackPane fx:id="StackPane" prefHeight="450.0" prefWidth="1100.0" />
    </children>
 </VBox>

@@ -25,6 +25,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.Glow;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javax.sql.rowset.CachedRowSet;
 
 /**
@@ -38,6 +45,8 @@ public class DangNhapController implements Initializable {
     private PasswordField tfPass;
     @FXML
     private Label lbThongBao;
+    @FXML
+    private Label head;
     private ResultSet rs;
     private PreparedStatement ps;
     private static String employeeName;
@@ -47,6 +56,7 @@ public class DangNhapController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {        
         lbThongBao.setText("");
+        head.setFont(Font.font(null, FontWeight.BOLD,25));
     }
     
     public static String getTenDangNhap() {
