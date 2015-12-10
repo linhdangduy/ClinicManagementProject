@@ -316,9 +316,10 @@ public class TiepNhanController implements Initializable, PaneInterface {
                 }
                 String capNhatTrangThai = "UPDATE Benh_Nhan SET Trang_Thai_BN = 'phòng thuốc' "
                         + "WHERE Ma_Benh_Nhan = '"+benhNhanSelected.getMa()+"'";
-                benhnhanData.remove(benhNhanSelected);
+                System.out.println(capNhatTrangThai);
                 con.sendToServer(capNhatTrangThai);
                 con.sendToServer("done");
+                benhnhanData.remove(benhNhanSelected);
                 clearAll();
                 clearAllHis();
                 tabDieuTri.setVisible(false);
