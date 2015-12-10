@@ -190,8 +190,8 @@ public class ThanhToanController implements Initializable {
     private void showDetails(BenhNhan benhnhan) throws SQLException {
             
             String sql1 = "select sum(Gia_Dich_Vu) as tien from Dich_Vu natural join Don_Dich_Vu natural join Phien_Kham"
-                    +" where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tien>0;";
-            String sql2 = "select sum(Chi_Phi_Thuoc) as abcd from Don_Thuoc natural join Phien_Kham where Ma_Benh_Nhan = ? and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having abcd > 0;";
+                    +" where Ma_Benh_Nhan = " +Integer.toString(benhnhan.getMa())+ " and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having tien>0;";
+            String sql2 = "select sum(Chi_Phi_Thuoc) as abcd from Don_Thuoc natural join Phien_Kham where Ma_Benh_Nhan = " + Integer.toString(benhnhan.getMa()) + " and Ma_Phien_Kham not in(select Ma_Phien_Kham from Thanh_Toan) having abcd > 0;";
             con = new ConnectToServer();
             con.sendToServer(sql1);
             Object ob = con.receiveFromServer();
