@@ -43,8 +43,7 @@ import javax.sql.rowset.CachedRowSet;
  */
 public class TiepNhanController implements Initializable{
     ConnectToServer con;
-    //private PreparedStatement ps;
-    //private ResultSet rs;
+    
     @FXML
     private Label lblTen;
     @FXML
@@ -116,7 +115,7 @@ public class TiepNhanController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            //con = new ConnectToDatabase();
+            
             cbSearchInit();
             rbNam1.setOnAction(e -> gioitinh1 = "Nam");
             rbNu1.setOnAction(e -> gioitinh1 = "Nữ");
@@ -134,10 +133,10 @@ public class TiepNhanController implements Initializable{
                         + "group by Ma_Benh_Nhan "
                         + "order by Thoi_Gian_Kham desc;";
         BenhNhanData.clear();
-        //rs = con.getRS(sql);
+        
         con = new ConnectToServer();
         con.sendToServer(sql);
-        //while(rs.next()){
+        
         while(true){
             Object ob = con.receiveFromServer();
             /*
@@ -166,7 +165,7 @@ public class TiepNhanController implements Initializable{
             
         }
         con.sendToServer("done");
-        //rs.close();
+        
     }
     private void cbSearchInit() {
         cbSearchTime.getItems().addAll("Hôm Nay" , "Tất Cả");
@@ -295,22 +294,7 @@ public class TiepNhanController implements Initializable{
             if (alert.getResult() == ButtonType.YES){
                 try {
                     con = new ConnectToServer();
-                    /*String sql = "Update Benh_Nhan set Trang_Thai_BN = ? where Ma_Benh_Nhan = ? ";
-                    ps =con.getPS(sql);
-                    ps.setString(1, "phòng khám");
-                    ps.setInt(2, bnSelected.getMa());
-                    ps.executeUpdate();
-                    ps.close();
                     
-                    
-                    
-                    //tao phien kham moi
-                    PreparedStatement ps2 = con.getPS("INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES (?,?)");
-                    ps2.setInt(1, bnSelected.getMa());
-                    long timeNow = Calendar.getInstance().getTimeInMillis();
-                    Timestamp ts = new java.sql.Timestamp(timeNow);
-                    ps2.setTimestamp(2, ts);
-                    ps2.executeUpdate();*/
                     String sql = "Update Benh_Nhan set Trang_Thai_BN = 'phòng khám' where Ma_Benh_Nhan =  '" + bnSelected.getMa()+"'";
                     con.sendToServer(sql);
                     //tao phien kham moi
@@ -341,7 +325,7 @@ public class TiepNhanController implements Initializable{
         try {
             Alert dialogStage = new Alert(AlertType.CONFIRMATION, "Bạn có xác nhận thêm bệnh nhân?", ButtonType.YES ,ButtonType.NO) ;
             dialogStage.setTitle("Xác Nhận");
-            //dialogStage.setHeaderText("Bạn có xác nhận thêm bệnh nhân?");
+            
             dialogStage.showAndWait();
             if (dialogStage.getResult() == ButtonType.YES) {
                 if (!tfTen1.getText().isEmpty()
@@ -359,16 +343,7 @@ public class TiepNhanController implements Initializable{
                     benhnhan.setPhone(tfPhone1.getText());
                     benhnhan.setTrangThai("phòng khám");
                     //Them thong tin benh nhan vao co so du lieu
-                    /*String sql = "insert into Benh_Nhan values (NULL,?,?,?,?,?,?);";
-                    ps = con.getPS(sql);
-                    ps.setString(1, benhnhan.getHoTen());
-                    ps.setString(2, benhnhan.getNgaySinh());
-                    ps.setString(3, benhnhan.getDiaChi());
-                    ps.setString(4, benhnhan.getGioiTinh());
-                    ps.setString(5, benhnhan.getPhone());
-                    ps.setString(6, benhnhan.getTrangThai());
-                    ps.executeUpdate();
-                    ps.close();*/
+                    
                     con =new ConnectToServer();
                     String sql = "insert into Benh_Nhan values (NULL,'"
                             +benhnhan.getHoTen()+"','"
@@ -379,14 +354,7 @@ public class TiepNhanController implements Initializable{
                             +benhnhan.getTrangThai()+"');";
                     con.sendToServer(sql);
                     // lay ma benhn nhan da nhap
-                    /*sql = "select * from `Benh_Nhan` where Ho_Ten_BN = ? and SDT_BN = ?;";
-                    ps = con.getPS(sql);
-                    ps.setString(1, benhnhan.getHoTen());
-                    ps.setString(2, benhnhan.getPhone());
-                    rs = ps.executeQuery();
-                    rs.next();
-                    benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-                    ps.close();*/
+                    
                     sql = "select * from `Benh_Nhan` where Ho_Ten_BN = '"+benhnhan.getHoTen()+"' and SDT_BN = '" + benhnhan.getPhone()+"'";
                     con.sendToServer(sql);
                     while(true){
@@ -403,13 +371,7 @@ public class TiepNhanController implements Initializable{
                     }
 
                     //them thoi gian kham vao bang Phien_Kham cho benh nhan
-                    /*PreparedStatement ps2 = con.getPS("INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES (?,?)");
-                    ps2.setInt(1, benhnhan.getMa());
-                    long timeNow = Calendar.getInstance().getTimeInMillis();
-                    Timestamp ts = new java.sql.Timestamp(timeNow);
-                    ps2.setTimestamp(2, ts);
-                    ps2.executeUpdate();
-                    benhnhan.setThoiGian(ts.toString());*/
+                    
                     long timeNow = Calendar.getInstance().getTimeInMillis();
                     Timestamp ts = new java.sql.Timestamp(timeNow);
                     sql = "INSERT INTO Phien_Kham(Ma_Benh_Nhan, Thoi_Gian_Kham) VALUES ('"+ benhnhan.getMa() +"','"+ts.toString()+"')";
@@ -461,16 +423,7 @@ public class TiepNhanController implements Initializable{
                     && !tfPhone2.getText().isEmpty()
                     ) {
                 //cap nhat vao du lieu
-                /*String sql = "Update Benh_Nhan set Ho_Ten_BN = ?, Ngay_Sinh_BN = ? , Dia_Chi_BN = ? , Gioi_Tinh_BN = ?, SDT_BN = ? where Ma_Benh_Nhan = ?";
-                ps = con.getPS(sql);
-                ps.setString(1, tfTen2.getText());
-                ps.setString(2, date2.getValue().toString());
-                ps.setString(3, tfDiaChi2.getText());
-                ps.setString(4, gioitinh2);
-                ps.setString(5, tfPhone2.getText());
-                ps.setInt(6, bnSelected.getMa());
-                ps.executeUpdate();
-                ps.close();*/
+                
                 con = new ConnectToServer();
                 String sql = "Update Benh_Nhan set Ho_Ten_BN = '"
                         +tfTen2.getText()+"',Ngay_Sinh_BN = '"
@@ -483,13 +436,7 @@ public class TiepNhanController implements Initializable{
                 con.sendToServer("done");
                 
                 //cap nhat vao bang
-                /*bnSelected.setHoTen(tfTen2.getText());
-                bnSelected.setNgaySinh(date2.getValue().toString());
-                bnSelected.setDiaChi(tfDiaChi2.getText());
-                bnSelected.setGioiTinh(gioitinh2);
-                bnSelected.setPhone(tfPhone2.getText());
-                int index = BenhNhanData.indexOf(bnSelected);
-                BenhNhanData.set(index, bnSelected);*/
+                
                 addBenhNhanData();
                 
             }
@@ -509,15 +456,11 @@ public class TiepNhanController implements Initializable{
         if (alert.getResult() == ButtonType.YES){
             con =new ConnectToServer();
             String sql = "delete from Benh_Nhan where Ma_Benh_Nhan = '" +bnSelected.getMa() + "'";
-            /*ps = con.getPS(sql);
-            ps.setInt(1, bnSelected.getMa());
-            ps.executeUpdate();
-            ps.close();*/
+            
             con.sendToServer(sql);
             con.sendToServer("done");
             addBenhNhanData();
-            //BenhNhanData.remove(bnSelected);
-            //bnSelected = null;
+           
         }
     }
     

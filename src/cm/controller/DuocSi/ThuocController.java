@@ -5,12 +5,9 @@
  */
 package cm.controller.DuocSi;
 
-import cm.ConnectToDatabase;
 import cm.ConnectToServer;
 import cm.model.Thuoc;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -96,16 +93,14 @@ public class ThuocController implements Initializable {
     private ObservableList<Thuoc> ThuocData = FXCollections.observableArrayList();
     private Thuoc thuocSelected;
     
-    /*private ConnectToDatabase con;
-    private PreparedStatement ps;
-    private ResultSet rs;*/
+    
     private ConnectToServer con;
     
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            //con = new ConnectToDatabase();
+            
             addThuocData();
             initTable();
             cbDonViInit();
@@ -159,19 +154,7 @@ public class ThuocController implements Initializable {
             }
         }
         con.sendToServer("done");
-        /*rs = con.getRS(sql);
-        while (rs.next()){
-            Thuoc thuoc = new Thuoc();
-            thuoc.setMa(rs.getInt("Ma_Thuoc"));
-            thuoc.setTenThuoc(rs.getString("Ten_Thuoc"));
-            thuoc.setCongDung(rs.getString("Cong_Dung"));
-            thuoc.setDonVi(rs.getString("Don_Vi"));
-            thuoc.setGiaThuoc(rs.getFloat("Gia_Thuoc"));
-            thuoc.setSoLuong(rs.getInt("So_Luong"));
-            thuoc.setGhiChu(rs.getString("Ghi_Chu_Thuoc"));
-            ThuocData.add(thuoc);
-        }
-        rs.close();*/
+        
         
     }
     private void initTable(){
@@ -265,16 +248,7 @@ public class ThuocController implements Initializable {
                         )
                 {
                     con = new ConnectToServer();
-                    /*String sql = "insert into Thuoc values (NULL, ?,?,?,?,?,?)";
-                    ps = con.getPS(sql);
-                    ps.setString(1,tfTenThuoc.getText());
-                    ps.setFloat(2, Float.parseFloat(tfGiaThuoc.getText()));
-                    ps.setString(3,tfCongDung.getText());
-                    ps.setInt(4, Integer.parseInt(tfSoLuong.getText()));
-                    ps.setString(5, cbDonVi.getValue());
-                    ps.setString(6,tfGhiChu.getText());
-                    ps.executeUpdate();
-                    ps.close();*/
+                    
                     String sql = "insert into Thuoc values (NULL, '"
                             + tfTenThuoc.getText() +"','"
                             + tfGiaThuoc.getText()+"','"
@@ -327,25 +301,7 @@ public class ThuocController implements Initializable {
                         && !tfGhiChu1.getText().isEmpty()
                         )
                 {
-                    /*String sql = "update Thuoc set Ten_Thuoc = ? , Cong_Dung = ? , Don_Vi =? , Gia_Thuoc =? , So_Luong =? ,Ghi_Chu_Thuoc =? where Ma_Thuoc =? ";
-                    ps = con.getPS(sql);
-                    ps.setString(1, tfTenThuoc1.getText());
-                    ps.setString(2, tfCongDung1.getText());
-                    ps.setString(3,cbDonVi1.getValue());
-                    ps.setFloat(4, Float.parseFloat(tfGiaThuoc1.getText()));
-                    ps.setInt(5, Integer.parseInt(tfSoLuong1.getText()));
-                    ps.setString(6, tfGhiChu1.getText());
-                    ps.setInt(7, thuocSelected.getMa());
-                    ps.executeUpdate();
-                    ps.close();
-
-                    thuocSelected.setTenThuoc(tfTenThuoc1.getText());
-                    thuocSelected.setCongDung(tfCongDung1.getText());
-                    thuocSelected.setDonVi(cbDonVi1.getValue());
-                    thuocSelected.setGiaThuoc(Float.parseFloat(tfGiaThuoc1.getText()));
-                    thuocSelected.setSoLuong(Integer.parseInt(tfSoLuong1.getText()));
-                    thuocSelected.setGhiChu(tfGhiChu1.getText());
-                    ThuocData.set(ThuocData.indexOf(thuocSelected), thuocSelected);*/
+                    
                     con =new ConnectToServer();
                     String sql = "update Thuoc set Ten_Thuoc = '"
                             + tfTenThuoc1.getText()+"' , Cong_Dung = '"
@@ -382,11 +338,7 @@ public class ThuocController implements Initializable {
                 if (thuocSelected != null){
                     con = new ConnectToServer();
                     String sql = "delete from Thuoc where Ma_Thuoc =' "+thuocSelected.getMa() + "'";
-                    /*ps = con.getPS(sql);
-                    ps.setInt(1, thuocSelected.getMa());
-                    ps.executeUpdate();
-                    ps.close();
-                    ThuocData.remove(thuocSelected);*/
+                    
                     con.sendToServer(sql);
                     con.sendToServer("done");
                     addThuocData();

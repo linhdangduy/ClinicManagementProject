@@ -74,9 +74,7 @@ public class TiepNhanController implements Initializable {
     private ObservableList<BenhNhan> BenhNhanData = FXCollections.observableArrayList();
     private ObservableList<KeDonThuoc> DonThuocData = FXCollections.observableArrayList();
     
-    //private ConnectToDatabase con;
-    //private PreparedStatement ps;
-    //private ResultSet rs;
+    
     private ConnectToServer con;
     private BenhNhan bnselected;
     private int maPK;
@@ -84,7 +82,7 @@ public class TiepNhanController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            //con = new ConnectToDatabase();
+            
             cbSearchInit();
             addBenhNhanData();
             initTable();
@@ -99,26 +97,7 @@ public class TiepNhanController implements Initializable {
         cbSearch.getItems().addAll("Mã","Họ Tên");
         cbSearch.setValue("Họ Tên");
     }
-    /*public void addBenhNhanData() throws SQLException{
-        //hien thi benh nhan theo thu tu co thoi gian kham gan nhat
-        String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk "
-                        + "where Trang_Thai_BN = 'phòng thuốc' "
-                        + "group by Ma_Benh_Nhan "
-                        + "order by Thoi_Gian_Kham desc;";
-        rs = con.getRS(sql);
-        BenhNhanData.clear();
-        while(rs.next()){
-            BenhNhan benhnhan = new BenhNhan();
-            benhnhan.setMa(rs.getInt("Ma_Benh_Nhan"));
-            benhnhan.setHoTen(rs.getString("Ho_Ten_BN"));
-            benhnhan.setNgaySinh(rs.getString("Ngay_Sinh_BN"));
-            benhnhan.setGioiTinh(rs.getString("Gioi_Tinh_BN"));
-            benhnhan.setPhone(rs.getString("SDT_BN"));
-            benhnhan.setThoiGian(rs.getString("Thoi_Gian_Kham"));
-            BenhNhanData.add(benhnhan);
-        }
-        rs.close();
-    }*/
+    
     public void addBenhNhanData() throws SQLException{
         //hien thi benh nhan theo thu tu co thoi gian kham gan nhat
         String sql = "SELECT * FROM Benh_Nhan natural join (select * from Phien_Kham order by Thoi_Gian_Kham desc) as pk "
@@ -126,10 +105,10 @@ public class TiepNhanController implements Initializable {
                         + "group by Ma_Benh_Nhan "
                         + "order by Thoi_Gian_Kham desc;";
         BenhNhanData.clear();
-        //rs = con.getRS(sql);
+        
         con = new ConnectToServer();
         con.sendToServer(sql);
-        //while(rs.next()){
+        
         while(true){
             Object ob = con.receiveFromServer();
             /*
@@ -158,7 +137,7 @@ public class TiepNhanController implements Initializable {
             
         }
         con.sendToServer("done");
-        //rs.close();
+        
     }
     public void initTable(){
         MaColumn.setCellValueFactory(new PropertyValueFactory<>("Ma"));
@@ -224,14 +203,7 @@ public class TiepNhanController implements Initializable {
         if (benhnhan != null){
             try {
                 con = new ConnectToServer();
-                /*String sql = "select Ma_Phien_Kham from Phien_Kham where Ma_Benh_Nhan = ? order by Thoi_Gian_Kham desc limit 1 ";
-                int maPhienKham;
-                ps = con.getPS(sql);
-                ps.setInt(1, benhnhan.getMa());
-                rs = ps.executeQuery();
-                rs.next();
-                maPhienKham = rs.getInt("Ma_Phien_Kham");
-                ps.close();*/
+                
                 
                 String sql = "select Ma_Phien_Kham from Phien_Kham where Ma_Benh_Nhan = '"+ benhnhan.getMa()
                         +"' order by Thoi_Gian_Kham desc limit 1 ";
@@ -284,9 +256,7 @@ public class TiepNhanController implements Initializable {
                     + "where Ma_Phien_Kham = '"
                     + maPhienKham+"' and Don_Thuoc.Ma_Thuoc = Thuoc.Ma_Thuoc";
             DonThuocData.clear();
-            /*ps = con.getPS(sql);
-            ps.setInt(1, maPhienKham);
-            rs = ps.executeQuery();*/
+            
             con.sendToServer(sql);
             while(true){
                 Object ob = con.receiveFromServer();
@@ -313,17 +283,7 @@ public class TiepNhanController implements Initializable {
                 }
             }
             con.sendToServer("done");
-            /*while (rs.next()){
-                KeDonThuoc thuoc = new KeDonThuoc();
-                thuoc.setMa(rs.getInt("Ma_Thuoc"));
-                thuoc.setTenThuoc(rs.getString("Ten_Thuoc"));
-                thuoc.setSoLuongKe(rs.getInt("So_Luong_Ke"));
-                thuoc.setSoLuong(rs.getInt("So_Luong"));
-                thuoc.setChiPhiThuoc(rs.getInt("Chi_Phi_Thuoc"));
-                DonThuocData.add(thuoc);
-                
-            }
-            rs.close();*/
+            
         } catch (SQLException ex) {
             Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -338,35 +298,14 @@ public class TiepNhanController implements Initializable {
             if (alert.getResult() == ButtonType.YES){
                 con =new ConnectToServer();
                 String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = '"+bnselected.getMa()+"'";
-                /*ps = con.getPS(sql);
-                ps.setInt(1, bnselected.getMa());
-                ps.executeUpdate();
-                ps.close();*/
+                
                 con.sendToServer(sql);
               
                 sql = "update Don_Thuoc set Ten_Dang_Nhap = '" +  DangNhapController.getTenDangNhap() + "' "
                         + "where Ma_Phien_Kham = '" + maPK + "'" ;
                 con.sendToServer(sql);
 
-                /*sql = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = ? where Ma_Benh_Nhan = ?";
-                ps = con.getPS(sql);
-                ps.setInt(2, bnselected.getMa());
-                String sql2 = "update Thuoc set So_Luong = ? where Ma_Thuoc = ?";
-                PreparedStatement ps2;
-                ps2 = con.getPS(sql2);
-                DonThuocData.forEach((thuoc) -> {
-                try {
-                ps.setFloat(1, thuoc.getChiPhiThuoc());
-                ps.executeUpdate();
-                ps2.setInt(1, thuoc.getSoLuong() - thuoc.getSoLuongKe());
-                ps2.setInt(2, thuoc.getMaThuoc());
-                ps2.executeUpdate();
-                } catch (SQLException ex) {
-                Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                });
-                ps.close();
-                ps2.close();*/
+                
 
                 DonThuocData.forEach(thuoc -> {
                     String sql2 = "update Don_Thuoc natural join Phien_Kham set Chi_Phi_Thuoc = '"
@@ -402,11 +341,7 @@ public class TiepNhanController implements Initializable {
                 if (alert.getResult() == ButtonType.YES){
                     con = new ConnectToServer();
                     String sql = "update Benh_Nhan set Trang_Thai_BN = 'thanh toán' where Ma_Benh_Nhan = '"+bnselected.getMa() +"'";
-                    /*ps = con.getPS(sql);
-                    ps.setInt(1, bnselected.getMa());
-                    ps.executeUpdate();
-                    ps.close();
-                    BenhNhanData.remove(BenhNhanData.indexOf(bnselected));*/
+                    
                     con.sendToServer(sql);
                     sql = "update Don_Thuoc set Ten_Dang_Nhap = '" +  DangNhapController.getTenDangNhap() + "'"
                             + "where Ma_Phien_Kham = '" + maPK + "'";
