@@ -6,6 +6,7 @@
 package cm.controller.DuocSi;
 
 import cm.ClinicManager;
+import cm.ConnectToServer;
 import cm.controller.BacSi.BacSiController;
 import cm.controller.DangNhap.DangNhapController;
 import java.io.IOException;
@@ -63,6 +64,12 @@ public class DuocSiController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource("/cm/view/DangNhap/DangNhap.fxml"));
             Scene scene = new Scene(root);
             ClinicManager.getStage().setScene(scene);
+            
+            ConnectToServer con = new ConnectToServer();
+            String query = "UPDATE Tai_Khoan SET Trang_Thai = 'Nghỉ' WHERE Ten_Dang_Nhap =  '"
+                                + DangNhapController.getTenDangNhap() +"'";
+            con.sendToServer(query);
+            con.sendToServer("done");
         } catch (IOException ex) {
             Logger.getLogger(BacSiController.class.getName()).log(Level.SEVERE, null, ex);
         }
