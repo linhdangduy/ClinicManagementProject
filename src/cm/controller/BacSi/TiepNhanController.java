@@ -93,7 +93,7 @@ public class TiepNhanController implements Initializable, PaneInterface {
     
     private ObservableList<String> time;
     private HashMap<String, Integer> inforPK = new HashMap<>();
-    
+    private BenhNhan benhnhan = null;
     
     //override tu Initializable interface
     @Override
@@ -197,10 +197,16 @@ public class TiepNhanController implements Initializable, PaneInterface {
     private void handleBtnChiTiet(ActionEvent event) {
         if (tblBenhNhan.getSelectionModel().getSelectedItem() != null) {
             if (!tabDieuTri.isVisible()) {
+                BenhNhan bn = tblBenhNhan.getSelectionModel().getSelectedItem();
+                if (benhnhan != bn) {
+                    clearAll();
+                }               
+                benhnhan = bn;
                 tabDieuTri.setVisible(true);
                 boxDanhSachBN.setVisible(false);
                 lblCanhBao.setText(null);
-                showListView(tblBenhNhan.getSelectionModel().getSelectedItem());
+                showListView(benhnhan);
+                
             }
         }
         else {
@@ -313,12 +319,25 @@ public class TiepNhanController implements Initializable, PaneInterface {
                         + "WHERE Ma_Benh_Nhan = '"+benhNhanSelected.getMa()+"'";
                 benhnhanData.remove(benhNhanSelected);
                 con.sendToServer(capNhatTrangThai);
-                
                 con.sendToServer("done");
+                clearAll();
+                tabDieuTri.setVisible(false);
+                boxDanhSachBN.setVisible(true);
             } catch (SQLException ex) {
                 Logger.getLogger(TiepNhanController.class.getName()).log(Level.SEVERE, null, ex);
             }            
         }   
+    }
+    
+    public void clearAll() {
+        tfTenBenh.setText("");
+        tfTrieuChung.setText("");
+        taHuongDieuTri.setText("");
+        taGhiChu.setText("");
+        taThemThuoc.setText("");
+        taThemDichVu.setText("");
+        ControllerMediator.getInstance().getThuocCtrl().deleteMemoryT();
+        ControllerMediator.getInstance().getDichVuCtrl().deleteMemoryDV();        
     }
     @FXML
     private void handleBtnTroLai(ActionEvent event) {
