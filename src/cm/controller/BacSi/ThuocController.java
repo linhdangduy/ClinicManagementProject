@@ -291,6 +291,9 @@ public class ThuocController implements Initializable, PaneInterface {
     public void deleteMemoryT() {
         Them = "";
         S = "";
+         for (int i = 0; i <= n; i++) {
+                arrayInt[i] = 0;
+            }
         taThem.setText(Them);
         tiepNhanCtrl.themTaThuoc(Them);
         KeDonThuocData.clear();

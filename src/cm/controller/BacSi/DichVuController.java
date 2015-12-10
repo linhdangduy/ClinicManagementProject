@@ -273,6 +273,9 @@ public class DichVuController implements Initializable, PaneInterface {
     public void deleteMemoryDV() {
         Them = "";
         S = "";
+         for (int i = 0; i <= n; i++) {
+                arrayInt[i] = 0;
+            }
         taThem.setText(Them);
         tiepNhanCtrl.themTaDichVu(Them);
         DonDichVuData.clear();
